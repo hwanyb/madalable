@@ -2,11 +2,40 @@ import React from "react";
 import styled from "styled-components";
 import { Icon } from "../../../styles/Common";
 
-const Base = styled.div``;
-const ItemWrapper = styled.a``;
-const ItemIcon = styled(Icon)``;
-const ItemText = styled.p``;
+const Base = styled.div`
+  width: 200px;
+  box-sizing: border-box;
+`;
 
+const ItemIcon = styled(Icon)`
+  line-height: 40px;
+  margin-right: 10px;
+`;
+const ItemText = styled.h3`
+  font-family: ${(props) => props.theme.fontFamily.aggro};
+  font-weight: 300;
+  font-size: ${(props) => props.theme.fontSize.base};
+  line-height: 40px;
+`;
+const ItemWrapper = styled.a`
+  display: flex;
+  cursor: pointer;
+  color: ${(props) => props.theme.color.primary};
+  margin-bottom: 10px;
+  border-radius: 0 50px 50px 0;
+  padding-left: 30px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: ${(props) => props.theme.color.primary};
+  }
+  &:hover ${ItemIcon} {
+    color: ${(props) => props.theme.color.white};
+  }
+  &:hover ${ItemText} {
+    color: ${(props) => props.theme.color.white};
+  }
+`;
 export default function SNB() {
   return (
     <Base>

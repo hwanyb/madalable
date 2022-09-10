@@ -12,8 +12,8 @@ const fontSize = {
   lg: "1.5rem",
 };
 
-const fontFamaily = {
-    aggro: 'SBAggro',
+const fontFamily = {
+  aggro: 'SBAggro',
 }
 const color = {
   background: "#FAFAFA",
@@ -30,7 +30,7 @@ const color = {
 const theme = {
   windowSize,
   fontSize,
-  fontFamaily,
+  fontFamily,
   color,
 };
 
