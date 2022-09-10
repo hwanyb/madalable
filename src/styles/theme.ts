@@ -13,18 +13,18 @@ const fontSize = {
 };
 
 const fontFamily = {
-  aggro: 'SBAggro',
-}
+  aggro: "SBAggro",
+};
 const color = {
   background: "#FAFAFA",
-  backgroundSecond: "#FDFDFE",
+  backgroundSecond: "#F1F1F1",
   primary: "#497BFB",
   secondary: "#FF9292",
   fontPrimary: "#484848",
   lightGray: "#D1D1D1",
   gray: "#A5A5A5",
   darkGray: "#727272",
-  white: "#FFF"
+  white: "#FFF",
 };
 
 const theme = {

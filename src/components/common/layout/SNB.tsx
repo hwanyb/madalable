@@ -5,6 +5,7 @@ import { Icon } from "../../../styles/Common";
 const Base = styled.div`
   width: 200px;
   box-sizing: border-box;
+  margin-top: 30px;
 `;
 
 const ItemIcon = styled(Icon)`
