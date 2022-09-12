@@ -10,7 +10,7 @@ import Auth from './pages/Auth';
 import Guide from './pages/Guide';
 import Todo from './pages/Todo';
 import Overview from './pages/Overview';
-import { setIsLoggedin } from './modules/authReducer';
+import { setIsLoggedin, setUserId } from './modules/authReducer';
 
 function App() {
   const navigate = useNavigate();
@@ -21,9 +21,11 @@ function App() {
       if(user) {
         dispatch(setIsLoggedin(true));
         navigate('/');
+        dispatch(setUserId(user.uid));
       } else {
         dispatch(setIsLoggedin(false));
         navigate('/auth');
+        dispatch(setUserId(''));
       }
     });
   }, []);

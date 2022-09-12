@@ -15,6 +15,7 @@ import {
   setMandalart,
 } from "../../modules/mandalartReducer";
 import "../../styles/featPicker.css";
+import { dbService } from "../../firebase";
 
 const Base = styled.div`
   width: 800px;
@@ -283,6 +284,7 @@ export default function CreateMandalart() {
   const mandalart = useSelector(
     (state: RootState) => state.mandalartReducer.mandalart,
   );
+  const userId = useSelector((state: RootState) => state.authReducer.userId);
   const { alias, emoji, color, startDate, endDate, difficulty } = mandalart;
 
   useEffect(() => {
@@ -386,6 +388,46 @@ export default function CreateMandalart() {
           difficulty: event.target.id,
         }),
       );
+    }
+  };
+
+  const onCompleteClick = async () => {
+    const result = window.confirm(
+      "아래 정보로 만다라트를 생성하시겠습니까?\n- 별명 : " +
+        alias +
+        "\n- 이모지 : " +
+        emoji +
+        "\n- 색상 : " +
+        color +
+        "\n- 기간 : " +
+        startDate +
+        "~" +
+        endDate +
+        "\n- 성공 난이도 : " +
+        difficulty
+    );
+    if (result) {
+      await dbService
+        .collection("mandalable")
+        .add({
+          user_id: userId,
+          create_at: Date.now(),
+          alias: alias,
+          emoji: emoji,
+          color: color,
+          start_date: startDate,
+          end_date: endDate,
+          difficulty: difficulty,
+        })
+        .then(() => {
+          setTimeout(() => {
+            dispatch(setIsOpenCreateMandalart());
+          }, 1000);
+        })
+        .catch((error) => {
+          console.error("Error adding document: ", error);
+        });
+      
     }
   };
   return (
@@ -557,7 +599,7 @@ export default function CreateMandalart() {
               Difficult
             </DifficultyBtn>
           </DifficultyBtnWrapper>
-          <CompleteBtn isFilled={isFilled}>완료</CompleteBtn>
+          <CompleteBtn isFilled={isFilled} onClick={onCompleteClick}>완료</CompleteBtn>
         </CreateMandalartWrapper>
       </CreateMandalartContainer>
     </Base>
