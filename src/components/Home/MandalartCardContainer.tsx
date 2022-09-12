@@ -1,8 +1,6 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
-import { RootState } from "../../modules";
-import { setIsOpenCreateMandalart } from "../../modules/mandalartReducer";
+
 import { Icon } from "../../styles/Common";
 import MandalartCard from "./MandalartCard";
 
@@ -18,17 +16,9 @@ const AddIcon = styled(Icon)`
 `;
 
 export default function MandalartCardContainer() {
-  const dispatch = useDispatch();
-  const isOpenCreateMandalart = useSelector(
-    (state: RootState) => state.mandalartReducer.isOpenCreateMandalart,
-  );
-  const onCreateClick = () => {
-    dispatch(setIsOpenCreateMandalart());
-  };
-
   return (
     <Base>
-      <MandalartCard isOpenCreateMandalart={isOpenCreateMandalart} onCreateClick={onCreateClick}>
+      <MandalartCard>
         <AddIcon className="material-symbols-rounded">add</AddIcon>
       </MandalartCard>
     </Base>

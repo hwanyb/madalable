@@ -1,11 +1,14 @@
 import React, { ReactNode } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
+
+import { setIsOpenCreateMandalart } from "../../modules/mandalartReducer";
 
 const Base = styled.div`
   width: 220px;
   height: 220px;
-  background-color: ${props => props.theme.color.transWhite};
-  filter: drop-shadow(4px 4px 4px ${props => props.theme.color.shadow});
+  background-color: ${(props) => props.theme.color.transWhite};
+  filter: drop-shadow(4px 4px 4px ${(props) => props.theme.color.shadow});
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   border-radius: 20px;
@@ -18,15 +21,14 @@ const Base = styled.div`
 
 type Props = {
   children: ReactNode;
-  onCreateClick: () => void;
-  isOpenCreateMandalart: boolean;
 };
 
-export default function MandalartCard({
-  children,
-  onCreateClick,
-  isOpenCreateMandalart,
-}: Props) {
-  console.log(isOpenCreateMandalart);
+export default function MandalartCard({ children }: Props) {
+  const dispatch = useDispatch();
+
+  const onCreateClick = () => {
+    dispatch(setIsOpenCreateMandalart());
+  };
+
   return <Base onClick={onCreateClick}>{children}</Base>;
 }
