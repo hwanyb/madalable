@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { authService } from "../../../firebase";
 import { Icon } from "../../../styles/Common";
@@ -19,7 +20,26 @@ const ItemText = styled.h3`
   font-size: ${(props) => props.theme.fontSize.base};
   line-height: 40px;
 `;
-const ItemWrapper = styled.a`
+const ItemWrapper = styled(Link)`
+  display: flex;
+  cursor: pointer;
+  color: ${(props) => props.theme.color.primary};
+  margin-bottom: 10px;
+  border-radius: 0 50px 50px 0;
+  padding-left: 30px;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  &:hover {
+    background-color: ${(props) => props.theme.color.primary};
+  }
+  &:hover ${ItemIcon} {
+    color: ${(props) => props.theme.color.white};
+  }
+  &:hover ${ItemText} {
+    color: ${(props) => props.theme.color.white};
+  }
+`;
+const LogoutBtn = styled.div`
   display: flex;
   cursor: pointer;
   color: ${(props) => props.theme.color.primary};
@@ -47,28 +67,28 @@ export default function SNB() {
   };
   return (
     <Base>
-      <ItemWrapper>
+      <ItemWrapper to="/">
         <ItemIcon className="material-symbols-rounded">home</ItemIcon>
         <ItemText>Home</ItemText>
       </ItemWrapper>
-      <ItemWrapper>
+      <ItemWrapper to="/todo">
         <ItemIcon className="material-symbols-rounded">check_circle</ItemIcon>
         <ItemText>To Do</ItemText>
       </ItemWrapper>
-      <ItemWrapper>
+      <ItemWrapper to="/overview">
         <ItemIcon className="material-symbols-rounded">
           signal_cellular_alt
         </ItemIcon>
         <ItemText>Overview</ItemText>
       </ItemWrapper>
-      <ItemWrapper>
+      <ItemWrapper to="/guide">
         <ItemIcon className="material-symbols-rounded">help</ItemIcon>
         <ItemText>Guide</ItemText>
       </ItemWrapper>
-      <ItemWrapper onClick={onLogoutClick}>
+      <LogoutBtn onClick={onLogoutClick}>
         <ItemIcon className="material-symbols-rounded">logout</ItemIcon>
         <ItemText>Logout</ItemText>
-      </ItemWrapper>
+      </LogoutBtn>
     </Base>
   );
 }
