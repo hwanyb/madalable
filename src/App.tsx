@@ -1,5 +1,7 @@
-import React from 'react';
-import { Router, Routes, Route } from "react-router-dom";
+import React, { useEffect } from 'react';
+import { Router, Routes, Route, useNavigate } from "react-router-dom";
+import { authService } from './firebase';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components'; 
 
 import Layout from './components/common/layout/Layout';
@@ -8,8 +10,24 @@ import Auth from './pages/Auth';
 import Guide from './pages/Guide';
 import Todo from './pages/Todo';
 import Overview from './pages/Overview';
+import { setIsLoggedin } from './modules/authReducer';
 
 function App() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    authService.onAuthStateChanged((user) => {
+      if(user) {
+        dispatch(setIsLoggedin(true));
+        navigate('/');
+      } else {
+        dispatch(setIsLoggedin(false));
+        navigate('/auth');
+      }
+    });
+  }, []);
+  
   return (
     <Routes>
         <Route path='/' element={<Home />} />
