@@ -120,7 +120,7 @@ const MandalartFeatWrapper = styled.div`
     margin-right: 30px;
   }
 `;
-const MandalartFeatBtn = styled.button`
+const MandalartFeatBtn = styled.div`
   background-color: ${(props) => props.theme.color.transWhite};
   align-items: center;
   justify-content: space-between;
@@ -129,6 +129,7 @@ const MandalartFeatBtn = styled.button`
   display: flex;
   cursor: auto;
   height: 30px;
+  border-radius: ${props => props.theme.borderRadius};
 `;
 const FeatText = styled.p`
   font-size: 14px;
@@ -167,7 +168,7 @@ const PickerWrapper = styled.div<{ isOpenedFeatPicker: boolean }>`
   position: absolute;
   text-align: center;
   margin: 0 auto;
-  background-color: ${(props) => props.theme.color.transWhite};
+  background-color: ${(props) => props.theme.color.white};
   border-radius: ${(props) => props.theme.borderRadius};
   top: -10px;
 `;
@@ -232,8 +233,8 @@ const DifficultyBtnWrapper = styled.div`
   display: flex;
 `;
 const DifficultyBtn = styled.button<{ difficulty: string }>`
-  width: 120px;
   margin-right: 20px;
+  text-align: center;
 
   &:last-child {
     margin-right: 0;
