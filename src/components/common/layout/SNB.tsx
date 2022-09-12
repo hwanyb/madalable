@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { authService } from "../../../firebase";
 import { Icon } from "../../../styles/Common";
 
 const Base = styled.div`
@@ -38,6 +39,12 @@ const ItemWrapper = styled.a`
   }
 `;
 export default function SNB() {
+  const onLogoutClick = () => {
+    const result = window.confirm("로그아웃하시겠습니까?");
+    if (result) {
+      authService.signOut();
+    }
+  };
   return (
     <Base>
       <ItemWrapper>
@@ -58,7 +65,7 @@ export default function SNB() {
         <ItemIcon className="material-symbols-rounded">help</ItemIcon>
         <ItemText>Guide</ItemText>
       </ItemWrapper>
-      <ItemWrapper>
+      <ItemWrapper onClick={onLogoutClick}>
         <ItemIcon className="material-symbols-rounded">logout</ItemIcon>
         <ItemText>Logout</ItemText>
       </ItemWrapper>
