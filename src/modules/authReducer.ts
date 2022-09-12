@@ -1,18 +1,28 @@
 const SET_IS_LOGGEDIN = "authReducer/SET_IS_LOGGEDIN" as const;
+const SET_USER_ID = "authReducer/SET_USER_ID" as const;
 
 export const setIsLoggedin = (isLoggedin: boolean) => ({
   type: SET_IS_LOGGEDIN,
-  payload: isLoggedin
+  payload: isLoggedin,
 });
 
-type AuthAction = ReturnType<typeof setIsLoggedin>;
+export const setUserId = (userId: string) => ({
+  type: SET_USER_ID,
+  payload: userId,
+});
+
+type AuthAction =
+  | ReturnType<typeof setIsLoggedin>
+  | ReturnType<typeof setUserId>;
 
 type AuthState = {
   isLoggedin: boolean;
+  userId: string;
 };
 
 const initialState: AuthState = {
   isLoggedin: false,
+  userId: "",
 };
 
 function authReducer(
@@ -21,7 +31,9 @@ function authReducer(
 ): AuthState {
   switch (action.type) {
     case SET_IS_LOGGEDIN:
-      return { ...state, isLoggedin: !state.isLoggedin };
+      return { ...state, isLoggedin: action.payload };
+    case SET_USER_ID:
+      return { ...state, userId: action.payload };
     default:
       return state;
   }
