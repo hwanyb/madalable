@@ -50,27 +50,32 @@ button {
     transition: all 0.2s ease-in;
     font-weight: 500;
     font-size: ${(props) => props.theme.fontSize.base};
-    padding: 0 20px;
-    background-color: ${(props) => props.theme.color.lightGray};
+    padding: 2px 40px;
+    background-color: ${(props) => props.theme.color.transWhite};
     color: ${(props) => props.theme.color.fontPrimary};
     cursor: pointer;
     display: block;
     &:hover {
         font-weight: 700;
         transition: all 0.2s ease-in;
+        background-color: ${(props) => props.theme.color.primary};
+        color: ${(props) => props.theme.color.white};
     }
 };
 input {
     border: 1px solid ${(props) => props.theme.color.primary};
     outline: none;
     line-height: 30px;
-    padding: 0 20px;
+    padding: 2px 40px;
     border-radius: ${(props) => props.theme.borderRadius};
     font-size: ${(props) => props.theme.fontSize.base};
     font-weight: 500;
     background-color: transparent;
     font-family: ${(props) => props.theme.fontFamily.noto};
-
+    transition: all 0.2s ease-in;
+    &:active {
+        border: 2px solid ${(props) => props.theme.color.primary};
+    }
 };
 `;
 export default GlobalStyle;
