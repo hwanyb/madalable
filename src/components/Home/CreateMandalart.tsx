@@ -6,11 +6,12 @@ import EmojiPicker, {
   Emoji,
   EmojiStyle,
 } from "emoji-picker-react";
+import { CirclePicker } from "react-color";
 
 import { Icon } from "../../styles/Common";
 import { RootState } from "../../modules";
 import { setMandalart } from "../../modules/mandalartReducer";
-import { CirclePicker } from "react-color";
+import '../../styles/featPicker.css';
 
 const Base = styled.div`
   width: 800px;
@@ -41,6 +42,8 @@ const Pagination = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+  z-index: 9999;
 `;
 const Arrow = styled(Icon)<{ disabled: boolean }>`
   width: 30px;
@@ -72,12 +75,12 @@ const CurrentBar = styled.div<{ currentIdx: number }>`
 
 const CreateMandalartContainer = styled.div<{ currentIdx: number }>`
   width: 400%;
+  height: 100%;
   display: flex;
   align-items: center;
-  overflow: hidden;
   transform: translateX(${(props) => props.currentIdx * -800}px);
   transition: transform 0.5s ease-in-out;
-  margin-top: 20vh;
+  margin-top: -50px;
 `;
 const CreateMandalartWrapper = styled.div`
   position: relative;
@@ -129,11 +132,12 @@ const FeatText = styled.p`
   color: ${(props) => props.theme.color.fontPrimary};
   text-align: left;
 `;
-const FeatPlaceholder = styled.div`
+const FeatPlaceholder = styled.div<{ color: string }>`
   width: 36px;
   height: 36px;
   margin-right: 20px;
   border-radius: 50%;
+  background-color: ${props => props.color !== '' ? props.color : props.theme.color.lightGray};
   cursor: pointer;
   filter: drop-shadow(1px 1px 1px ${(props) => props.theme.color.shadow});
   line-height: 35px;
@@ -167,9 +171,11 @@ const PeriodWrapper = styled.div`
   justify-content: center;
 `;
 const DateInput = styled.input`
-  filter: drop-shadow(1px 1px 1px ${(props) => props.theme.color.shadow});
+  filter: drop-shadow(4px 4px 4px ${(props) => props.theme.color.shadow});
   font-weight: 700;
   color: ${(props) => props.theme.color.fontPrimary};
+  border: none;
+  background-color: ${props => props.theme.color.transWhite};
 `;
 const DateText = styled.p`
   font-size: 20px;
@@ -245,12 +251,15 @@ const DifficultyBtn = styled.button<{ difficulty: string }>`
           background-color: ${props.theme.color.white};
         `}
 `;
-const CompleteBtn = styled.button`
-  margin: 0 auto;
-  margin-top: 100px;
+const CompleteBtn = styled.button<{ isFilled: boolean }>`
+  position: absolute;
+  bottom: -100px;
+  left: 50%;
+  transform: translateX(-50%);
   background-color: ${(props) => props.theme.color.white};
+  padding: 0 30px;
   color: ${(props) => props.theme.color.fontPrimary};
-
+  display: ${(props) => (props.isFilled ? "block" : "none")};
   &:hover {
     background-color: ${(props) => props.theme.color.primary};
     color: ${(props) => props.theme.color.white};
@@ -411,7 +420,7 @@ export default function CreateMandalart() {
           <MandalartFeatContainer>
             <MandalartFeatWrapper>
               <MandalartFeatBtn>
-                <FeatPlaceholder id="emoji" onClick={onAddFeatClick}>
+                <FeatPlaceholder id="emoji" onClick={onAddFeatClick} color={color}>
                   {mandalart.emoji !== "" ? (
                     <Emoji
                       unified={emoji}
@@ -429,7 +438,7 @@ export default function CreateMandalart() {
             </MandalartFeatWrapper>
             <MandalartFeatWrapper>
               <MandalartFeatBtn>
-                <FeatPlaceholder id="color" onClick={onAddFeatClick}>
+                <FeatPlaceholder id="color" onClick={onAddFeatClick} color={color}>
                   <FeatAddIcon className="material-symbols-rounded">
                     {mandalart.color === "" ? "add" : "edit"}
                   </FeatAddIcon>
@@ -522,7 +531,7 @@ export default function CreateMandalart() {
               Difficult
             </DifficultyBtn>
           </DifficultyBtnWrapper>
-          <CompleteBtn>완료</CompleteBtn>
+          <CompleteBtn isFilled={isFilled}>완료</CompleteBtn>
         </CreateMandalartWrapper>
       </CreateMandalartContainer>
     </Base>
