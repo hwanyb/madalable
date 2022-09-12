@@ -10,7 +10,10 @@ import { CirclePicker } from "react-color";
 
 import { Icon } from "../../styles/Common";
 import { RootState } from "../../modules";
-import { setMandalart } from "../../modules/mandalartReducer";
+import {
+  setIsOpenCreateMandalart,
+  setMandalart,
+} from "../../modules/mandalartReducer";
 import "../../styles/featPicker.css";
 
 const Base = styled.div`
@@ -286,7 +289,6 @@ export default function CreateMandalart() {
     const values = Object.values(mandalart);
     if (!values.includes("")) {
       setIsFilled(true);
-      console.log(isFilled);
     }
   }, [mandalart]);
 
@@ -308,6 +310,7 @@ export default function CreateMandalart() {
   useEffect(() => {
     console.log(mandalart);
   });
+
   const onArrowClick = (e: React.MouseEvent<HTMLSpanElement>) => {
     if (e.currentTarget.id === "prev") {
       if (currentIdx > 0) {
@@ -317,6 +320,13 @@ export default function CreateMandalart() {
       if (currentIdx < 3) {
         setCurrentIdx(currentIdx + 1);
       }
+    }
+  };
+
+  const onCloseBtnClick = () => {
+    const result = window.confirm("만다라트 생성을 그만하시겠어요?");
+    if (result) {
+      dispatch(setIsOpenCreateMandalart());
     }
   };
 
@@ -330,6 +340,12 @@ export default function CreateMandalart() {
       dispatch(setMandalart({ ...mandalart, startDate: value }));
     } else if (name === "end-date") {
       dispatch(setMandalart({ ...mandalart, endDate: value }));
+    }
+  };
+
+  const onKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.keyCode === 13 && alias.length > 1) {
+      setCurrentIdx(currentIdx + 1);
     }
   };
 
@@ -374,7 +390,9 @@ export default function CreateMandalart() {
   };
   return (
     <Base>
-      <CloseBtn className="material-symbols-rounded">close</CloseBtn>
+      <CloseBtn className="material-symbols-rounded" onClick={onCloseBtnClick}>
+        close
+      </CloseBtn>
       <Pagination>
         <Arrow
           id="prev"
@@ -409,6 +427,7 @@ export default function CreateMandalart() {
             autoFocus
             onChange={onChange}
             value={alias}
+            onKeyUp={onKeyUp}
           />
         </CreateMandalartWrapper>
         <CreateMandalartWrapper>
