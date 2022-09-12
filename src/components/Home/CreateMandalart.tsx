@@ -11,7 +11,7 @@ import { CirclePicker } from "react-color";
 import { Icon } from "../../styles/Common";
 import { RootState } from "../../modules";
 import { setMandalart } from "../../modules/mandalartReducer";
-import '../../styles/featPicker.css';
+import "../../styles/featPicker.css";
 
 const Base = styled.div`
   width: 800px;
@@ -117,7 +117,7 @@ const MandalartFeatWrapper = styled.div`
   }
 `;
 const MandalartFeatBtn = styled.button`
-  background-color: ${(props) => props.theme.color.white};
+  background-color: ${(props) => props.theme.color.transWhite};
   align-items: center;
   justify-content: space-between;
   padding: 0;
@@ -137,7 +137,8 @@ const FeatPlaceholder = styled.div<{ color: string }>`
   height: 36px;
   margin-right: 20px;
   border-radius: 50%;
-  background-color: ${props => props.color !== '' ? props.color : props.theme.color.lightGray};
+  background-color: ${(props) =>
+    props.color !== "" ? props.color : props.theme.color.lightGray};
   cursor: pointer;
   filter: drop-shadow(1px 1px 1px ${(props) => props.theme.color.shadow});
   line-height: 35px;
@@ -162,7 +163,7 @@ const PickerWrapper = styled.div<{ isOpenedFeatPicker: boolean }>`
   position: absolute;
   text-align: center;
   margin: 0 auto;
-  background-color: ${(props) => props.theme.color.white};
+  background-color: ${(props) => props.theme.color.transWhite};
   border-radius: ${(props) => props.theme.borderRadius};
   top: -10px;
 `;
@@ -175,7 +176,7 @@ const DateInput = styled.input`
   font-weight: 700;
   color: ${(props) => props.theme.color.fontPrimary};
   border: none;
-  background-color: ${props => props.theme.color.transWhite};
+  background-color: ${(props) => props.theme.color.transWhite};
 `;
 const DateText = styled.p`
   font-size: 20px;
@@ -248,7 +249,7 @@ const DifficultyBtn = styled.button<{ difficulty: string }>`
       : css`
           font-weight: 500;
           color: ${props.theme.color.fontPrimary};
-          background-color: ${props.theme.color.white};
+          background-color: ${props.theme.color.transWhite};
         `}
 `;
 const CompleteBtn = styled.button<{ isFilled: boolean }>`
@@ -256,7 +257,7 @@ const CompleteBtn = styled.button<{ isFilled: boolean }>`
   bottom: -100px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: ${(props) => props.theme.color.white};
+  background-color: ${(props) => props.theme.color.transWhite};
   padding: 0 30px;
   color: ${(props) => props.theme.color.fontPrimary};
   display: ${(props) => (props.isFilled ? "block" : "none")};
@@ -275,8 +276,6 @@ export default function CreateMandalart() {
     useState<boolean>(false);
   const [isFilled, setIsFilled] = useState<boolean>(false);
 
-
-
   const dispatch = useDispatch();
   const mandalart = useSelector(
     (state: RootState) => state.mandalartReducer.mandalart,
@@ -289,7 +288,7 @@ export default function CreateMandalart() {
       setIsFilled(true);
       console.log(isFilled);
     }
-  },[mandalart]);
+  }, [mandalart]);
 
   const colorArr: string[] = [
     "#FF8080",
@@ -420,7 +419,11 @@ export default function CreateMandalart() {
           <MandalartFeatContainer>
             <MandalartFeatWrapper>
               <MandalartFeatBtn>
-                <FeatPlaceholder id="emoji" onClick={onAddFeatClick} color={color}>
+                <FeatPlaceholder
+                  id="emoji"
+                  onClick={onAddFeatClick}
+                  color={color}
+                >
                   {mandalart.emoji !== "" ? (
                     <Emoji
                       unified={emoji}
@@ -438,7 +441,11 @@ export default function CreateMandalart() {
             </MandalartFeatWrapper>
             <MandalartFeatWrapper>
               <MandalartFeatBtn>
-                <FeatPlaceholder id="color" onClick={onAddFeatClick} color={color}>
+                <FeatPlaceholder
+                  id="color"
+                  onClick={onAddFeatClick}
+                  color={color}
+                >
                   <FeatAddIcon className="material-symbols-rounded">
                     {mandalart.color === "" ? "add" : "edit"}
                   </FeatAddIcon>
