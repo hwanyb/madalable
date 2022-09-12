@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import { createStore } from "redux";
 
@@ -16,12 +17,14 @@ const root = ReactDOM.createRoot(
 const store = createStore(rootReducer);
 
 root.render(
-  <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <GlobalStyle />
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </ThemeProvider>
-  </React.StrictMode>,
+  <BrowserRouter>
+    <React.StrictMode>
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </ThemeProvider>
+    </React.StrictMode>
+  </BrowserRouter>,
 );

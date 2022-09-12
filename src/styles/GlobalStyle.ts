@@ -42,23 +42,23 @@ body {
 }
 button {
     border: none;
-  outline: none;
-  font-family: ${(props) => props.theme.fontFamily.noto};
-  filter: drop-shadow(4px 4px 4px ${(props) => props.theme.color.shadow});
-  border-radius: ${(props) => props.theme.borderRadius};
-  line-height: 30px;
-  transition: all 0.2s ease-in;
-  font-weight: 500;
-  font-size: ${(props) => props.theme.fontSize.base};
-  padding: 0 20px;
-  background-color: ${(props) => props.theme.color.lightGray};
-  color: ${(props) => props.theme.color.fontPrimary};
-  cursor: pointer;
-  display: block;
-  &:hover {
-    font-weight: 700;
+    outline: none;
+    font-family: ${(props) => props.theme.fontFamily.noto};
+    filter: drop-shadow(4px 4px 4px ${(props) => props.theme.color.shadow});
+    border-radius: ${(props) => props.theme.borderRadius};
+    line-height: 30px;
     transition: all 0.2s ease-in;
-}
+    font-weight: 500;
+    font-size: ${(props) => props.theme.fontSize.base};
+    padding: 0 20px;
+    background-color: ${(props) => props.theme.color.lightGray};
+    color: ${(props) => props.theme.color.fontPrimary};
+    cursor: pointer;
+    display: block;
+    &:hover {
+        font-weight: 700;
+        transition: all 0.2s ease-in;
+    }
 };
 input {
     border: 1px solid ${(props) => props.theme.color.primary};
