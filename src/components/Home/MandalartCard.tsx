@@ -4,8 +4,8 @@ import styled from "styled-components";
 const Base = styled.div`
   width: 220px;
   height: 220px;
-  background-color: #ffffffc0;
-  filter: drop-shadow(4px 4px 4px rgba(87, 87, 87, 0.1));
+  background-color: ${props => props.theme.color.transWhite};
+  filter: drop-shadow(4px 4px 4px ${props => props.theme.color.shadow});
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   border-radius: 20px;
@@ -19,14 +19,14 @@ const Base = styled.div`
 type Props = {
   children: ReactNode;
   onCreateClick: () => void;
-  mandalart: boolean;
+  isOpenCreateMandalart: boolean;
 };
 
 export default function MandalartCard({
   children,
   onCreateClick,
-  mandalart,
+  isOpenCreateMandalart,
 }: Props) {
-  console.log(mandalart);
+  console.log(isOpenCreateMandalart);
   return <Base onClick={onCreateClick}>{children}</Base>;
 }

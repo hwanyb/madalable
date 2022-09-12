@@ -1,11 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
-import { ThemeProvider } from "styled-components";
-import GlobalStyle from "./styles/GobalStyle";
-import theme from "./styles/theme";
 import { Provider } from "react-redux";
+import { ThemeProvider } from "styled-components";
 import { createStore } from "redux";
+
+import App from "./App";
+import GlobalStyle from "./styles/GlobalStyle";
+import { theme } from "./styles/theme";
 import rootReducer from "./modules";
 
 const root = ReactDOM.createRoot(
@@ -13,6 +14,7 @@ const root = ReactDOM.createRoot(
 );
 
 const store = createStore(rootReducer);
+
 root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>

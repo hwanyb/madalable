@@ -1,3 +1,5 @@
+import { DefaultTheme } from "styled-components";
+
 const windowSize = {
   small: `screen and (max-width: '600px')`,
   base: `screen and (max-width: '768px')`,
@@ -14,6 +16,7 @@ const fontSize = {
 
 const fontFamily = {
   aggro: "SBAggro",
+  noto: "Noto Sans KR"
 };
 const color = {
   background: "#FAFAFA",
@@ -24,14 +27,16 @@ const color = {
   lightGray: "#D1D1D1",
   gray: "#A5A5A5",
   darkGray: "#727272",
+  transWhite: "#FFFFFFc0",
   white: "#FFF",
+  shadow: "#8F8F8F44"
 };
+const borderRadius = "20px"
 
-const theme = {
+export const theme: DefaultTheme = {
   windowSize,
   fontSize,
   fontFamily,
   color,
+  borderRadius
 };
-
-export default theme;

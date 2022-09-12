@@ -1,8 +1,8 @@
 import { combineReducers } from "redux";
-import mandalart from "./mandalart";
+import mandalartReducer from "./mandalartReducer";
 
 const rootReducer = combineReducers({
-  mandalart,
+  mandalartReducer,
 });
 
 export default rootReducer;
