@@ -11,7 +11,7 @@ import { CirclePicker } from "react-color";
 import { Icon } from "../../styles/Common";
 import { RootState } from "../../modules";
 import {
-  setIsOpenCreateMandalart,
+  setIsOpenedCreateMandalart,
   setMandalart,
 } from "../../modules/mandalartReducer";
 import "../../styles/featPicker.css";
@@ -329,7 +329,7 @@ export default function CreateMandalart() {
   const onCloseBtnClick = () => {
     const result = window.confirm("만다라트 생성을 그만하시겠어요?");
     if (result) {
-      dispatch(setIsOpenCreateMandalart());
+      dispatch(setIsOpenedCreateMandalart());
     }
   };
 
@@ -422,7 +422,7 @@ export default function CreateMandalart() {
         })
         .then(() => {
           setTimeout(() => {
-            dispatch(setIsOpenCreateMandalart());
+            dispatch(setIsOpenedCreateMandalart());
           }, 1000);
         })
         .catch((error) => {

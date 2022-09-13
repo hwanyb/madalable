@@ -5,7 +5,8 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { RootState } from "../../modules";
 import {
-  setIsOpenCreateMandalart,
+  setIsOpenedCreateMandalart,
+  setIsOpenedMandalartDetail,
   setSelectedMandalart,
 } from "../../modules/mandalartReducer";
 
@@ -49,13 +50,14 @@ export default function MandalartCardContainer() {
   const dispatch = useDispatch();
 
   const onCreateClick = () => {
-    dispatch(setIsOpenCreateMandalart());
+    dispatch(setIsOpenedCreateMandalart());
   };
   const onCardClick = (
     e: React.SyntheticEvent<HTMLDivElement>,
     myMandalart: selectedMandalart,
   ) => {
     dispatch(setSelectedMandalart(myMandalart));
+    dispatch(setIsOpenedMandalartDetail());
   };
   return (
     <Base>

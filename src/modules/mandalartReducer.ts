@@ -1,11 +1,15 @@
-const SET_IS_OPENNED_CREATE_MANDALART = "mandalartReducer/SET_IS_OPENNED_CREATE_MANDALART" as const;
+const SET_IS_OPENED_CREATE_MANDALART = "mandalartReducer/SET_IS_OPENED_CREATE_MANDALART" as const;
+const SET_IS_OPENED_MANDALART_DETAIL = "mandalartReducer/SET_IS_OPENED_MANDALART_DETAIL" as const;
 const SET_MANDALART = "mandalartReducer/SET_MANDALART" as const;
 const SET_MY_MANDALART = "mandalartReducer/SET_MY_MANDALART" as const;
 const SET_SELECTED_MANDALART =
   "mandalartReducer/SET_SELECTED_MANDALART" as const;
 
-export const setIsOpenCreateMandalart = () => ({
-  type: SET_IS_OPENNED_CREATE_MANDALART,
+export const setIsOpenedCreateMandalart = () => ({
+  type: SET_IS_OPENED_CREATE_MANDALART,
+});
+export const setIsOpenedMandalartDetail = () => ({
+  type: SET_IS_OPENED_MANDALART_DETAIL,
 });
 
 export const setMandalart = (mandalart: MandalartState["mandalart"]) => ({
@@ -24,13 +28,15 @@ export const setSelectedMandalart = (
   payload: selectedMandalart,
 });
 type MandalartAction =
-  | ReturnType<typeof setIsOpenCreateMandalart>
+  | ReturnType<typeof setIsOpenedCreateMandalart>
+  | ReturnType<typeof setIsOpenedMandalartDetail>
   | ReturnType<typeof setMandalart>
   | ReturnType<typeof setMyMandalart>
   | ReturnType<typeof setSelectedMandalart>;
 
 type MandalartState = {
-  isOpenCreateMandalart: boolean;
+  isOpenedCreateMandalart: boolean;
+  isOpenedMandalartDetail: boolean;
 
   mandalart: {
     alias: string;
@@ -65,7 +71,8 @@ type MandalartState = {
 };
 
 const initialState: MandalartState = {
-  isOpenCreateMandalart: false,
+  isOpenedCreateMandalart: false,
+  isOpenedMandalartDetail: false,
   mandalart: {
     alias: "",
     emoji: "",
@@ -93,10 +100,15 @@ function mandalartReducer(
   action: MandalartAction,
 ): MandalartState {
   switch (action.type) {
-    case SET_IS_OPENNED_CREATE_MANDALART:
+    case SET_IS_OPENED_CREATE_MANDALART:
       return {
         ...state,
-        isOpenCreateMandalart: !state.isOpenCreateMandalart,
+        isOpenedCreateMandalart: !state.isOpenedCreateMandalart,
+      };
+    case SET_IS_OPENED_MANDALART_DETAIL:
+      return {
+        ...state,
+        isOpenedMandalartDetail: !state.isOpenedMandalartDetail,
       };
     case SET_MANDALART:
       return {
