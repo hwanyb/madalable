@@ -41,6 +41,7 @@ type MandalartState = {
     end_date: string;
     difficulty: string;
     user_id: string;
+    created_at: number;
   }[];
 };
 
@@ -78,10 +79,9 @@ function mandalartReducer(
     case SET_MY_MANDALART:
       return {
         ...state,
-        myMandalart: {
-          ...state.myMandalart,
+        myMandalart: [
           ...action.payload,
-        },
+        ],
       };
     default:
       return state;
