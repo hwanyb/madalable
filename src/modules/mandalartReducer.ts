@@ -1,10 +1,11 @@
-const SET_IS_OPEN = "mandalartReducer/SET_IS_OPEN" as const;
+const SET_IS_OPENNED_CREATE_MANDALART = "mandalartReducer/SET_IS_OPENNED_CREATE_MANDALART" as const;
 const SET_MANDALART = "mandalartReducer/SET_MANDALART" as const;
 const SET_MY_MANDALART = "mandalartReducer/SET_MY_MANDALART" as const;
-const SET_SELECTED_MANDALART = "mandalartReducer/SET_SELECTED_MANDALART" as const;
+const SET_SELECTED_MANDALART =
+  "mandalartReducer/SET_SELECTED_MANDALART" as const;
 
 export const setIsOpenCreateMandalart = () => ({
-  type: SET_IS_OPEN,
+  type: SET_IS_OPENNED_CREATE_MANDALART,
 });
 
 export const setMandalart = (mandalart: MandalartState["mandalart"]) => ({
@@ -16,9 +17,11 @@ export const setMyMandalart = (myMandalart: MandalartState["myMandalart"]) => ({
   type: SET_MY_MANDALART,
   payload: myMandalart,
 });
-export const setSelectedMandalart = (selectedMandalart: MandalartState["selectedMandalart"]) => ({
+export const setSelectedMandalart = (
+  selectedMandalart: MandalartState["selectedMandalart"],
+) => ({
   type: SET_SELECTED_MANDALART,
-  payload: selectedMandalart
+  payload: selectedMandalart,
 });
 type MandalartAction =
   | ReturnType<typeof setIsOpenCreateMandalart>
@@ -58,7 +61,7 @@ type MandalartState = {
     difficulty: string;
     user_id: string;
     created_at: number;
-  }
+  };
 };
 
 const initialState: MandalartState = {
@@ -81,8 +84,8 @@ const initialState: MandalartState = {
     difficulty: "",
     doc_id: "",
     user_id: "",
-    created_at: 0
-  }
+    created_at: 0,
+  },
 };
 
 function mandalartReducer(
@@ -90,7 +93,7 @@ function mandalartReducer(
   action: MandalartAction,
 ): MandalartState {
   switch (action.type) {
-    case SET_IS_OPEN:
+    case SET_IS_OPENNED_CREATE_MANDALART:
       return {
         ...state,
         isOpenCreateMandalart: !state.isOpenCreateMandalart,
@@ -106,18 +109,16 @@ function mandalartReducer(
     case SET_MY_MANDALART:
       return {
         ...state,
-        myMandalart: [
-          ...action.payload,
-        ],
+        myMandalart: [...action.payload],
       };
     case SET_SELECTED_MANDALART:
       return {
         ...state,
         selectedMandalart: {
           ...state.selectedMandalart,
-          ...action.payload
-        }
-      }
+          ...action.payload,
+        },
+      };
     default:
       return state;
   }
