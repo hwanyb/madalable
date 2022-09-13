@@ -1,6 +1,7 @@
 const SET_IS_OPEN = "mandalartReducer/SET_IS_OPEN" as const;
 const SET_MANDALART = "mandalartReducer/SET_MANDALART" as const;
 const SET_MY_MANDALART = "mandalartReducer/SET_MY_MANDALART" as const;
+const SET_SELECTED_MANDALART = "mandalartReducer/SET_SELECTED_MANDALART" as const;
 
 export const setIsOpenCreateMandalart = () => ({
   type: SET_IS_OPEN,
@@ -15,11 +16,15 @@ export const setMyMandalart = (myMandalart: MandalartState["myMandalart"]) => ({
   type: SET_MY_MANDALART,
   payload: myMandalart,
 });
-
+export const setSelectedMandalart = (selectedMandalart: MandalartState["selectedMandalart"]) => ({
+  type: SET_SELECTED_MANDALART,
+  payload: selectedMandalart
+});
 type MandalartAction =
   | ReturnType<typeof setIsOpenCreateMandalart>
   | ReturnType<typeof setMandalart>
-  | ReturnType<typeof setMyMandalart>;
+  | ReturnType<typeof setMyMandalart>
+  | ReturnType<typeof setSelectedMandalart>;
 
 type MandalartState = {
   isOpenCreateMandalart: boolean;
@@ -43,6 +48,17 @@ type MandalartState = {
     user_id: string;
     created_at: number;
   }[];
+  selectedMandalart: {
+    doc_id: string;
+    alias: string;
+    emoji: string;
+    color: string;
+    start_date: string;
+    end_date: string;
+    difficulty: string;
+    user_id: string;
+    created_at: number;
+  }
 };
 
 const initialState: MandalartState = {
@@ -56,6 +72,17 @@ const initialState: MandalartState = {
     difficulty: "",
   },
   myMandalart: [],
+  selectedMandalart: {
+    alias: "",
+    emoji: "",
+    color: "",
+    start_date: "",
+    end_date: "",
+    difficulty: "",
+    doc_id: "",
+    user_id: "",
+    created_at: 0
+  }
 };
 
 function mandalartReducer(
@@ -83,6 +110,14 @@ function mandalartReducer(
           ...action.payload,
         ],
       };
+    case SET_SELECTED_MANDALART:
+      return {
+        ...state,
+        selectedMandalart: {
+          ...state.selectedMandalart,
+          ...action.payload
+        }
+      }
     default:
       return state;
   }

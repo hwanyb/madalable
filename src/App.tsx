@@ -36,8 +36,9 @@ function App() {
     });
   }, []);
 
-  async function fetchDocs() {
-    await dbService
+function fetchDocs() {
+    setTimeout(() => {
+      dbService
       .collection("mandalable")
       .where("user_id", "==", userId)
       .onSnapshot((snapshot) => {
@@ -46,12 +47,13 @@ function App() {
           ...doc.data(),
         }));
         dispatch(setMyMandalart(docsArr));
+        console.log(myMandalart)
       });
+    }, 5000)
+    
   };
   useEffect(() => {
-    setTimeout(() => {
       fetchDocs();
-    }, 5000)
   });
   return (
     <Routes>

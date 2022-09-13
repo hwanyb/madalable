@@ -4,10 +4,11 @@ import styled from "styled-components";
 
 import { setIsOpenCreateMandalart } from "../../modules/mandalartReducer";
 
-const Base = styled.div`
+const Base = styled.div<{ color: string }>`
   width: 220px;
   height: 220px;
-  background-color: ${(props) => props.theme.color.transWhite};
+  /* background-color: ${(props) => props.theme.color.transWhite}; */
+  background-color: ${(props) => props.color};
   filter: drop-shadow(4px 4px 4px ${(props) => props.theme.color.shadow});
   cursor: pointer;
   transition: all 0.2s ease-in-out;
@@ -21,14 +22,11 @@ const Base = styled.div`
 
 type Props = {
   children: ReactNode;
+  color: string
 };
 
-export default function MandalartCard({ children }: Props) {
-  const dispatch = useDispatch();
+export default function MandalartCard({ children, color }: Props) {
 
-  const onCreateClick = () => {
-    dispatch(setIsOpenCreateMandalart());
-  };
 
-  return <Base onClick={onCreateClick}>{children}</Base>;
+  return <Base color={color}>{children}</Base>;
 }
