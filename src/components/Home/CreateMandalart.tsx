@@ -33,6 +33,7 @@ export const CloseBtn = styled(Icon)`
   cursor: pointer;
   color: ${(props) => props.theme.color.gray};
   font-size: ${(props) => props.theme.fontSize.lg};
+  top: 50px;
   right: 50px;
   line-height: 30px;
   transition: all 0.5s ease-in-out;

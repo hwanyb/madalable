@@ -77,5 +77,9 @@ input {
         border: 2px solid ${(props) => props.theme.color.primary};
     }
 };
+textarea {
+    font-family: 'Noto Sans KR', sans-serif;
+    resize: none;
+}
 `;
 export default GlobalStyle;

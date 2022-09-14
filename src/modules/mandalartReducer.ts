@@ -34,7 +34,7 @@ type MandalartAction =
   | ReturnType<typeof setMyMandalart>
   | ReturnType<typeof setSelectedMandalart>;
 
-type MandalartState = {
+export type MandalartState = {
   isOpenedCreateMandalart: boolean;
   isOpenedMandalartDetail: boolean;
 
