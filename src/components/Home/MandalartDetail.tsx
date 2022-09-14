@@ -3,11 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 
 import styled from "styled-components";
 import { RootState } from "../../modules";
+import { setIsEditing } from "../../modules/goalReducer";
 import {
   MandalartState,
   setIsOpenedMandalartDetail,
 } from "../../modules/mandalartReducer";
+import { Icon } from "../../styles/Common";
 import { CloseBtn } from "./CreateMandalart";
+import CreateTodo from "./CreateTodo";
 
 const Base = styled.div`
   height: 100%;
@@ -16,6 +19,21 @@ const Base = styled.div`
   display: flex;
   align-items: center;
   box-sizing: border-box;
+`;
+const EditBtn = styled(Icon)`
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  position: absolute;
+  top: 50px;
+  right: 100px;
+  font-size: ${(props) => props.theme.fontSize.lg};
+  transition: all 0.5s ease-in-out;
+  color: ${(props) => props.theme.color.gray};
+  &:hover {
+    color: ${(props) => props.theme.color.primary};
+    transition: all 0.5s ease-in-out;
+  }
 `;
 const DetailContainer = styled.div`
   width: fit-content;
@@ -219,6 +237,9 @@ export default function MandalartDetail() {
   const selectedMandalart = useSelector(
     (state: RootState) => state.mandalartReducer.selectedMandalart,
   );
+  const isEditing = useSelector(
+    (state: RootState) => state.goalReducer.isEditing
+  )
 
   const [goals, setGoals] = useState<GoalProps[]>(selectedMandalart.goals);
 
@@ -246,7 +267,9 @@ export default function MandalartDetail() {
   ) => {
     if (e.target instanceof Element) {
       if (e.target.id !== "") {
-        alert(goal.text);
+        if(isEditing){
+          alert(goal.text);
+        }
       }
     }
   };
@@ -255,6 +278,12 @@ export default function MandalartDetail() {
       <CloseBtn className="material-symbols-rounded" onClick={onCloseBtnClick}>
         close
       </CloseBtn>
+      <EditBtn
+        className="material-symbols-rounded"
+        onClick={() => dispatch(setIsEditing())}
+      >
+        {isEditing ? "done" : "edit"}
+      </EditBtn>
       <DetailContainer>
         <MainGoal>
           <MandalartAlias selectedMandalart={selectedMandalart}>
@@ -269,6 +298,7 @@ export default function MandalartDetail() {
               onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
                 onChange(e, goal.id)
               }
+              disabled={!isEditing}
             />
           ))}
         </MainGoal>
@@ -291,6 +321,11 @@ export default function MandalartDetail() {
           </GoalWrapper>
         ))}
       </DetailContainer>
+      {
+        isEditing && (
+          <CreateTodo />
+        )
+      }
     </Base>
   );
 }

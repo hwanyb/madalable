@@ -1,11 +1,18 @@
 const SET_GOALS_ARR = "goalReducer/SET_GOALS_ARR" as const;
+const SET_IS_EDITING = "goalReducer/SET_IS_EDITING" as const;
 
 export const setGaoalsArr = (goalsArr: GoalState["goalsArr"]) => ({
   type: SET_GOALS_ARR,
   payload: goalsArr,
 });
 
-type GoalAction = ReturnType<typeof setGaoalsArr>;
+export const setIsEditing = () => ({
+  type: SET_IS_EDITING,
+});
+
+type GoalAction =
+  | ReturnType<typeof setGaoalsArr>
+  | ReturnType<typeof setIsEditing>;
 
 type GoalState = {
   goalsArr: {
@@ -22,6 +29,7 @@ type GoalState = {
       periodNumber: number;
     }[];
   }[];
+  isEditing: boolean;
 };
 
 let tempGoalsArr = [];
@@ -48,6 +56,7 @@ for (let i = 0; i < 8; i++) {
 
 const initialState: GoalState = {
   goalsArr: tempGoalsArr,
+  isEditing: false,
 };
 
 function goalReducer(
@@ -60,6 +69,11 @@ function goalReducer(
         ...state,
         goalsArr: [...action.payload],
       };
+    case SET_IS_EDITING:
+      return {
+        ...state,
+        isEditing: !state.isEditing,
+      }
     default:
     return state;
   }
