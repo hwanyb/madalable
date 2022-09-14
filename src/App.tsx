@@ -22,6 +22,12 @@ function App() {
   const myMandalart = useSelector(
     (state: RootState) => state.mandalartReducer.myMandalart,
   );
+  const isOpenedCreateMandalart = useSelector(
+    (state: RootState) => state.mandalartReducer.isOpenedCreateMandalart,
+  );
+  const isOpenedMandalartDetail = useSelector(
+    (state: RootState) => state.mandalartReducer.isOpenedMandalartDetail,
+  );
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
       if (user) {
@@ -36,9 +42,8 @@ function App() {
     });
   }, []);
 
-function fetchDocs() {
-    setTimeout(() => {
-      dbService
+  function fetchDocs() {
+    dbService
       .collection("mandalable")
       .where("user_id", "==", userId)
       .onSnapshot((snapshot) => {
@@ -47,14 +52,12 @@ function fetchDocs() {
           ...doc.data(),
         }));
         dispatch(setMyMandalart(docsArr));
-        console.log(myMandalart)
       });
-    }, 5000)
-    
-  };
+  }
   useEffect(() => {
-      fetchDocs();
-  });
+    fetchDocs();
+  }, [isOpenedCreateMandalart, isOpenedMandalartDetail, userId]);
+  console.log(myMandalart);
   return (
     <Routes>
       <Route path="/" element={<Home />} />
