@@ -25,7 +25,7 @@ const Base = styled.div`
   transition: opacity 1s ease-in-out;
 `;
 
-const CloseBtn = styled(Icon)`
+export const CloseBtn = styled(Icon)`
   position: absolute;
   width: 30px;
   height: 30px;

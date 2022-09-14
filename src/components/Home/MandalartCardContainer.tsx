@@ -51,9 +51,7 @@ export default function MandalartCardContainer() {
   const goalsArr = useSelector(
     (state: RootState) => state.goalReducer.goalsArr,
   );
-  const selectedMandalart = useSelector(
-    (state: RootState) => state.mandalartReducer.selectedMandalart,
-  );
+
   const dispatch = useDispatch();
 
   const onCreateClick = () => {

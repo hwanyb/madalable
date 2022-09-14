@@ -67,6 +67,7 @@ type MandalartState = {
     difficulty: string;
     user_id: string;
     created_at: number;
+    goals?: any;
   };
 };
 
