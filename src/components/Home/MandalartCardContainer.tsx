@@ -13,21 +13,21 @@ import {
 
 import { Icon } from "../../styles/Common";
 import { theme } from "../../styles/theme";
-import MandalartCard from "./MandalartCard";
+import MandalartCard from "../common/MandalartCard";
 
-const Base = styled.div`
+export const Base = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 30px;
 `;
-const ItemWrapper = styled.div``;
+export const ItemWrapper = styled.div``;
 const AddIcon = styled(Icon)`
   font-size: 80px;
   color: ${(props) => props.theme.color.primary};
   transition: all 0.3s ease-in-out; ;
 `;
-const MandalartEmoji = styled(Emoji)``;
-const MandalartAlias = styled.p`
+export const MandalartEmoji = styled(Emoji)``;
+export const MandalartAlias = styled.p`
   color: ${(props) => props.theme.color.fontPrimary};
   font-size: ${(props) => props.theme.fontSize.sm};
   text-align: center;
@@ -43,6 +43,7 @@ interface selectedMandalart {
   difficulty: string;
   user_id: string;
   created_at: number;
+  success: number;
 }
 export default function MandalartCardContainer() {
   const myMandalartArr = useSelector(

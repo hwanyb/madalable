@@ -45,6 +45,7 @@ export type MandalartState = {
     startDate: string;
     endDate: string;
     difficulty: string;
+    success: number;
   };
   myMandalart: {
     doc_id: string;
@@ -56,6 +57,7 @@ export type MandalartState = {
     difficulty: string;
     user_id: string;
     created_at: number;
+    success: number;
   }[];
   selectedMandalart: {
     doc_id: string;
@@ -67,6 +69,7 @@ export type MandalartState = {
     difficulty: string;
     user_id: string;
     created_at: number;
+    success: number;
     goals?: {
       id: number;
       text: string;
@@ -94,6 +97,7 @@ const initialState: MandalartState = {
     startDate: "",
     endDate: "",
     difficulty: "",
+    success: 0,
   },
   myMandalart: [],
   selectedMandalart: {
@@ -106,6 +110,7 @@ const initialState: MandalartState = {
     doc_id: "",
     user_id: "",
     created_at: 0,
+    success: 0,
   },
 };
 

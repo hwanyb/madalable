@@ -88,12 +88,14 @@
     font-size: 30px !important;
     width: 30px !important;
     height: 30px !important;
-
 }
 aside {
     border-color: rgba(255, 0, 0, 0) !important;
 }
 
+.epr-emoji-img {
+    z-index: 9999;
+}
 
 /* color picker */
 
