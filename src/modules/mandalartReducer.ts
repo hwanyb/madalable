@@ -4,6 +4,7 @@ const SET_MANDALART = "mandalartReducer/SET_MANDALART" as const;
 const SET_MY_MANDALART = "mandalartReducer/SET_MY_MANDALART" as const;
 const SET_SELECTED_MANDALART =
   "mandalartReducer/SET_SELECTED_MANDALART" as const;
+const SET_MANDALART_INIT = "mandalartReducer/setMandalartInit" as const;
 
 export const setIsOpenedCreateMandalart = () => ({
   type: SET_IS_OPENED_CREATE_MANDALART,
@@ -15,6 +16,10 @@ export const setIsOpenedMandalartDetail = () => ({
 export const setMandalart = (mandalart: MandalartState["mandalart"]) => ({
   type: SET_MANDALART,
   payload: mandalart,
+});
+
+export const setMandalartInit = () => ({
+  type: SET_MANDALART_INIT
 });
 
 export const setMyMandalart = (myMandalart: MandalartState["myMandalart"]) => ({
@@ -31,6 +36,7 @@ type MandalartAction =
   | ReturnType<typeof setIsOpenedCreateMandalart>
   | ReturnType<typeof setIsOpenedMandalartDetail>
   | ReturnType<typeof setMandalart>
+  | ReturnType<typeof setMandalartInit>
   | ReturnType<typeof setMyMandalart>
   | ReturnType<typeof setSelectedMandalart>;
 
@@ -137,6 +143,11 @@ function mandalartReducer(
           ...action.payload,
         },
       };
+    case SET_MANDALART_INIT:
+      return {
+        ...state,
+        mandalart: initialState.mandalart
+      }
     case SET_MY_MANDALART:
       return {
         ...state,

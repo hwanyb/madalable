@@ -13,6 +13,7 @@ import { RootState } from "../../modules";
 import {
   setIsOpenedCreateMandalart,
   setMandalart,
+  setMandalartInit,
 } from "../../modules/mandalartReducer";
 import "../../styles/featPicker.css";
 import { dbService } from "../../firebase";
@@ -427,6 +428,7 @@ export default function CreateMandalart() {
         .then(() => {
           setTimeout(() => {
             dispatch(setIsOpenedCreateMandalart());
+            dispatch(setMandalartInit());
           }, 1000);
         })
         .catch((error) => {
