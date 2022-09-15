@@ -62,18 +62,6 @@ export default function MandalartCardContainer() {
     e: React.SyntheticEvent<HTMLDivElement>,
     myMandalart: selectedMandalart,
   ) => {
-    if (!myMandalart.hasOwnProperty("goals")) {
-      const updateGoals = async () => {
-        await dbService
-          .collection("mandalable")
-          .doc(myMandalart.doc_id)
-          .update({
-            goals: goalsArr,
-          });
-      };
-      updateGoals();
-    }
-
     dispatch(setSelectedMandalart(myMandalart));
     dispatch(setIsOpenedMandalartDetail());
   };

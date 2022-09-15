@@ -289,6 +289,9 @@ export default function CreateMandalart() {
   const mandalart = useSelector(
     (state: RootState) => state.mandalartReducer.mandalart,
   );
+  const goalsArr = useSelector(
+    (state: RootState) => state.goalReducer.goalsArr,
+  );
   const userId = useSelector((state: RootState) => state.authReducer.userId);
   const { alias, emoji, color, startDate, endDate, difficulty, success } = mandalart;
 
@@ -423,7 +426,8 @@ export default function CreateMandalart() {
           start_date: startDate,
           end_date: endDate,
           difficulty: difficulty,
-          success: success
+          success: success,
+          goals: goalsArr
         })
         .then(() => {
           setTimeout(() => {
