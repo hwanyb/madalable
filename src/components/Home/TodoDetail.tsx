@@ -9,7 +9,7 @@ import styled, { css } from "styled-components";
 import { RootState } from "../../modules";
 import { Icon } from "../../styles/Common";
 import { CloseBtn } from "./CreateMandalart";
-import { EditBtn, GoalProps } from "./MandalartDetail";
+import { EditOrSubmitBtn, GoalProps } from "./MandalartDetail";
 import {
   setIsEditingTodo,
   setIsOpenedTodoDetail,
@@ -489,12 +489,12 @@ const TodoDetail: React.FC<Props> = ({ goals, setGoals }) => {
             close
           </CloseBtn>
           {!isEditingTodo && (
-            <EditBtn
+            <EditOrSubmitBtn
               className="material-symbols-rounded"
               onClick={() => dispatch(setIsEditingTodo())}
             >
               edit
-            </EditBtn>
+            </EditOrSubmitBtn>
           )}
         </BtnWrapper>
         <CurrentInfo isEditingTodo={isEditingTodo}>

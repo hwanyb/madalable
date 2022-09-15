@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import styled from "styled-components";
+import { dbService } from "../../firebase";
 import { RootState } from "../../modules";
 import {
   setIsEditingGoal,
@@ -25,7 +26,8 @@ const Base = styled.div`
   align-items: center;
   box-sizing: border-box;
 `;
-export const EditBtn = styled(Icon)`
+
+export const EditOrSubmitBtn = styled(Icon)`
   width: 30px;
   height: 30px;
   line-height: 30px;
@@ -259,11 +261,17 @@ export default function MandalartDetail() {
     (state: RootState) => state.goalReducer.isOpenedTodoDetail,
   );
 
-  const [goals, setGoals] = useState(selectedMandalart.goals);
+  const [goals, setGoals] = useState<GoalProps[] | undefined>(selectedMandalart.goals);
 
   const onCloseBtnClick = () => {
-    dispatch(setIsOpenedMandalartDetail());
+    const result = window.confirm(
+      "창을 닫으면 입력하신 정보가 사라집니다.\n창을 닫으시겠습니까?",
+    );
+    if (result) {
+      dispatch(setIsOpenedMandalartDetail());
+    }
   };
+
   const onChange = (
     e: React.ChangeEvent<HTMLTextAreaElement>,
     goalId: number,
@@ -291,23 +299,46 @@ export default function MandalartDetail() {
           dispatch(setSelectedGoal(goal));
           dispatch(setSelectedTodo(todo));
           dispatch(setIsOpenedTodoDetail());
-          console.log("selectedGoal:", selectedGoal);
-          console.log("selectedTodo:", selectedTodo);
         }
       }
     }
   };
+
+  const onSubmitClick = async () => {
+    console.log(selectedMandalart);
+    console.log(goals);
+    const result = window.confirm("만다라트를 수정하시겠습니까?");
+    if (result) {
+      await dbService
+        .collection("mandalable")
+        .doc(selectedMandalart.doc_id)
+        .update({
+          goals: goals,
+        })
+        .then(() => {
+          dispatch(setIsEditingGoal());
+          dispatch(setIsOpenedMandalartDetail());
+        })
+        .catch((error) => {
+          alert("다음의 에러로 수정할 수 없습니다.: " + error);
+        });
+    }
+  };
+
   return (
     <Base>
       <CloseBtn className="material-symbols-rounded" onClick={onCloseBtnClick}>
         close
       </CloseBtn>
-      <EditBtn
-        className="material-symbols-rounded"
-        onClick={() => dispatch(setIsEditingGoal())}
-      >
-        {isEditingGoal ? "done" : "edit"}
-      </EditBtn>
+
+      {isEditingGoal ? (
+        <EditOrSubmitBtn className="material-symbols-rounded" onClick={onSubmitClick}>done</EditOrSubmitBtn>
+      ) : (
+        <EditOrSubmitBtn
+          className="material-symbols-rounded"
+          onClick={() => dispatch(setIsEditingGoal())}
+        >edit</EditOrSubmitBtn>
+      )}
       <DetailContainer>
         <MainGoal>
           <MandalartAlias selectedMandalart={selectedMandalart}>
@@ -345,11 +376,7 @@ export default function MandalartDetail() {
           </GoalWrapper>
         ))}
       </DetailContainer>
-      {
-        isOpenedTodoDetail && (
-          <TodoDetail goals={goals} setGoals={setGoals} />
-        )
-      }
+      {isOpenedTodoDetail && <TodoDetail goals={goals} setGoals={setGoals} />}
     </Base>
   );
 }
