@@ -362,6 +362,9 @@ const TodoDetail: React.FC<Props> = ({ goals, setGoals }) => {
   const isEditingTodo = useSelector(
     (state: RootState) => state.goalReducer.isEditingTodo,
   );
+  const isEditingGoal = useSelector(
+    (state: RootState) => state.goalReducer.isEditingGoal,
+  );
 
   const [isOpenedEmojiPicker, setIsOpenedEmojiPicker] =
     useState<boolean>(false);
@@ -442,11 +445,15 @@ const TodoDetail: React.FC<Props> = ({ goals, setGoals }) => {
   };
 
   const onCloseBtnClick = () => {
-    const result = window.confirm(
-      "창을 닫으면 입력하신 정보가 사라집니다.\n창을 닫으시겠습니까?",
-    );
-    if (result) {
-      dispatch(setIsEditingTodo());
+    if(isEditingTodo){
+      const result = window.confirm(
+        "창을 닫으면 입력하신 정보가 사라집니다.\n창을 닫으시겠습니까?",
+      );
+      if (result) {
+        dispatch(setIsEditingTodo());
+        dispatch(setIsOpenedTodoDetail());
+      }
+    }else{
       dispatch(setIsOpenedTodoDetail());
     }
   };
@@ -474,7 +481,7 @@ const TodoDetail: React.FC<Props> = ({ goals, setGoals }) => {
       const copiedGoal = [...goals];
       copiedGoal[selectedGoal.id - 1].todos[selectedTodo.id - 1] = selectedTodo;
       setGoals(copiedGoal);
-      dispatch(setIsOpenedTodoDetail());
+      dispatch(setIsEditingTodo());
     }
   };
 
@@ -488,7 +495,7 @@ const TodoDetail: React.FC<Props> = ({ goals, setGoals }) => {
           >
             close
           </CloseBtn>
-          {!isEditingTodo && (
+          {!isEditingTodo && isEditingGoal && (
             <EditOrSubmitBtn
               className="material-symbols-rounded"
               onClick={() => dispatch(setIsEditingTodo())}

@@ -264,10 +264,15 @@ export default function MandalartDetail() {
   const [goals, setGoals] = useState<GoalProps[] | undefined>(selectedMandalart.goals);
 
   const onCloseBtnClick = () => {
-    const result = window.confirm(
-      "창을 닫으면 입력하신 정보가 사라집니다.\n창을 닫으시겠습니까?",
-    );
-    if (result) {
+    if(isEditingGoal){
+      const result = window.confirm(
+        "창을 닫으면 입력하신 정보가 사라집니다.\n창을 닫으시겠습니까?",
+      );
+      if (result) {
+        dispatch(setIsEditingGoal());
+        dispatch(setIsOpenedMandalartDetail());
+      }
+    } else {
       dispatch(setIsOpenedMandalartDetail());
     }
   };
@@ -295,11 +300,9 @@ export default function MandalartDetail() {
   ) => {
     if (e.target instanceof Element) {
       if (e.target.id !== "") {
-        if (isEditingGoal) {
           dispatch(setSelectedGoal(goal));
           dispatch(setSelectedTodo(todo));
           dispatch(setIsOpenedTodoDetail());
-        }
       }
     }
   };
@@ -317,7 +320,6 @@ export default function MandalartDetail() {
         })
         .then(() => {
           dispatch(setIsEditingGoal());
-          dispatch(setIsOpenedMandalartDetail());
         })
         .catch((error) => {
           alert("다음의 에러로 수정할 수 없습니다.: " + error);
