@@ -3,14 +3,19 @@ import { useDispatch, useSelector } from "react-redux";
 
 import styled from "styled-components";
 import { RootState } from "../../modules";
-import { setIsEditing } from "../../modules/goalReducer";
+import {
+  setIsEditingGoal,
+  setIsOpenedTodoDetail,
+  setSelectedGoal,
+  setSelectedTodo,
+} from "../../modules/goalReducer";
 import {
   MandalartState,
   setIsOpenedMandalartDetail,
 } from "../../modules/mandalartReducer";
 import { Icon } from "../../styles/Common";
 import { CloseBtn } from "./CreateMandalart";
-import CreateTodo from "./CreateTodo";
+import TodoDetail from "./TodoDetail";
 
 const Base = styled.div`
   height: 100%;
@@ -20,7 +25,7 @@ const Base = styled.div`
   align-items: center;
   box-sizing: border-box;
 `;
-const EditBtn = styled(Icon)`
+export const EditBtn = styled(Icon)`
   width: 30px;
   height: 30px;
   line-height: 30px;
@@ -143,9 +148,13 @@ const GoalInput = styled.textarea`
   }
 `;
 const Todo = styled.div`
-  background-color: ${(props) => props.theme.color.white};
+  background-color: ${(props) => props.theme.color.transWhite};
   font-weight: 300;
   font-size: ${(props) => props.theme.fontSize.sm};
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    background-color: ${(props) => props.theme.color.white};
+  }
 `;
 const GoalWrapper = styled.div`
   transition: all 0.5s ease-in-out;
@@ -218,7 +227,7 @@ const GoalText = styled.div<{
 type GoalProps = {
   id: number;
   text: string;
-  todos: TodoProps[];
+  todos: TodoProps[] | undefined;
 };
 type TodoProps = {
   id: number;
@@ -237,11 +246,20 @@ export default function MandalartDetail() {
   const selectedMandalart = useSelector(
     (state: RootState) => state.mandalartReducer.selectedMandalart,
   );
-  const isEditing = useSelector(
-    (state: RootState) => state.goalReducer.isEditing
-  )
+  const isEditingGoal = useSelector(
+    (state: RootState) => state.goalReducer.isEditingGoal,
+  );
+  const selectedGoal = useSelector(
+    (state: RootState) => state.goalReducer.selectedGoal,
+  );
+  const selectedTodo = useSelector(
+    (state: RootState) => state.goalReducer.selectedTodo,
+  );
+  const isOpenedTodoDetail = useSelector(
+    (state: RootState) => state.goalReducer.isOpenedTodoDetail,
+  );
 
-  const [goals, setGoals] = useState<GoalProps[]>(selectedMandalart.goals);
+  const [goals, setGoals] = useState(selectedMandalart.goals);
 
   console.log(selectedMandalart);
 
@@ -256,9 +274,13 @@ export default function MandalartDetail() {
       target: { value },
     } = e;
 
-    const copiedGoals = [...goals];
-    copiedGoals[goalId - 1].text = value;
-    setGoals(copiedGoals);
+    const copiedGoals = selectedMandalart.goals
+      ? [...selectedMandalart.goals]
+      : undefined;
+    if (copiedGoals !== undefined) {
+      copiedGoals[goalId - 1].text = value;
+      setGoals(copiedGoals);
+    }
   };
   const onTodoClick = (
     e: React.SyntheticEvent<HTMLDivElement>,
@@ -267,8 +289,12 @@ export default function MandalartDetail() {
   ) => {
     if (e.target instanceof Element) {
       if (e.target.id !== "") {
-        if(isEditing){
-          alert(goal.text);
+        if (isEditingGoal) {
+          dispatch(setSelectedGoal(goal));
+          dispatch(setSelectedTodo(todo));
+          dispatch(setIsOpenedTodoDetail());
+          console.log("selectedGoal:", selectedGoal);
+          console.log("selectedTodo:", selectedTodo);
         }
       }
     }
@@ -280,16 +306,16 @@ export default function MandalartDetail() {
       </CloseBtn>
       <EditBtn
         className="material-symbols-rounded"
-        onClick={() => dispatch(setIsEditing())}
+        onClick={() => dispatch(setIsEditingGoal())}
       >
-        {isEditing ? "done" : "edit"}
+        {isEditingGoal ? "done" : "edit"}
       </EditBtn>
       <DetailContainer>
         <MainGoal>
           <MandalartAlias selectedMandalart={selectedMandalart}>
             {selectedMandalart.alias}
           </MandalartAlias>
-          {goals.map((goal) => (
+          {goals?.map((goal) => (
             <GoalInput
               key={goal.id}
               value={goal.text}
@@ -298,16 +324,16 @@ export default function MandalartDetail() {
               onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
                 onChange(e, goal.id)
               }
-              disabled={!isEditing}
+              disabled={!isEditingGoal}
             />
           ))}
         </MainGoal>
-        {goals.map((goal) => (
+        {goals?.map((goal) => (
           <GoalWrapper key={goal.id} id={goal.text}>
             <GoalText selectedMandalart={selectedMandalart}>
               {goal.text}
             </GoalText>
-            {goal.todos.map((todo) => (
+            {goal?.todos?.map((todo) => (
               <Todo
                 key={todo.id}
                 onClick={(e: React.SyntheticEvent<HTMLDivElement>) =>
@@ -322,8 +348,8 @@ export default function MandalartDetail() {
         ))}
       </DetailContainer>
       {
-        isEditing && (
-          <CreateTodo />
+        isOpenedTodoDetail && (
+          <TodoDetail />
         )
       }
     </Base>
