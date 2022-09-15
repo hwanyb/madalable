@@ -32,12 +32,12 @@ export const EditBtn = styled(Icon)`
   position: absolute;
   top: 50px;
   right: 100px;
-  font-size: ${(props) => props.theme.fontSize.lg};
-  transition: all 0.5s ease-in-out;
+  transition: all 0.3s ease-in-out;
   color: ${(props) => props.theme.color.gray};
   &:hover {
     color: ${(props) => props.theme.color.primary};
-    transition: all 0.5s ease-in-out;
+    transform: scale(1.2);
+    transition: all 0.3s ease-in-out;
   }
 `;
 const DetailContainer = styled.div`
@@ -224,7 +224,7 @@ const GoalText = styled.div<{
   font-weight: 500;
 `;
 
-type GoalProps = {
+export type GoalProps = {
   id: number;
   text: string;
   todos: TodoProps[] | undefined;
@@ -260,8 +260,6 @@ export default function MandalartDetail() {
   );
 
   const [goals, setGoals] = useState(selectedMandalart.goals);
-
-  console.log(selectedMandalart);
 
   const onCloseBtnClick = () => {
     dispatch(setIsOpenedMandalartDetail());
@@ -349,7 +347,7 @@ export default function MandalartDetail() {
       </DetailContainer>
       {
         isOpenedTodoDetail && (
-          <TodoDetail />
+          <TodoDetail goals={goals} setGoals={setGoals} />
         )
       }
     </Base>

@@ -32,15 +32,14 @@ export const CloseBtn = styled(Icon)`
   text-align: center;
   cursor: pointer;
   color: ${(props) => props.theme.color.gray};
-  font-size: ${(props) => props.theme.fontSize.lg};
   top: 50px;
   right: 50px;
   line-height: 30px;
-  transition: all 0.5s ease-in-out;
+  transition: all 0.3s ease-in-out;
   &:hover {
     color: ${(props) => props.theme.color.darkGray};
-    transform: rotate(90deg);
-    transition: all 0.5s ease-in-out;
+    transform: rotate(90deg) scale(1.2);
+    transition: all 0.3s ease-in-out;
   }
 `;
 const Pagination = styled.div`
@@ -57,9 +56,14 @@ const Arrow = styled(Icon)<{ disabled: boolean }>`
   text-align: center;
   font-size: ${(props) => props.theme.fontSize.base};
   line-height: 30px;
+  transition: all 0.3s ease-in-out;
   color: ${(props) =>
     props.disabled ? props.theme.color.lightGray : props.theme.color.primary};
   cursor: ${(props) => (props.disabled ? "default" : "pointer")};
+  & :hover {
+    transform: scale(1.2);
+    transition: all 0.3s ease-in-out;
+  }
 `;
 
 const BackgroudBar = styled.div`
@@ -154,7 +158,6 @@ const FeatPlaceholder = styled.div<{ color: string }>`
   }
 `;
 const FeatAddIcon = styled(Icon)`
-  font-size: 24px;
   font-weight: 500;
   color: ${(props) => props.theme.color.fontPrimary};
   transition: all 0.2s ease-in-out;
@@ -207,7 +210,6 @@ const QuestionWrapper = styled.div`
   line-height: 30px;
 `;
 const QuestionIcon = styled(Icon)`
-  font-size: ${(props) => props.theme.fontSize.base};
   font-weight: 500;
   color: ${(props) => props.theme.color.primary};
 `;
