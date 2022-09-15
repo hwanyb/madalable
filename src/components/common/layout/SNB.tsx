@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { authService } from "../../../firebase";
 import { Icon } from "../../../styles/Common";
@@ -20,15 +20,16 @@ const ItemText = styled.h3`
   font-size: ${(props) => props.theme.fontSize.base};
   line-height: 40px;
 `;
-const ItemWrapper = styled(Link)`
+const ItemWrapper = styled(Link)<{location: string}>`
   display: flex;
   cursor: pointer;
-  color: ${(props) => props.theme.color.primary};
+  color: ${(props) => props.location === props.className ? props.theme.color.white : props.theme.color.primary};
   margin-bottom: 10px;
   border-radius: 0 50px 50px 0;
   padding-left: 30px;
   transition: all 0.2s ease;
   text-decoration: none;
+  background-color: ${(props) => props.location === props.className ? props.theme.color.primary : "transparent"};
   &:hover {
     background-color: ${(props) => props.theme.color.primary};
   }
@@ -65,23 +66,24 @@ export default function SNB() {
       authService.signOut();
     }
   };
+  const location = useLocation().pathname;
   return (
     <Base>
-      <ItemWrapper to="/">
+      <ItemWrapper to="/" className="/" location={location}>
         <ItemIcon className="material-symbols-rounded">home</ItemIcon>
         <ItemText>Home</ItemText>
       </ItemWrapper>
-      <ItemWrapper to="/todo">
+      <ItemWrapper to="/todo" className="/todo" location={location}>
         <ItemIcon className="material-symbols-rounded">check_circle</ItemIcon>
         <ItemText>To Do</ItemText>
       </ItemWrapper>
-      <ItemWrapper to="/overview">
+      <ItemWrapper to="/overview" className="/overview" location={location}>
         <ItemIcon className="material-symbols-rounded">
           signal_cellular_alt
         </ItemIcon>
         <ItemText>Overview</ItemText>
       </ItemWrapper>
-      <ItemWrapper to="/guide">
+      <ItemWrapper to="/guide" className='/guide' location={location}>
         <ItemIcon className="material-symbols-rounded">help</ItemIcon>
         <ItemText>Guide</ItemText>
       </ItemWrapper>

@@ -25,6 +25,7 @@ const Base = styled.div`
   display: flex;
   align-items: center;
   box-sizing: border-box;
+  justify-content: center;
 `;
 
 export const EditOrSubmitBtn = styled(Icon)`
