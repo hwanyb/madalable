@@ -43,6 +43,21 @@ export const EditOrSubmitBtn = styled(Icon)`
     transition: all 0.3s ease-in-out;
   }
 `;
+const DeleteBtn = styled(Icon)`
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  position: absolute;
+  top: 50px;
+  right: 150px;
+  transition: all 0.3s ease-in-out;
+  color: ${(props) => props.theme.color.gray};
+  &:hover {
+    color: red;
+    transform: scale(1.2);
+    transition: all 0.3s ease-in-out;
+  }
+`;
 const DetailContainer = styled.div`
   width: fit-content;
   height: fit-content;
@@ -303,6 +318,12 @@ export default function MandalartDetail() {
     }
   };
 
+  const onDeleteClick = async () => {
+    const result = window.confirm("만다라트를 삭제하시겠습니까?");
+    if(result) {
+      alert("메롱")
+    }
+  }
   const onSubmitClick = async () => {
     console.log(selectedMandalart);
     console.log(goals);
@@ -330,13 +351,21 @@ export default function MandalartDetail() {
       </CloseBtn>
 
       {isEditingGoal ? (
-        <EditOrSubmitBtn className="material-symbols-rounded" onClick={onSubmitClick}>done</EditOrSubmitBtn>
+        <EditOrSubmitBtn
+          className="material-symbols-rounded"
+          onClick={onSubmitClick}
+        >
+          done
+        </EditOrSubmitBtn>
       ) : (
         <EditOrSubmitBtn
           className="material-symbols-rounded"
           onClick={() => dispatch(setIsEditingGoal())}
-        >edit</EditOrSubmitBtn>
+        >
+          edit
+        </EditOrSubmitBtn>
       )}
+        <DeleteBtn className="material-symbols-rounded" onClick={onDeleteClick}>delete</DeleteBtn>
       <DetailContainer>
         <MainGoal>
           <MandalartAlias selectedMandalart={selectedMandalart}>
