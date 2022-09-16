@@ -321,7 +321,10 @@ export default function MandalartDetail() {
   const onDeleteClick = async () => {
     const result = window.confirm("만다라트를 삭제하시겠습니까?");
     if(result) {
-      alert("메롱")
+      await dbService.collection("mandalable").doc(selectedMandalart.doc_id).delete().then(() => {
+        alert("만다라트가 삭제되었습니다");
+        dispatch(setIsOpenedMandalartDetail());
+      })
     }
   }
   const onSubmitClick = async () => {
