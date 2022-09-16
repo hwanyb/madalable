@@ -3,7 +3,6 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { dbService } from "../../firebase";
 import { RootState } from "../../modules";
 import {
   setIsOpenedCreateMandalart,
@@ -49,10 +48,7 @@ export default function MandalartCardContainer() {
   const myMandalartArr = useSelector(
     (state: RootState) => state.mandalartReducer.myMandalart,
   );
-  const goalsArr = useSelector(
-    (state: RootState) => state.goalReducer.goalsArr,
-  );
-
+  
   const dispatch = useDispatch();
 
   const onCreateClick = () => {

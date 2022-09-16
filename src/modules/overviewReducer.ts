@@ -1,10 +1,16 @@
 const SET_IS_OPENED_GOAL_OVERVIEW =
   "overviewReducer/SET_IS_OPENED_GOAL_OVERVIEW" as const;
+const SET_IS_OPENED_TODO_OVERVIEW =
+  "overviewReducer/SET_IS_OPENED_TODO_OVERVIEW" as const;
 const SET_SELECTED_MANDALART =
   "overviewReducer/SET_SELECTED_MANDALART" as const;
+const SET_SELECTED_GOAL = "overviewReducer/SET_SELECTED_GOAL" as const;
 
 export const setIsOpenedGoalOverview = () => ({
   type: SET_IS_OPENED_GOAL_OVERVIEW,
+});
+export const setIsOpenedTodoOverview = () => ({
+  type: SET_IS_OPENED_TODO_OVERVIEW,
 });
 
 export const setSelectedMandalart = (
@@ -13,13 +19,22 @@ export const setSelectedMandalart = (
   type: SET_SELECTED_MANDALART,
   payload: selectedMandalart,
 });
+export const setSelectedGoal = (
+  selectedTodo: OverviewState["selectedGoal"],
+) => ({
+  type: SET_SELECTED_GOAL,
+  payload: selectedTodo,
+});
 
 type OverviewAction =
   | ReturnType<typeof setIsOpenedGoalOverview>
-  | ReturnType<typeof setSelectedMandalart>;
+  | ReturnType<typeof setIsOpenedTodoOverview>
+  | ReturnType<typeof setSelectedMandalart>
+  | ReturnType<typeof setSelectedGoal>;
 
 type OverviewState = {
   isOpenedGoalOverview: boolean;
+  isOpenedTodoOverview: boolean;
   selectedMandalart: {
     doc_id: string;
     alias: string;
@@ -50,10 +65,27 @@ type OverviewState = {
         }[]
       | undefined;
   };
+  selectedGoal: {
+    id: number;
+    text: string;
+    todos:
+      | {
+          id: number;
+          text: string;
+          emoji: string;
+          multiple: boolean;
+          period: string;
+          periodText: string;
+          periodRange: string;
+          periodNumber: number;
+        }[]
+      | undefined;
+  };
 };
 
 const initialState: OverviewState = {
   isOpenedGoalOverview: false,
+  isOpenedTodoOverview: false,
   selectedMandalart: {
     alias: "",
     emoji: "",
@@ -65,6 +97,11 @@ const initialState: OverviewState = {
     user_id: "",
     created_at: 0,
     success: 0,
+  },
+  selectedGoal: {
+    id: 0,
+    text: "",
+    todos: [],
   },
 };
 
@@ -78,11 +115,24 @@ function overviewReducer(
         ...state,
         isOpenedGoalOverview: !state.isOpenedGoalOverview,
       };
+    case SET_IS_OPENED_TODO_OVERVIEW:
+      return {
+        ...state,
+        isOpenedTodoOverview: !state.isOpenedTodoOverview,
+      };
     case SET_SELECTED_MANDALART:
       return {
         ...state,
         selectedMandalart: {
           ...state.selectedMandalart,
+          ...action.payload,
+        },
+      };
+    case SET_SELECTED_GOAL:
+      return {
+        ...state,
+        selectedGoal: {
+          ...state.selectedGoal,
           ...action.payload,
         },
       };

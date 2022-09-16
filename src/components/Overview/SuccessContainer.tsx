@@ -29,7 +29,7 @@ const SuccessRateCircle = styled.div<{ success: number; size: number }>`
   );
   background-size: 150%;
   background-position: center;
-  filter: brightness(0.85) saturate(1.3);
+  filter: brightness(0.85) saturate(1.4) hue-rotate(-5deg);
   position: absolute;
 `;
 const FrontCircle = styled.div`
