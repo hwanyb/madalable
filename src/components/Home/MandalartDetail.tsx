@@ -140,6 +140,7 @@ const MandalartAlias = styled.div<{
   font-weight: 700;
   display: flex;
   align-items: center;
+  word-break: break-all;
 `;
 const GoalInput = styled.textarea`
   background-color: ${(props) => props.theme.color.white};
@@ -251,12 +252,6 @@ export default function MandalartDetail() {
   );
   const isEditingGoal = useSelector(
     (state: RootState) => state.goalReducer.isEditingGoal,
-  );
-  const selectedGoal = useSelector(
-    (state: RootState) => state.goalReducer.selectedGoal,
-  );
-  const selectedTodo = useSelector(
-    (state: RootState) => state.goalReducer.selectedTodo,
   );
   const isOpenedTodoDetail = useSelector(
     (state: RootState) => state.goalReducer.isOpenedTodoDetail,
