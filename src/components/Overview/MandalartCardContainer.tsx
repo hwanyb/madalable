@@ -22,10 +22,9 @@ const SuccessRateWrapper = styled.div`
 `;
 const SuccessRate = styled.div``;
 const BackCircle = styled.div`
-  /* position: absolute; */
   width: 150px;
   height: 150px;
-  background-color: ${(props) => props.theme.color.transWhite};
+  background-color: #ffffff52;
   border-radius: 50%;
   display: flex;
   flex-direction: column;
