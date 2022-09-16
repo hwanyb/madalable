@@ -1,14 +1,19 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 
 import { RootState } from "../../modules";
+import {
+  setIsOpenedGoalOverview,
+  setSelectedMandalart,
+} from "../../modules/overviewReducer";
 import MandalartCard from "../common/MandalartCard";
 import {
   Base,
   ItemWrapper,
   MandalartAlias,
   MandalartEmoji,
+  selectedMandalart,
 } from "../Home/MandalartCardContainer";
 
 const SuccessRateWrapper = styled.div`
@@ -61,29 +66,45 @@ const SuccessRateText = styled.p`
 type Props = {};
 
 export default function MandalartCardContainer({}: Props) {
+  const dispatch = useDispatch();
+
   const myMandalartArr = useSelector(
     (state: RootState) => state.mandalartReducer.myMandalart,
   );
+
+  const onMandalartClick = (
+    e: React.SyntheticEvent<HTMLDivElement>,
+    mandalart: selectedMandalart,
+  ) => {
+    dispatch(setSelectedMandalart(mandalart));
+    dispatch(setIsOpenedGoalOverview());
+  };
+
   return (
     <Base>
-      {myMandalartArr.map((myMandalart, index) => (
-        <ItemWrapper key={index}>
-          <MandalartCard color={myMandalart.color}>
+      {myMandalartArr.map((mandalart, index) => (
+        <ItemWrapper
+          key={index}
+          onClick={(e: React.SyntheticEvent<HTMLDivElement>) =>
+            onMandalartClick(e, mandalart)
+          }
+        >
+          <MandalartCard color={mandalart.color}>
             <SuccessRateWrapper>
               <SuccessRate>
                 <BackCircle>
                   <SuccessRateCircle
-                    success={myMandalart.success}
-                    color={myMandalart.color}
+                    success={mandalart.success}
+                    color={mandalart.color}
                   />
-                  <FrontCircle color={myMandalart.color} />
+                  <FrontCircle color={mandalart.color} />
                 </BackCircle>
               </SuccessRate>
-              <SuccessRateText>{myMandalart.success} %</SuccessRateText>
+              <SuccessRateText>{mandalart.success} %</SuccessRateText>
             </SuccessRateWrapper>
-            <MandalartEmoji unified={myMandalart.emoji} size={70} />
+            <MandalartEmoji unified={mandalart.emoji} size={70} />
           </MandalartCard>
-          <MandalartAlias>{myMandalart.alias}</MandalartAlias>
+          <MandalartAlias>{mandalart.alias}</MandalartAlias>
         </ItemWrapper>
       ))}
     </Base>

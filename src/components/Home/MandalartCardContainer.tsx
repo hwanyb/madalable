@@ -33,7 +33,7 @@ export const MandalartAlias = styled.p`
   text-align: center;
   margin-top: 10px;
 `;
-interface selectedMandalart {
+export interface selectedMandalart {
   doc_id: string;
   alias: string;
   emoji: string;
