@@ -60,14 +60,14 @@ export default function SuccessContainer({
   size,
 }: SuccessProps) {
   return (
-    <SuccessRateWrapper>
+    <SuccessRateWrapper className="success-rate-wrapper">
       <SuccessRate>
         <BackCircle size={size}>
-          <SuccessRateCircle success={success} color={color} size={size} />
-          <FrontCircle color={color} />
+          <SuccessRateCircle className="success-rate-circle" success={success} color={color} size={size} />
+          <FrontCircle className="front-circle" color={color} />
         </BackCircle>
       </SuccessRate>
-      <SuccessRateText>{success} %</SuccessRateText>
+      <SuccessRateText className="success-rate-text">{success} %</SuccessRateText>
     </SuccessRateWrapper>
   );
 }

@@ -6,23 +6,131 @@ import { Emoji } from "emoji-picker-react";
 import { RootState } from "../../modules";
 import SuccessContainer from "./SuccessContainer";
 
-const Base = styled.div``;
-const GoalSuccessWrapper = styled.div``;
-const Title = styled.h2``;
-const GoalSuccess = styled.div``;
-const GoalText = styled.h1``;
-const GoalSuccessText = styled.h4``;
-const TodosWrapper = styled.div``;
-const Todos = styled.div``;
-const TodoItem = styled.div``;
+const Base = styled.div`
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  color: ${(props) => props.theme.color.fontPrimary};
+  align-items: center;
+`;
+const ContentWrapper = styled.div`
+  width: 50%;
+  height: 100%;
+  text-align: center;
+  padding: 10px 50px;
+  display: grid;
+  grid-template-rows: 0.5fr 12fr;
+  box-sizing: border-box;
+  &:first-child {
+    border-right: 1px solid ${props => props.theme.color.lightGray};
+  }
+
+  .success-rate-wrapper {
+    position: relative;
+  }
+  .success-rate-text {
+    display: none;
+  }
+  .front-circle {
+    background-color: ${(props) => props.theme.color.backgroundSecond};
+  }
+  .success-rate-circle {
+    filter: none;
+  }
+`;
+const Title = styled.h2`
+  font-size: ${(props) => props.theme.fontSize.base};
+  font-weight: 500;
+  background-color: ${props => props.color};
+  width: fit-content;
+  margin: 0 auto;
+  padding: 5px 30px;  
+  border-radius: ${props => props.theme.borderRadius};
+  box-shadow: 2px 2px 5px ${(props) => props.theme.color.shadow};
+`;
+const GoalSuccess = styled.div`
+  position: relative;
+`;
+const GoalSuccessTextWrapper = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 999;
+  transform: translate(-50%, -50%);
+  text-align: center;
+`;
+const GoalText = styled.h1`
+  font-size: ${(props) => props.theme.fontSize.md};
+  font-weight: 300;
+`;
+const GoalSuccessText = styled.h4`
+  font-size: ${(props) => props.theme.fontSize.lg};
+  margin-top: 10px;
+  font-weight: 700;
+
+`;
+const Todos = styled.div`
+  background-color: ${(props) => props.theme.color.transWhite};
+  border-radius: ${(props) => props.theme.borderRadius};
+  box-shadow: 5px 5px 10px ${(props) => props.theme.color.shadow};
+  margin: 50px 30px;
+  padding: 30px;
+  display: grid;
+  grid-template-rows: repeat(8, 1fr);
+  align-items: center;
+`;
+const TodoItem = styled.div`
+  width: 100%;
+  text-align: left;
+  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+`;
+const TodoEmojiWrapper = styled.div`
+  width: 40px;
+  height: 40px;
+  margin-right: 20px;
+  box-sizing: border-box;
+`;
 const TodoEmoji = styled(Emoji)``;
-const TodoInfo = styled.div``;
-const TodoText = styled.p``;
-const TodoSuccess = styled.div``;
-const TodoSuccessText = styled.p``;
-const TodoSuccessBarWrapper = styled.div``;
-const BackgroundBar = styled.div``;
-const TodoSuccessBar = styled.div``;
+const TodoInfo = styled.div`
+  width: 100%;
+`;
+const TodoText = styled.p`
+  width: fit-content;
+`;
+const TodoSuccess = styled.div`
+  display: flex;
+  line-height: 20px;
+  align-items: center;
+  margin-top: 5px;
+  margin-right: 8px;
+`;
+const TodoSuccessText = styled.p`
+  font-size: ${props => props.theme.fontSize.xs};
+  margin-right: 10px;
+  white-space: nowrap;
+`;
+const TodoSuccessBarWrapper = styled.div`
+  position: relative;
+  width: 100%;
+`;
+const BackgroundBar = styled.div`
+  width: 100%;
+  height: 10px;
+  background-color: #f1f1f1;
+  border-radius: ${(props) => props.theme.borderRadius};
+`;
+const TodoSuccessBar = styled.div<{ success: number}>`
+  width: ${props => props.success}%;
+  height: 10px;
+  position: absolute;
+  top: -1px;
+  background-color: ${props => props.color};
+  border-radius: ${(props) => props.theme.borderRadius};
+  box-shadow: 1px 1px 3px ${(props) => props.theme.color.shadow};
+`;
 
 export default function TodoOverview() {
   const selectedMandalart = useSelector(
@@ -33,38 +141,59 @@ export default function TodoOverview() {
   );
   return (
     <Base>
-      <GoalSuccessWrapper>
-        <Title>건강 성공률</Title>
+      <ContentWrapper>
+        <Title color={selectedMandalart.color}>건강 성공률</Title>
         <GoalSuccess>
           <SuccessContainer
-            size={300}
+            size={400}
             success={50}
             color={selectedMandalart.color}
           />
-          <GoalText>건강</GoalText>
-          <GoalSuccessText>50%</GoalSuccessText>
+          <GoalSuccessTextWrapper>
+            <GoalText>건강</GoalText>
+            <GoalSuccessText>50 %</GoalSuccessText>
+          </GoalSuccessTextWrapper>
         </GoalSuccess>
-      </GoalSuccessWrapper>
-      <TodosWrapper>
-        <Title>건강 실천과제</Title>
+      </ContentWrapper>
+      <ContentWrapper>
+        <Title color={selectedMandalart.color}>건강 실천과제</Title>
         <Todos>
           {selectedGoal.todos.map((todo) => (
             <TodoItem key={todo.id}>
-              <TodoEmoji unified={todo.emoji} size={30} />
+              <TodoEmojiWrapper>
+                <TodoEmoji unified={todo.emoji} size={40} />
+              </TodoEmojiWrapper>
               <TodoInfo>
-                <TodoText>{todo.text}</TodoText>
+                <TodoText>
+                  {todo.multiple
+                    ? todo.period === "daily"
+                      ? "일 "
+                      : todo.period === "weekly"
+                      ? "주 "
+                      : "월 " +
+                          todo.periodNumber +
+                          todo.periodText +
+                          todo.periodRange ===
+                        "less"
+                      ? "이하"
+                      : "이상" + todo.text
+                    : todo.text}
+                </TodoText>
                 <TodoSuccess>
-                  <TodoSuccessText>50%</TodoSuccessText>
+                  <TodoSuccessText>50 %</TodoSuccessText>
                   <TodoSuccessBarWrapper>
                     <BackgroundBar />
-                    <TodoSuccessBar />
+                    <TodoSuccessBar
+                      success={10}
+                      color={selectedMandalart.color}
+                    />
                   </TodoSuccessBarWrapper>
                 </TodoSuccess>
               </TodoInfo>
             </TodoItem>
           ))}
         </Todos>
-      </TodosWrapper>
+      </ContentWrapper>
     </Base>
   );
 }
