@@ -23,7 +23,7 @@ const ContentWrapper = styled.div`
   grid-template-rows: 0.5fr 12fr;
   box-sizing: border-box;
   &:first-child {
-    border-right: 1px solid ${props => props.theme.color.lightGray};
+    border-right: 1px solid ${(props) => props.theme.color.lightGray};
   }
 
   .success-rate-wrapper {
@@ -41,12 +41,12 @@ const ContentWrapper = styled.div`
 `;
 const Title = styled.h2`
   font-size: ${(props) => props.theme.fontSize.base};
-  font-weight: 500;
-  background-color: ${props => props.color};
+  font-weight: 700;
+  background-color: ${(props) => props.color};
   width: fit-content;
   margin: 0 auto;
-  padding: 5px 30px;  
-  border-radius: ${props => props.theme.borderRadius};
+  padding: 5px 30px;
+  border-radius: ${(props) => props.theme.borderRadius};
   box-shadow: 2px 2px 5px ${(props) => props.theme.color.shadow};
 `;
 const GoalSuccess = styled.div`
@@ -68,7 +68,6 @@ const GoalSuccessText = styled.h4`
   font-size: ${(props) => props.theme.fontSize.lg};
   margin-top: 10px;
   font-weight: 700;
-
 `;
 const Todos = styled.div`
   background-color: ${(props) => props.theme.color.transWhite};
@@ -85,13 +84,12 @@ const TodoItem = styled.div`
   text-align: left;
   align-items: center;
   display: grid;
-  grid-template-columns: 1fr 5fr;
+  grid-template-columns: 1fr 7fr;
 `;
 const TodoEmojiWrapper = styled.div`
   width: 40px;
   height: 40px;
-  margin-right: 20px;
-  box-sizing: border-box;
+  margin-right: 0px;
 `;
 const TodoEmoji = styled(Emoji)``;
 const TodoInfo = styled.div`
@@ -99,16 +97,17 @@ const TodoInfo = styled.div`
 `;
 const TodoText = styled.p`
   width: fit-content;
+  font-size: ${(props) => props.theme.fontSize.base};
+  font-weight: 700;
 `;
 const TodoSuccess = styled.div`
   display: flex;
-  line-height: 20px;
   align-items: center;
-  margin-top: 5px;
+  margin-top: 10px;
   margin-right: 8px;
 `;
 const TodoSuccessText = styled.p`
-  font-size: ${props => props.theme.fontSize.xs};
+  font-size: ${(props) => props.theme.fontSize.xs};
   margin-right: 10px;
   white-space: nowrap;
 `;
@@ -118,18 +117,18 @@ const TodoSuccessBarWrapper = styled.div`
 `;
 const BackgroundBar = styled.div`
   width: 100%;
-  height: 10px;
+  height: 12px;
   background-color: #f1f1f1;
   border-radius: ${(props) => props.theme.borderRadius};
 `;
-const TodoSuccessBar = styled.div<{ success: number}>`
-  width: ${props => props.success}%;
-  height: 10px;
+const TodoSuccessBar = styled.div<{ success: number }>`
+  width: ${(props) => props.success}%;
+  height: 12px;
   position: absolute;
-  top: -1px;
-  background-color: ${props => props.color};
+  top: 0;
+  background-color: ${(props) => props.color};
   border-radius: ${(props) => props.theme.borderRadius};
-  box-shadow: 1px 1px 3px ${(props) => props.theme.color.shadow};
+  box-shadow: 1px 0 3px ${(props) => props.theme.color.shadow};
 `;
 
 export default function TodoOverview() {
@@ -161,22 +160,21 @@ export default function TodoOverview() {
           {selectedGoal.todos.map((todo) => (
             <TodoItem key={todo.id}>
               <TodoEmojiWrapper>
-                <TodoEmoji unified={todo.emoji} size={40} />
+                <TodoEmoji unified={todo.emoji === "" ? "2754" : todo.emoji} size={40} />
               </TodoEmojiWrapper>
               <TodoInfo>
                 <TodoText>
+                  {todo.text === "" && "실천과제가 등록되지 않았습니다."}
                   {todo.multiple
-                    ? todo.period === "daily"
-                      ? "일 "
-                      : todo.period === "weekly"
-                      ? "주 "
-                      : "월 " +
-                          todo.periodNumber +
-                          todo.periodText +
-                          todo.periodRange ===
-                        "less"
-                      ? "이하"
-                      : "이상" + todo.text
+                    ? `${
+                        todo.period === "daily"
+                          ? "일"
+                          : todo.period === "weekly"
+                          ? "주"
+                          : "월"
+                      } ${todo.periodNumber}${todo.periodText} ${
+                        todo.periodRange === "less" ? "이하" : "이상"
+                      } ${todo.text}`
                     : todo.text}
                 </TodoText>
                 <TodoSuccess>
