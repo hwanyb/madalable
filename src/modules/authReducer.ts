@@ -1,3 +1,5 @@
+import { AuthState } from "../types";
+
 const SET_IS_LOGGEDIN = "authReducer/SET_IS_LOGGEDIN" as const;
 const SET_USER_ID = "authReducer/SET_USER_ID" as const;
 
@@ -14,11 +16,6 @@ export const setUserId = (userId: string) => ({
 type AuthAction =
   | ReturnType<typeof setIsLoggedin>
   | ReturnType<typeof setUserId>;
-
-type AuthState = {
-  isLoggedin: boolean;
-  userId: string;
-};
 
 const initialState: AuthState = {
   isLoggedin: false,

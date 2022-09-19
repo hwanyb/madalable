@@ -1,3 +1,5 @@
+import { MandalartState } from "../types";
+
 const SET_IS_OPENED_CREATE_MANDALART = "mandalartReducer/SET_IS_OPENED_CREATE_MANDALART" as const;
 const SET_IS_OPENED_MANDALART_DETAIL = "mandalartReducer/SET_IS_OPENED_MANDALART_DETAIL" as const;
 const SET_MANDALART = "mandalartReducer/SET_MANDALART" as const;
@@ -40,73 +42,6 @@ type MandalartAction =
   | ReturnType<typeof setMyMandalart>
   | ReturnType<typeof setSelectedMandalart>;
 
-export type MandalartState = {
-  isOpenedCreateMandalart: boolean;
-  isOpenedMandalartDetail: boolean;
-
-  mandalart: {
-    alias: string;
-    emoji: string;
-    color: string;
-    startDate: string;
-    endDate: string;
-    difficulty: string;
-    success: number;
-  };
-  myMandalart: {
-    doc_id: string;
-    alias: string;
-    emoji: string;
-    color: string;
-    start_date: string;
-    end_date: string;
-    difficulty: string;
-    user_id: string;
-    created_at: number;
-    success: number;
-    goals?: {
-      id: number;
-      text: string;
-      todos: {
-        id: number;
-        text: string;
-        emoji: string;
-        multiple: boolean;
-        period: string;
-        periodText: string;
-        periodRange: string;
-        periodNumber: number;
-      }[] | undefined;
-    }[] | undefined;
-  }[];
-  selectedMandalart: {
-    doc_id: string;
-    alias: string;
-    emoji: string;
-    color: string;
-    start_date: string;
-    end_date: string;
-    difficulty: string;
-    user_id: string;
-    created_at: number;
-    success: number;
-    goals?: {
-      id: number;
-      text: string;
-      todos: {
-        id: number;
-        text: string;
-        emoji: string;
-        multiple: boolean;
-        period: string;
-        periodText: string;
-        periodRange: string;
-        periodNumber: number;
-      }[] | undefined;
-    }[] | undefined;
-  };
-};
-
 const initialState: MandalartState = {
   isOpenedCreateMandalart: false,
   isOpenedMandalartDetail: false,
@@ -114,8 +49,8 @@ const initialState: MandalartState = {
     alias: "",
     emoji: "",
     color: "",
-    startDate: "",
-    endDate: "",
+    start_date: "",
+    end_date: "",
     difficulty: "",
     success: 0,
   },

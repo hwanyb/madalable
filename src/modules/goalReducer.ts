@@ -1,3 +1,5 @@
+import { GoalState } from "../types";
+
 const SET_GOALS_ARR = "goalReducer/SET_GOALS_ARR" as const;
 const SET_IS_EDITING_GOAL = "goalReducer/SET_IS_EDITING_GOAL" as const;
 const SET_IS_EDITING_TODO = "goalReducer/SET_IS_EDITING_TODO" as const;
@@ -37,54 +39,6 @@ type GoalAction =
   | ReturnType<typeof setSelectedTodo>
   | ReturnType<typeof setSelectedGoal>
   | ReturnType<typeof setIsOpenedTodoDetail>;
-
-type GoalState = {
-  selectedGoal: {
-    id: number;
-    text: string;
-    todos:
-      | {
-          id: number;
-          text: string;
-          emoji: string;
-          multiple: boolean;
-          period: string;
-          periodText: string;
-          periodRange: string;
-          periodNumber: number;
-        }[]
-      | undefined;
-  };
-  selectedTodo: {
-    id: number;
-    text: string;
-    emoji: string;
-    multiple: boolean;
-    period: string;
-    periodText: string;
-    periodRange: string;
-    periodNumber: number;
-  };
-  goalsArr: {
-    id: number;
-    text: string;
-    todos:
-      | {
-          id: number;
-          text: string;
-          emoji: string;
-          multiple: boolean;
-          period: string;
-          periodText: string;
-          periodRange: string;
-          periodNumber: number;
-        }[]
-      | undefined;
-  }[];
-  isEditingGoal: boolean;
-  isEditingTodo: boolean;
-  isOpenedTodoDetail: boolean;
-};
 
 let tempGoalsArr = [];
 for (let i = 0; i < 8; i++) {
