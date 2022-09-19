@@ -50,4 +50,11 @@ export type MandalartState = {
   myMandalart: Mandalart[];
   isOpenedCreateMandalart: boolean;
   isOpenedMandalartDetail: boolean;
+};
+
+export type OverviewState = {
+  selectedMandalart: Mandalart;
+  selectedGoal: Goal;
+  isOpenedGoalOverview: boolean;
+  isOpenedTodoOverview: boolean;
 }
