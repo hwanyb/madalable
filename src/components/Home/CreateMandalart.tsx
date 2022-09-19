@@ -135,7 +135,7 @@ const MandalartFeatBtn = styled.div`
   display: flex;
   cursor: auto;
   height: 30px;
-  border-radius: ${props => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
 `;
 const FeatText = styled.p`
   font-size: 14px;
@@ -293,7 +293,8 @@ export default function CreateMandalart() {
     (state: RootState) => state.goalReducer.goalsArr,
   );
   const userId = useSelector((state: RootState) => state.authReducer.userId);
-  const { alias, emoji, color, startDate, endDate, difficulty, success } = mandalart;
+  const { alias, emoji, color, start_date, end_date, difficulty, success } =
+    mandalart;
 
   useEffect(() => {
     const values = Object.values(mandalart);
@@ -347,9 +348,9 @@ export default function CreateMandalart() {
     if (name === "alias") {
       dispatch(setMandalart({ ...mandalart, alias: value }));
     } else if (name === "start-date") {
-      dispatch(setMandalart({ ...mandalart, startDate: value }));
+      dispatch(setMandalart({ ...mandalart, start_date: value }));
     } else if (name === "end-date") {
-      dispatch(setMandalart({ ...mandalart, endDate: value }));
+      dispatch(setMandalart({ ...mandalart, end_date: value }));
     }
   };
 
@@ -408,11 +409,11 @@ export default function CreateMandalart() {
         "\n- 색상 : " +
         color +
         "\n- 기간 : " +
-        startDate +
+        start_date +
         "~" +
-        endDate +
+        end_date +
         "\n- 성공 난이도 : " +
-        difficulty
+        difficulty,
     );
     if (result) {
       await dbService
@@ -423,11 +424,11 @@ export default function CreateMandalart() {
           alias: alias,
           emoji: emoji,
           color: color,
-          start_date: startDate,
-          end_date: endDate,
+          start_date: start_date,
+          end_date: end_date,
           difficulty: difficulty,
           success: success,
-          goals: goalsArr
+          goals: goalsArr,
         })
         .then(() => {
           setTimeout(() => {
@@ -438,7 +439,6 @@ export default function CreateMandalart() {
         .catch((error) => {
           console.error("Error adding document: ", error);
         });
-      
     }
   };
   return (
@@ -556,14 +556,14 @@ export default function CreateMandalart() {
               type="date"
               name="start-date"
               onChange={onChange}
-              value={startDate}
+              value={start_date}
             />
             <DateText>~</DateText>
             <DateInput
               type="date"
               name="end-date"
               onChange={onChange}
-              value={endDate}
+              value={end_date}
             />
           </PeriodWrapper>
         </CreateMandalartWrapper>
@@ -610,7 +610,9 @@ export default function CreateMandalart() {
               Difficult
             </DifficultyBtn>
           </DifficultyBtnWrapper>
-          <CompleteBtn isFilled={isFilled} onClick={onCompleteClick}>완료</CompleteBtn>
+          <CompleteBtn isFilled={isFilled} onClick={onCompleteClick}>
+            완료
+          </CompleteBtn>
         </CreateMandalartWrapper>
       </CreateMandalartContainer>
     </Base>
