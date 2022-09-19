@@ -1,7 +1,8 @@
-import { Emoji } from "emoji-picker-react";
 import React from "react";
 import { useSelector } from "react-redux";
+import { Emoji } from "emoji-picker-react";
 import styled from "styled-components";
+
 import { RootState } from "../modules";
 import { Icon } from "../styles/Common";
 
@@ -106,9 +107,12 @@ const CountArrow = styled(Icon)`
   color: ${(props) => props.theme.color.lightGray};
   transition: all 0.3s ease-in-out;
   font-size: 30px;
-
+  display: block;
   &:hover {
     color: ${(props) => props.theme.color.primary};
+  }
+  &:last-child {
+    margin-top: -5px;
   }
 `;
 
@@ -116,6 +120,41 @@ export default function TodoContainer() {
   const myMandalart = useSelector(
     (state: RootState) => state.mandalartReducer.myMandalart,
   );
+
+  const getDays = (start_date: string, end_date: string) => {
+    const startDate: Date = new Date(start_date);
+    const endDate: Date = new Date(end_date);
+
+    const oneDay = 1000 * 60 * 60 * 24;
+    const diffInTime = endDate.getTime() - startDate.getTime();
+    const diffInDays = Math.round(diffInTime / oneDay);
+    return diffInDays;
+  };
+
+  const getWeeks = (start_date: string, end_date: string) => {
+    const startDate: Date = new Date(start_date);
+    const endDate: Date = new Date(end_date);
+
+    const oneWeek = 1000 * 60 * 60 * 24 * 7;
+    const diffInTime = endDate.getTime() - startDate.getTime();
+    const diffInWeeks = Math.round(diffInTime / oneWeek);
+
+    return diffInWeeks;
+  };
+  const getMonths = (start_date: string, end_date: string) => {
+    const startDate: Date = new Date(start_date);
+    const endDate: Date = new Date(end_date);
+
+    let diffInMonths = (endDate.getFullYear() - startDate.getFullYear()) * 12;
+
+    diffInMonths -= startDate.getMonth();
+    diffInMonths += endDate.getMonth();
+
+    if (endDate.getDate() < startDate.getDate()) {
+      return diffInMonths--;
+    } else return diffInMonths;
+  };
+
   return (
     <Base>
       {myMandalart.map((myMandalart) => (
@@ -124,6 +163,13 @@ export default function TodoContainer() {
             <MandalartEmoji unified={myMandalart.emoji} size={15} />
             <MandalartAlias>{myMandalart.alias}</MandalartAlias>
           </MandalartInfo>
+          <p>
+            {myMandalart.start_date} - {myMandalart.end_date} /
+            {getDays(myMandalart.start_date, myMandalart.end_date)}일,
+            {getWeeks(myMandalart.start_date, myMandalart.end_date)}주,
+            {getMonths(myMandalart.start_date, myMandalart.end_date)}개월
+          </p>
+
           {myMandalart.goals
             .filter((goal) => goal.text !== "")
             .map((goal) => (
