@@ -64,6 +64,20 @@ export type MandalartState = {
     user_id: string;
     created_at: number;
     success: number;
+    goals?: {
+      id: number;
+      text: string;
+      todos: {
+        id: number;
+        text: string;
+        emoji: string;
+        multiple: boolean;
+        period: string;
+        periodText: string;
+        periodRange: string;
+        periodNumber: number;
+      }[] | undefined;
+    }[] | undefined;
   }[];
   selectedMandalart: {
     doc_id: string;
