@@ -7,13 +7,13 @@ import {
   setIsOpenedGoalOverview,
   setSelectedMandalart,
 } from "../../modules/overviewReducer";
+import { Mandalart } from "../../types";
 import MandalartCard from "../common/MandalartCard";
 import {
   Base,
   ItemWrapper,
   MandalartAlias,
   MandalartEmoji,
-  selectedMandalart,
 } from "../Home/MandalartCardContainer";
 import SuccessContainer from "./SuccessContainer";
 
@@ -26,7 +26,7 @@ export default function MandalartCardContainer() {
 
   const onMandalartClick = (
     e: React.SyntheticEvent<HTMLDivElement>,
-    mandalart: selectedMandalart,
+    mandalart: Mandalart,
   ) => {
     dispatch(setSelectedMandalart(mandalart));
     dispatch(setIsOpenedGoalOverview());

@@ -12,6 +12,7 @@ import {
 
 import { Icon } from "../../styles/Common";
 import { theme } from "../../styles/theme";
+import { Mandalart } from "../../types";
 import MandalartCard from "../common/MandalartCard";
 
 export const Base = styled.div`
@@ -32,18 +33,6 @@ export const MandalartAlias = styled.p`
   text-align: center;
   margin-top: 10px;
 `;
-export interface selectedMandalart {
-  doc_id: string;
-  alias: string;
-  emoji: string;
-  color: string;
-  start_date: string;
-  end_date: string;
-  difficulty: string;
-  user_id: string;
-  created_at: number;
-  success: number;
-}
 export default function MandalartCardContainer() {
   const myMandalartArr = useSelector(
     (state: RootState) => state.mandalartReducer.myMandalart,
@@ -56,7 +45,7 @@ export default function MandalartCardContainer() {
   };
   const onCardClick = (
     e: React.SyntheticEvent<HTMLDivElement>,
-    myMandalart: selectedMandalart,
+    myMandalart: Mandalart,
   ) => {
     dispatch(setSelectedMandalart(myMandalart));
     dispatch(setIsOpenedMandalartDetail());
