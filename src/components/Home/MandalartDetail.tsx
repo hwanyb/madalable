@@ -10,11 +10,9 @@ import {
   setSelectedGoal,
   setSelectedTodo,
 } from "../../modules/goalReducer";
-import {
-  MandalartState,
-  setIsOpenedMandalartDetail,
-} from "../../modules/mandalartReducer";
+import { setIsOpenedMandalartDetail } from "../../modules/mandalartReducer";
 import { Icon } from "../../styles/Common";
+import { Mandalart } from "../../types";
 import { CloseBtn } from "./CreateMandalart";
 import TodoDetail from "./TodoDetail";
 
@@ -148,7 +146,7 @@ const MainGoal = styled.div`
   }
 `;
 const MandalartAlias = styled.div<{
-  selectedMandalart: MandalartState["selectedMandalart"];
+  selectedMandalart: Mandalart;
 }>`
   background-color: ${(props) => props.selectedMandalart.color};
   font-size: ${(props) => props.theme.fontSize.base};
@@ -235,7 +233,7 @@ const GoalWrapper = styled.div`
   }
 `;
 const GoalText = styled.div<{
-  selectedMandalart: MandalartState["selectedMandalart"];
+  selectedMandalart: Mandalart;
 }>`
   background-color: ${(props) => props.selectedMandalart.color};
   filter: brightness(1.2) saturate(0.8);
@@ -272,10 +270,12 @@ export default function MandalartDetail() {
     (state: RootState) => state.goalReducer.isOpenedTodoDetail,
   );
 
-  const [goals, setGoals] = useState<GoalProps[] | undefined>(selectedMandalart.goals);
+  const [goals, setGoals] = useState<GoalProps[] | undefined>(
+    selectedMandalart.goals,
+  );
 
   const onCloseBtnClick = () => {
-    if(isEditingGoal){
+    if (isEditingGoal) {
       const result = window.confirm(
         "창을 닫으면 입력하신 정보가 사라집니다.\n창을 닫으시겠습니까?",
       );
@@ -311,22 +311,26 @@ export default function MandalartDetail() {
   ) => {
     if (e.target instanceof Element) {
       if (e.target.id !== "") {
-          dispatch(setSelectedGoal(goal));
-          dispatch(setSelectedTodo(todo));
-          dispatch(setIsOpenedTodoDetail());
+        dispatch(setSelectedGoal(goal));
+        dispatch(setSelectedTodo(todo));
+        dispatch(setIsOpenedTodoDetail());
       }
     }
   };
 
   const onDeleteClick = async () => {
     const result = window.confirm("만다라트를 삭제하시겠습니까?");
-    if(result) {
-      await dbService.collection("mandalable").doc(selectedMandalart.doc_id).delete().then(() => {
-        alert("만다라트가 삭제되었습니다");
-        dispatch(setIsOpenedMandalartDetail());
-      })
+    if (result) {
+      await dbService
+        .collection("mandalable")
+        .doc(selectedMandalart.doc_id)
+        .delete()
+        .then(() => {
+          alert("만다라트가 삭제되었습니다");
+          dispatch(setIsOpenedMandalartDetail());
+        });
     }
-  }
+  };
   const onSubmitClick = async () => {
     console.log(selectedMandalart);
     console.log(goals);
@@ -368,7 +372,9 @@ export default function MandalartDetail() {
           edit
         </EditOrSubmitBtn>
       )}
-        <DeleteBtn className="material-symbols-rounded" onClick={onDeleteClick}>delete</DeleteBtn>
+      <DeleteBtn className="material-symbols-rounded" onClick={onDeleteClick}>
+        delete
+      </DeleteBtn>
       <DetailContainer>
         <MainGoal>
           <MandalartAlias selectedMandalart={selectedMandalart}>
