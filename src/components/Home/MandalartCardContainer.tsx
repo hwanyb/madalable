@@ -20,7 +20,9 @@ export const Base = styled.div`
   flex-wrap: wrap;
   gap: 30px;
 `;
-export const ItemWrapper = styled.div``;
+export const ItemWrapper = styled.div`
+  position: relative;
+`;
 const AddIcon = styled(Icon)`
   font-size: 80px;
   color: ${(props) => props.theme.color.primary};
@@ -33,6 +35,52 @@ export const MandalartAlias = styled.p`
   text-align: center;
   margin-top: 10px;
 `;
+
+export const SuccessStampWrapper = styled.div`
+  position: absolute;
+  left: -10px;
+  z-index: 999;
+  font-family: ${props => props.theme.fontFamily.aggro};
+  font-weight: 900;
+  color: ${props => props.theme.color.primary};
+  mix-blend-mode: multiply;
+  border-radius: 10px;
+  border: 5px solid ${props => props.theme.color.primary};
+  padding: 3px;
+  transform: rotate(-20deg);
+`;
+export const SuccessStamp = styled.div`
+  border-radius: 5px;
+  border: 2px solid ${props => props.theme.color.primary};
+  padding: 3px 5px 2px 5px;
+`;
+
+export const successOrNot = (success: number, difficulty: string) => {
+  switch (difficulty) {
+    case "hard":
+      if (success >= 99) {
+        return true;
+      } else {
+        return false;
+      }
+
+    case "normal":
+      if (success >= 90) {
+        return true;
+      } else {
+        return false;
+      }
+    case "easy":
+      if (success >= 85) {
+        return true;
+      } else {
+        return false;
+      }
+    default:
+      return false;
+  }
+};
+
 export default function MandalartCardContainer() {
   const myMandalartArr = useSelector(
     (state: RootState) => state.mandalartReducer.myMandalart,
@@ -64,6 +112,13 @@ export default function MandalartCardContainer() {
             onCardClick(e, myMandalart)
           }
         >
+          {
+            successOrNot(myMandalart.success, myMandalart.difficulty) && (
+              <SuccessStampWrapper>
+                <SuccessStamp>SUCCESS</SuccessStamp>
+              </SuccessStampWrapper>
+            )
+          }
           <MandalartCard color={myMandalart.color}>
             <MandalartEmoji unified={myMandalart.emoji} size={70} />
           </MandalartCard>

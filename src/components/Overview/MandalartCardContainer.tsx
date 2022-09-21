@@ -14,6 +14,9 @@ import {
   ItemWrapper,
   MandalartAlias,
   MandalartEmoji,
+  successOrNot,
+  SuccessStamp,
+  SuccessStampWrapper,
 } from "../Home/MandalartCardContainer";
 import SuccessContainer from "./SuccessContainer";
 
@@ -46,6 +49,13 @@ export default function MandalartCardContainer() {
             onMandalartClick(e, mandalart)
           }
         >
+          {
+            successOrNot(mandalart.success, mandalart.difficulty) && (
+              <SuccessStampWrapper>
+                <SuccessStamp>SUCCESS</SuccessStamp>
+              </SuccessStampWrapper>
+            )
+          }
           <MandalartCard color={mandalart.color}>
             <SuccessContainer color={mandalart.color} success={mandalart.success} size={150} />
             <MandalartEmoji unified={mandalart.emoji} size={70} />
