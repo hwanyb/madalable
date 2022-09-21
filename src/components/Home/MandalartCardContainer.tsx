@@ -42,16 +42,17 @@ const CreateText = styled.p`
   top: 200px;
   left: 150px;
   white-space: nowrap;
-  font-family: ${props => props.theme.fontFamily.aggro};
-  color: ${props => props.theme.color.primary};
+  font-family: ${(props) => props.theme.fontFamily.aggro};
+  color: ${(props) => props.theme.color.primary};
   z-index: 5;
 `;
 const CreateIcon = styled(Icon)<{ mandalartLength: number }>`
   position: absolute;
   top: -60px;
   left: -10px;
-  animation: ${props => props.mandalartLength <= 0 && iconAnimation} 0.3s infinite alternate ease-in-out;
-  color: ${props => props.theme.color.secondary};
+  animation: ${(props) => props.mandalartLength <= 0 && iconAnimation} 0.3s
+    infinite alternate ease-in-out;
+  color: ${(props) => props.theme.color.secondary};
 `;
 const CrateMandalartCard = styled.div<{ mandalartLength: number }>`
   width: 220px;
@@ -65,7 +66,8 @@ const CrateMandalartCard = styled.div<{ mandalartLength: number }>`
   display: flex;
   justify-content: center;
   color: ${(props) => props.theme.color.primary};
-  animation: ${props => props.mandalartLength <= 0 && createCardInduceClick} 0.5s infinite alternate cubic-bezier(0.1, 0.7, 0.1, 0.7);
+  animation: ${(props) => props.mandalartLength <= 0 && createCardInduceClick}
+    0.5s infinite alternate cubic-bezier(0.1, 0.7, 0.1, 0.7);
   &:hover {
     background-color: ${(props) => props.theme.color.white};
     animation-play-state: paused;
@@ -136,7 +138,6 @@ export default function MandalartCardContainer() {
   const myMandalartArr = useSelector(
     (state: RootState) => state.mandalartReducer.myMandalart,
   );
-  const [mandalartLength, setMandalartLength] = useState(myMandalartArr.length);
 
   const dispatch = useDispatch();
 
@@ -153,10 +154,10 @@ export default function MandalartCardContainer() {
   return (
     <Base>
       <ItemWrapper onClick={onCreateClick}>
-        {mandalartLength <= 0 && (
+        {myMandalartArr.length <= 0 && (
           <CreateText>
             <CreateIcon
-              mandalartLength={mandalartLength}
+              mandalartLength={myMandalartArr.length}
               className="material-symbols-rounded"
             >
               ads_click
@@ -164,7 +165,7 @@ export default function MandalartCardContainer() {
             버튼을 눌러 만다라트를 만들어 보세요!
           </CreateText>
         )}
-        <CrateMandalartCard mandalartLength={mandalartLength}>
+        <CrateMandalartCard mandalartLength={myMandalartArr.length}>
           <AddIcon className="material-symbols-rounded">add</AddIcon>
         </CrateMandalartCard>
       </ItemWrapper>
