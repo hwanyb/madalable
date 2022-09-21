@@ -5,6 +5,8 @@ import styled from "styled-components";
 
 import { RootState } from "../modules";
 import { Icon } from "../styles/Common";
+import { Goal, Mandalart, Todo } from "../types";
+import { dbService } from "../firebase";
 
 const Base = styled.div`
   color: ${(props) => props.theme.color.fontPrimary};
@@ -89,9 +91,10 @@ const TodoPeriod = styled.p`
   font-weight: 300;
   font-size: ${(props) => props.theme.fontSize.base};
 `;
-const TodoDone = styled(Icon)`
+const TodoDone = styled(Icon)<{ done: boolean }>`
   justify-self: end;
-  color: ${(props) => props.theme.color.lightGray};
+  color: ${(props) =>
+    props.done ? props.theme.color.primary : props.theme.color.lightGray};
   font-size: 30px;
   transition: all 0.3s ease-in-out;
   &:hover {
@@ -155,6 +158,19 @@ export default function TodoContainer() {
     } else return diffInMonths;
   };
 
+  const onClickDone = async (
+    e: React.SyntheticEvent<HTMLSpanElement>,
+    myMandalart: Mandalart,
+    goal: Goal,
+    todo: Todo,
+  ) => {
+    const newGoals = [...myMandalart.goals];
+    newGoals[goal.id - 1].todos[todo.id - 1].done =
+      !newGoals[goal.id - 1].todos[todo.id - 1].done;
+    await dbService.collection("mandalable").doc(myMandalart.doc_id).update({
+      goals: newGoals,
+    });
+  };
   return (
     <Base>
       {myMandalart.map((myMandalart) => (
@@ -185,8 +201,14 @@ export default function TodoContainer() {
                         <TodoTextWrapper>
                           <TodoText>{todo.text}</TodoText>
                         </TodoTextWrapper>
-                        <TodoDone className="material-symbols-rounded">
-                          circle
+                        <TodoDone
+                          className="material-symbols-rounded"
+                          onClick={(e: React.SyntheticEvent<HTMLSpanElement>) =>
+                            onClickDone(e, myMandalart, goal, todo)
+                          }
+                          done={todo.done}
+                        >
+                          {todo.done ? "check_circle" : "circle"}
                         </TodoDone>
                       </TodoItem>
                     </>
