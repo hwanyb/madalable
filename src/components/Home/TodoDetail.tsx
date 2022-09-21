@@ -406,7 +406,6 @@ const TodoDetail: React.FC<Props> = ({ goals, setGoals }) => {
     copiedSelectedTodo.emoji = emojiData.unified;
     dispatch(setSelectedTodo(copiedSelectedTodo));
     setIsOpenedEmojiPicker(false);
-    console.log(selectedTodo);
   };
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {
@@ -422,30 +421,30 @@ const TodoDetail: React.FC<Props> = ({ goals, setGoals }) => {
     dispatch(setSelectedTodo(copiedSelectedTodo));
   };
 
-  const onToggle = () => {
-    copiedSelectedTodo.multiple = !copiedSelectedTodo.multiple;
-    dispatch(setSelectedTodo(copiedSelectedTodo));
-  };
+  // const onToggle = () => {
+  //   copiedSelectedTodo.multiple = !copiedSelectedTodo.multiple;
+  //   dispatch(setSelectedTodo(copiedSelectedTodo));
+  // };
 
-  const onPeriodOptionClick = (e: React.MouseEvent<HTMLUListElement>) => {
-    if (e.target instanceof Element) {
-      const id = e.target.id;
-      copiedSelectedTodo.period = id;
-      dispatch(setSelectedTodo(copiedSelectedTodo));
-    }
-    setTimeout(() => {
-      setShowDropDown(!showDropDown);
-    }, 100);
-  };
+  // const onPeriodOptionClick = (e: React.MouseEvent<HTMLUListElement>) => {
+  //   if (e.target instanceof Element) {
+  //     const id = e.target.id;
+  //     copiedSelectedTodo.period = id;
+  //     dispatch(setSelectedTodo(copiedSelectedTodo));
+  //   }
+  //   setTimeout(() => {
+  //     setShowDropDown(!showDropDown);
+  //   }, 100);
+  // };
 
-  const onRangeClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    if (e.target instanceof Element) {
-      const id = e.target.id;
-      copiedSelectedTodo.periodRange = id;
-      dispatch(setSelectedTodo(copiedSelectedTodo));
-    }
-  };
+  // const onRangeClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  //   e.preventDefault();
+  //   if (e.target instanceof Element) {
+  //     const id = e.target.id;
+  //     copiedSelectedTodo.periodRange = id;
+  //     dispatch(setSelectedTodo(copiedSelectedTodo));
+  //   }
+  // };
 
   const onCloseBtnClick = () => {
     if(isEditingTodo){

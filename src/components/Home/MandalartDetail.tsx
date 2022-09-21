@@ -316,8 +316,6 @@ export default function MandalartDetail() {
     }
   };
   const onSubmitClick = async () => {
-    console.log(selectedMandalart);
-    console.log(goals);
     const result = window.confirm("만다라트를 수정하시겠습니까?");
     if (result) {
       await dbService

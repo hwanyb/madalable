@@ -1,6 +1,5 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import styled from "styled-components";
 
 import { RootState } from "../../modules";
 import {
@@ -26,11 +25,6 @@ export default function MandalartCardContainer() {
   const myMandalartArr = useSelector(
     (state: RootState) => state.mandalartReducer.myMandalart,
   );
-  const getMandalartSuccess = (mandalart: Mandalart) => {
-    const vaildGoal = mandalart.goals.filter((goal) => goal.text !== "");
-    const sumSuccess = mandalart.goals.reduce((acc, goal) => acc + goal.success, 0);
-    return Math.ceil(sumSuccess / vaildGoal.length);
-  };
   const onMandalartClick = (
     e: React.SyntheticEvent<HTMLDivElement>,
     mandalart: Mandalart,

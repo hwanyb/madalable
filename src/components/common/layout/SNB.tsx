@@ -149,10 +149,6 @@ export default function SNB() {
         </ItemIcon>
         <ItemText>Overview</ItemText>
       </ItemWrapper>
-      <ItemWrapper to="/guide" className="/guide" location={location}>
-        <ItemIcon className="material-symbols-rounded">help</ItemIcon>
-        <ItemText>Guide</ItemText>
-      </ItemWrapper>
       <LogoutBtn onClick={onLogoutClick}>
         <ItemIcon className="material-symbols-rounded">logout</ItemIcon>
         <ItemText>Logout</ItemText>

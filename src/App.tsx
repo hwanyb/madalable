@@ -1,26 +1,28 @@
 import React, { useEffect } from "react";
-import { Router, Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { authService, dbService } from "./firebase";
-import { useDispatch } from "react-redux";
-import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
 
-import Layout from "./components/common/layout/Layout";
 import Home from "./pages/Home";
 import Auth from "./pages/Auth";
-import Guide from "./pages/Guide";
 import Todo from "./pages/Todo";
 import Overview from "./pages/Overview";
 import { setIsLoggedin, setUserId } from "./modules/authReducer";
-import { useSelector } from "react-redux";
 import { RootState } from "./modules";
 import { setMyMandalart } from "./modules/mandalartReducer";
 
 function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
+
+  const isLoggedin = useSelector(
+    (state: RootState) => state.authReducer.isLoggedin,
+  );
   const userId = useSelector((state: RootState) => state.authReducer.userId);
-  const myMandalart = useSelector(
-    (state: RootState) => state.mandalartReducer.myMandalart,
+
+  const selectedMandalart = useSelector(
+    (state: RootState) => state.mandalartReducer.selectedMandalart,
   );
   const isOpenedCreateMandalart = useSelector(
     (state: RootState) => state.mandalartReducer.isOpenedCreateMandalart,
@@ -28,6 +30,36 @@ function App() {
   const isOpenedMandalartDetail = useSelector(
     (state: RootState) => state.mandalartReducer.isOpenedMandalartDetail,
   );
+
+  const isEditingGoal = useSelector(
+    (state: RootState) => state.goalReducer.isEditingGoal,
+  );
+  const isEditingTodo = useSelector(
+    (state: RootState) => state.goalReducer.isEditingTodo,
+  );
+  const isOpenedTodoDetail = useSelector(
+    (state: RootState) => state.goalReducer.isOpenedTodoDetail,
+  );
+  const selectedGoal = useSelector(
+    (state: RootState) => state.goalReducer.selectedGoal,
+  );
+  const selectedTodo = useSelector(
+    (state: RootState) => state.goalReducer.selectedTodo,
+  );
+
+  const overviewSelectedMandalart = useSelector(
+    (state: RootState) => state.overviewReducer.selectedMandalart,
+  );
+  const overviewSelectedGoal = useSelector(
+    (state: RootState) => state.overviewReducer.selectedGoal,
+  );
+  const isOpenedGoalOverview = useSelector(
+    (state: RootState) => state.overviewReducer.isOpenedGoalOverview,
+  );
+  const isOpenedTodoOverview = useSelector(
+    (state: RootState) => state.overviewReducer.isOpenedTodoOverview,
+  );
+
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
       if (user) {
@@ -42,8 +74,8 @@ function App() {
     });
   }, []);
 
-  function fetchDocs() {
-    dbService
+  const fetchDocs = async () => {
+    await dbService
       .collection("mandalable")
       .where("user_id", "==", userId)
       .onSnapshot((snapshot) => {
@@ -53,15 +85,29 @@ function App() {
         }));
         dispatch(setMyMandalart(docsArr));
       });
-  }
+  };
   useEffect(() => {
     fetchDocs();
-  }, [isOpenedCreateMandalart, isOpenedMandalartDetail, userId]);
-  console.log(myMandalart);
+  }, [
+    location,
+    isLoggedin,
+    userId,
+    selectedMandalart,
+    isOpenedCreateMandalart,
+    isOpenedMandalartDetail,
+    isEditingGoal,
+    isEditingTodo,
+    isOpenedTodoDetail,
+    selectedGoal,
+    selectedTodo,
+    overviewSelectedMandalart,
+    overviewSelectedGoal,
+    isOpenedGoalOverview,
+    isOpenedTodoOverview,
+  ]);
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/guide" element={<Guide />} />
       <Route path="/todo" element={<Todo />} />
       <Route path="/overview" element={<Overview />} />
       <Route path="/auth" element={<Auth />} />

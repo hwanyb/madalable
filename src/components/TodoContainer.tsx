@@ -124,17 +124,16 @@ export default function TodoContainer() {
     (state: RootState) => state.mandalartReducer.myMandalart,
   );
 
-  const getDays = (start_date: string, end_date: string) => {
-    const startDate: Date = new Date(start_date);
-    const endDate: Date = new Date(end_date);
-
-    const oneDay = 1000 * 60 * 60 * 24;
-    const diffInTime = endDate.getTime() - startDate.getTime();
-    const diffInDays = Math.round(diffInTime / oneDay);
-    return diffInDays;
-  };
-
   // 데일리, 위클리, 먼슬리 투두 기능 개발 시 필요한 일수구하기 주수구하기 개월수 구하기 로직
+  // const getDays = (start_date: string, end_date: string) => {
+  //   const startDate: Date = new Date(start_date);
+  //   const endDate: Date = new Date(end_date);
+
+  //   const oneDay = 1000 * 60 * 60 * 24;
+  //   const diffInTime = endDate.getTime() - startDate.getTime();
+  //   const diffInDays = Math.round(diffInTime / oneDay);
+  //   return diffInDays;
+  // };
   // const getWeeks = (start_date: string, end_date: string) => {
   //   const startDate: Date = new Date(start_date);
   //   const endDate: Date = new Date(end_date);
@@ -160,14 +159,17 @@ export default function TodoContainer() {
   // };
   const getMandalartSuccess = (mandalart: Mandalart) => {
     const vaildGoal = mandalart.goals.filter((goal) => goal.text !== "");
-    const sumSuccess = mandalart.goals.reduce((acc, goal) => acc + goal.success, 0);
+    const sumSuccess = mandalart.goals.reduce(
+      (acc, goal) => acc + goal.success,
+      0,
+    );
     return Math.ceil(sumSuccess / vaildGoal.length);
   };
   const getGoalSuccess = (goal: Goal) => {
     const validTodo = goal.todos.filter((todo) => todo.text !== "").length;
     const doneTodo = goal.todos.filter((todo) => todo.done === true).length;
     return Math.ceil((doneTodo / validTodo) * 100);
-  }
+  };
 
   const onClickDone = async (
     e: React.SyntheticEvent<HTMLSpanElement>,
@@ -178,11 +180,14 @@ export default function TodoContainer() {
     const newGoals = [...myMandalart.goals];
     newGoals[goal.id - 1].todos[todo.id - 1].done =
       !newGoals[goal.id - 1].todos[todo.id - 1].done;
-      newGoals[goal.id - 1].success = getGoalSuccess(goal);
-    await dbService.collection("mandalable").doc(myMandalart.doc_id).update({
-      goals: newGoals,
-      success: getMandalartSuccess(myMandalart)
-    });
+    newGoals[goal.id - 1].success = getGoalSuccess(goal);
+    await dbService
+      .collection("mandalable")
+      .doc(myMandalart.doc_id)
+      .update({
+        goals: newGoals,
+        success: getMandalartSuccess(myMandalart),
+      });
   };
   return (
     <Base>
@@ -196,29 +201,27 @@ export default function TodoContainer() {
           {myMandalart.goals
             .filter((goal) => goal.text !== "")
             .map((goal) => (
-              <>
+              <React.Fragment key={goal.id}>
                 <TodoInfo>{goal.text}</TodoInfo>
                 {/* <TodoLabel>일회성 과제</TodoLabel> */}
                 {goal.todos
                   .filter((todo) => todo.text !== "")
                   .map((todo) => (
-                    <>
-                      <TodoItem>
-                        <TodoEmoji unified={todo.emoji} size={40} />
-                        <TodoTextWrapper>
-                          <TodoText>{todo.text}</TodoText>
-                        </TodoTextWrapper>
-                        <TodoDone
-                          className="material-symbols-rounded"
-                          onClick={(e: React.SyntheticEvent<HTMLSpanElement>) =>
-                            onClickDone(e, myMandalart, goal, todo)
-                          }
-                          done={todo.done}
-                        >
-                          {todo.done ? "check_circle" : "circle"}
-                        </TodoDone>
-                      </TodoItem>
-                    </>
+                    <TodoItem key={todo.id}>
+                      <TodoEmoji unified={todo.emoji} size={40} />
+                      <TodoTextWrapper>
+                        <TodoText>{todo.text}</TodoText>
+                      </TodoTextWrapper>
+                      <TodoDone
+                        className="material-symbols-rounded"
+                        onClick={(e: React.SyntheticEvent<HTMLSpanElement>) =>
+                          onClickDone(e, myMandalart, goal, todo)
+                        }
+                        done={todo.done}
+                      >
+                        {todo.done ? "check_circle" : "circle"}
+                      </TodoDone>
+                    </TodoItem>
                   ))}
                 {/* <TodoLabel>데일리 과제</TodoLabel>
                 {goal.todos
@@ -313,7 +316,7 @@ export default function TodoContainer() {
                       </TodoItem>
                     </>
                   ))} */}
-              </>
+              </React.Fragment>
             ))}
         </TodoWrapper>
       ))}
