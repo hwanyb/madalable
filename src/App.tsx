@@ -7,7 +7,7 @@ import Home from "./pages/Home";
 import Auth from "./pages/Auth";
 import Todo from "./pages/Todo";
 import Overview from "./pages/Overview";
-import { setIsLoggedin, setUserId } from "./modules/authReducer";
+import { setIsLoggedin, setNickname, setUserId } from "./modules/authReducer";
 import { RootState } from "./modules";
 import { setMyMandalart } from "./modules/mandalartReducer";
 
@@ -66,6 +66,7 @@ function App() {
         dispatch(setIsLoggedin(true));
         navigate("/");
         dispatch(setUserId(user.uid));
+        dispatch(setNickname(user.displayName));
       } else {
         dispatch(setIsLoggedin(false));
         navigate("/auth");

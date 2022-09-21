@@ -34,6 +34,7 @@ export type Mandalart = {
 export type AuthState = {
   isLoggedin: boolean;
   userId: string;
+  nickname: string;
 };
 
 export type GoalState = {

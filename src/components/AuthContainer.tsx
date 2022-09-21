@@ -4,12 +4,14 @@ import { authService, firebaseInstance } from "../firebase";
 
 const AuthWrapper = styled.div``;
 const AuthForm = styled.form``;
+const NicknameInput = styled.input``;
 const EmailInput = styled.input``;
 const PasswordInput = styled.input``;
 const ErrorText = styled.p``;
 const SignupButton = styled.button``;
 const SignupWithGoogle = styled.button``;
 export default function AuthContainer() {
+  const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -24,6 +26,8 @@ export default function AuthContainer() {
       setEmail(value);
     } else if (name === "password") {
       setPassword(value);
+    } else if (name === "nickname") {
+      setNickname(value);
     }
   };
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -32,6 +36,9 @@ export default function AuthContainer() {
       await authService
         .createUserWithEmailAndPassword(email, password)
         .then(() => {
+          authService.currentUser.updateProfile({
+            displayName: nickname,
+          });
           alert("회원가입 완료");
         })
         .catch((error) => setError(error.message));
@@ -70,10 +77,20 @@ export default function AuthContainer() {
   return (
     <AuthWrapper>
       <AuthForm onSubmit={onSubmit}>
+        {signupMode && (
+          <NicknameInput
+            name="nickname"
+            type="text"
+            placeholder="닉네임"
+            required
+            value={nickname}
+            onChange={onChange}
+          />
+        )}
         <EmailInput
           name="email"
           type="text"
-          placeholder="Email"
+          placeholder="이메일"
           required
           value={email}
           onChange={onChange}
@@ -81,7 +98,7 @@ export default function AuthContainer() {
         <PasswordInput
           name="password"
           type="password"
-          placeholder="Password"
+          placeholder="비밀번호"
           required
           value={password}
           onChange={onChange}
