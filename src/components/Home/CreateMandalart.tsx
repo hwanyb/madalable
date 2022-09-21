@@ -75,7 +75,7 @@ const BackgroudBar = styled.div`
   margin: 0px 50px;
 `;
 const CurrentBar = styled.div<{ currentIdx: number }>`
-  width: ${(props) => (props.currentIdx + 1) * 25}%;
+  width: ${(props) => (props.currentIdx + 1) * 33.33333}%;
   height: 7px;
   background-color: ${(props) => props.theme.color.primary};
   border-radius: ${(props) => props.theme.borderRadius};
@@ -84,7 +84,7 @@ const CurrentBar = styled.div<{ currentIdx: number }>`
 `;
 
 const CreateMandalartContainer = styled.div<{ currentIdx: number }>`
-  width: 400%;
+  width: 300%;
   height: 100%;
   display: flex;
   align-items: center;
@@ -177,28 +177,33 @@ const PickerWrapper = styled.div<{ isOpenedFeatPicker: boolean }>`
   border-radius: ${(props) => props.theme.borderRadius};
   top: -10px;
 `;
-const PeriodWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-const DateInput = styled.input`
-  filter: drop-shadow(4px 4px 4px ${(props) => props.theme.color.shadow});
-  font-weight: 700;
-  color: ${(props) => props.theme.color.fontPrimary};
-  border: none;
-  background-color: ${(props) => props.theme.color.transWhite};
-`;
-const DateText = styled.p`
-  font-size: 20px;
-  color: #484848;
-  line-height: 30px;
-  margin: 0 10px;
-`;
 
-const DifficultyGuidewrapper = styled.div`
+// 데일리 위클리 먼슬리 추가 시 필요
+// const PeriodWrapper = styled.div`
+//   display: flex;
+//   justify-content: center;
+// `;
+// const DateInput = styled.input`
+//   filter: drop-shadow(4px 4px 4px ${(props) => props.theme.color.shadow});
+//   font-weight: 700;
+//   color: ${(props) => props.theme.color.fontPrimary};
+//   border: none;
+//   background-color: ${(props) => props.theme.color.transWhite};
+// `;
+// const DateText = styled.p`
+//   font-size: 20px;
+//   color: #484848;
+//   line-height: 30px;
+//   margin: 0 10px;
+// `;
+
+const DifficultyGuidewrapper = styled.div<{ currentIdx: number }>`
   position: absolute;
-  right: 0;
-  top: -10px;
+  top: 40%;
+  right: 400px;
+  transition: opacity 0.5s 1s ease-in-out;
+  visibility: ${props => props.currentIdx === 2 ? "visible" : "hidden"};
+  opacity: ${props => props.currentIdx === 2 ? 1 : 0};
 `;
 const QuestionWrapper = styled.div`
   position: absolute;
@@ -207,28 +212,34 @@ const QuestionWrapper = styled.div`
   height: 30px;
   border-radius: 50%;
   background-color: ${(props) => props.theme.color.transWhite};
+  filter: drop-shadow(1px 1px 1px ${(props) => props.theme.color.shadow});
   text-align: center;
   line-height: 30px;
 `;
-const QuestionIcon = styled(Icon)`
-  font-weight: 500;
-  color: ${(props) => props.theme.color.primary};
-`;
-const DifficultyGuide = styled.div`
+const DifficultyGuide = styled.div<{ showGuide: boolean }>`
   position: absolute;
   top: 0;
+  left: 0;
   background-color: ${(props) => props.theme.color.transWhite};
   border-radius: ${(props) => props.theme.borderRadius};
   padding: 30px;
-  display: none;
+  opacity: ${props => props.showGuide ? 1 : 0};
+  transition: opacity 0.5s ease-in-out;
+  filter: drop-shadow(1px 1px 1px ${(props) => props.theme.color.shadow});
 `;
 const DifficultyGuideText = styled.p`
   font-size: ${(props) => props.theme.fontSize.sm};
   font-weight: 300;
   color: ${(props) => props.theme.color.fontPrimary};
   white-space: nowrap;
-  line-height: 15px;
+  line-height: 18px;
   text-align: left;
+`;
+
+const QuestionIcon = styled(Icon)`
+  font-weight: 500;
+  color: ${(props) => props.theme.color.primary};
+  cursor: default;
 `;
 
 const DifficultyBtnWrapper = styled.div`
@@ -278,6 +289,7 @@ const CompleteBtn = styled.button<{ isFilled: boolean }>`
 
 export default function CreateMandalart() {
   const [currentIdx, setCurrentIdx] = useState<number>(0);
+  const [showGuide, setShowGuide] = useState<boolean>(false);
   const [isOpenedFeatPicker, setIsOpenedFeatPicker] = useState<boolean>(false);
   const [isOpenedEmojiPicker, setIsOpenedEmojiPicker] =
     useState<boolean>(false);
@@ -297,8 +309,8 @@ export default function CreateMandalart() {
     mandalart;
 
   useEffect(() => {
-    const values = Object.values(mandalart);
-    if (!values.includes("")) {
+    // const values = Object.values(mandalart);
+    if (alias !=="" && emoji !== "" && difficulty !== "") {
       setIsFilled(true);
     }
   }, [mandalart]);
@@ -322,13 +334,16 @@ export default function CreateMandalart() {
     console.log(mandalart);
   });
 
+  const onQuestionClick = () => {
+    
+  };
   const onArrowClick = (e: React.MouseEvent<HTMLSpanElement>) => {
     if (e.currentTarget.id === "prev") {
       if (currentIdx > 0) {
         setCurrentIdx(currentIdx - 1);
       }
     } else {
-      if (currentIdx < 3) {
+      if (currentIdx < 2) {
         setCurrentIdx(currentIdx + 1);
       }
     }
@@ -338,6 +353,7 @@ export default function CreateMandalart() {
     const result = window.confirm("만다라트 생성을 그만하시겠어요?");
     if (result) {
       dispatch(setIsOpenedCreateMandalart());
+      dispatch(setMandalartInit());
     }
   };
 
@@ -424,8 +440,8 @@ export default function CreateMandalart() {
           alias: alias,
           emoji: emoji,
           color: color,
-          start_date: start_date,
-          end_date: end_date,
+          // start_date: start_date,
+          // end_date: end_date,
           difficulty: difficulty,
           success: success,
           goals: goalsArr,
@@ -462,7 +478,7 @@ export default function CreateMandalart() {
           id="next"
           onClick={(e) => onArrowClick(e)}
           className="material-symbols-rounded"
-          disabled={currentIdx > 2}
+          disabled={currentIdx > 1}
         >
           arrow_forward_ios
         </Arrow>
@@ -546,6 +562,7 @@ export default function CreateMandalart() {
             )}
           </MandalartFeatContainer>
         </CreateMandalartWrapper>
+        {/* 데일리, 위클리, 먼슬리 기능 추가되었을때 필요한 만다라트 기간 부분
         <CreateMandalartWrapper>
           <CommandTextWrapper>
             <CommandText>만다라트 기간을 설정해 주세요!</CommandText>
@@ -566,23 +583,8 @@ export default function CreateMandalart() {
               value={end_date}
             />
           </PeriodWrapper>
-        </CreateMandalartWrapper>
+        </CreateMandalartWrapper> */}
         <CreateMandalartWrapper>
-          <DifficultyGuidewrapper>
-            <QuestionWrapper>
-              <QuestionIcon>question_mark</QuestionIcon>
-            </QuestionWrapper>
-            <DifficultyGuide>
-              <DifficultyGuideText>
-                선택한 난이도에 따라 만다라트 성공율이 결정됩니다.
-                <br />
-                • Easy : 85%
-                <br />
-                • Normal : 90%
-                <br />• Difficalt : 99%
-              </DifficultyGuideText>
-            </DifficultyGuide>
-          </DifficultyGuidewrapper>
           <CommandTextWrapper>
             <CommandText>만다라트 성공 난이도를 선택해 주세요!</CommandText>
             <Emoji unified="1f929" size={24} emojiStyle={EmojiStyle.APPLE} />
@@ -615,6 +617,21 @@ export default function CreateMandalart() {
           </CompleteBtn>
         </CreateMandalartWrapper>
       </CreateMandalartContainer>
+      <DifficultyGuidewrapper currentIdx={currentIdx}>
+            <QuestionWrapper onMouseOver={() => setShowGuide(true)} onMouseLeave={() => setShowGuide(false)}>
+              <QuestionIcon>question_mark</QuestionIcon>
+            </QuestionWrapper>
+            <DifficultyGuide showGuide={showGuide}>
+              <DifficultyGuideText>
+                선택한 난이도에 따라 만다라트 성공율이 결정됩니다.
+                <br />
+                • Easy : 85%
+                <br />
+                • Normal : 90%
+                <br />• Difficult : 99%
+              </DifficultyGuideText>
+            </DifficultyGuide>
+          </DifficultyGuidewrapper>
     </Base>
   );
 }

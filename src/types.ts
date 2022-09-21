@@ -2,18 +2,19 @@ export type Todo = {
   id: number;
   text: string;
   emoji: string;
-  multiple: boolean;
-  period: string;
-  periodText: string;
-  periodRange: string;
-  periodNumber: number;
+  multiple?: boolean;
+  period?: string;
+  periodText?: string;
+  periodRange?: string;
+  periodNumber?: number;
   done?: boolean;
 };
 
 export type Goal = {
   id: number;
   text: string;
-  todos: Todo[]
+  todos: Todo[],
+  success?: number
 };
 
 export type Mandalart = {
@@ -21,8 +22,8 @@ export type Mandalart = {
   alias: string;
   emoji: string;
   color: string;
-  start_date: string;
-  end_date: string;
+  start_date?: string;
+  end_date?: string;
   difficulty: string;
   user_id?: string;
   created_at?: number;

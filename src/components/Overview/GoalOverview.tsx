@@ -4,12 +4,25 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { RootState } from "../../modules";
 import {
+  setIsOpenedGoalOverview,
   setIsOpenedTodoOverview,
   setSelectedGoal,
 } from "../../modules/overviewReducer";
+import { Icon } from "../../styles/Common";
+import { Goal } from "../../types";
 import SuccessContainer from "./SuccessContainer";
 import TodoOverview from "./TodoOverview";
 
+const BackBtn = styled(Icon)`
+  position: absolute;
+  top: -30px;
+  left: 0;
+  color: ${(props) => props.theme.color.lightGray};
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    color: ${(props) => props.theme.color.primary};
+  }
+`;
 const Circle = styled.div`
   width: 150px;
   height: 150px;
@@ -96,7 +109,7 @@ const Mandalart = styled.div`
   background-color: ${(props) => props.color};
 `;
 const MandalartEmoji = styled(Emoji)``;
-const Goal = styled.div`
+const GoalWrapper = styled.div`
   background-image: linear-gradient(
       rgba(255, 255, 255, 0.7),
       rgba(255, 255, 255, 0.7)
@@ -128,23 +141,6 @@ const GoalText = styled.h2`
   color: ${(props) => props.theme.color.fontPrimary};
 `;
 
-interface selectedGoal {
-  id: number;
-  text: string;
-  todos:
-    | {
-        id: number;
-        text: string;
-        emoji: string;
-        multiple: boolean;
-        period: string;
-        periodText: string;
-        periodRange: string;
-        periodNumber: number;
-      }[]
-    | undefined;
-}
-
 export default function GoalOverview() {
   const dispatch = useDispatch();
   const selectedMandalart = useSelector(
@@ -153,15 +149,22 @@ export default function GoalOverview() {
   const isOpenedTodoOverview = useSelector(
     (state: RootState) => state.overviewReducer.isOpenedTodoOverview,
   );
-  const onGoalClick = (
-    e: React.SyntheticEvent<HTMLDivElement>,
-    goal: selectedGoal,
-  ) => {
+  const onGoalClick = (e: React.SyntheticEvent<HTMLDivElement>, goal: Goal) => {
     dispatch(setSelectedGoal(goal));
     dispatch(setIsOpenedTodoOverview());
   };
+  const onBackClick = () => {
+    if (isOpenedTodoOverview) {
+      dispatch(setIsOpenedTodoOverview());
+    } else {
+      dispatch(setIsOpenedGoalOverview());
+    }
+  };
   return (
     <Base>
+      <BackBtn className="material-symbols-rounded" onClick={onBackClick}>
+        arrow_back
+      </BackBtn>
       {isOpenedTodoOverview ? (
         <TodoOverview />
       ) : (
@@ -175,7 +178,7 @@ export default function GoalOverview() {
             />
           </Mandalart>
           {selectedMandalart.goals.map((goal) => (
-            <Goal
+            <GoalWrapper
               onClick={(e: React.SyntheticEvent<HTMLDivElement>) =>
                 onGoalClick(e, goal)
               }
@@ -185,13 +188,13 @@ export default function GoalOverview() {
               <SuccessContainer
                 size={150}
                 color={selectedMandalart.color}
-                success={10}
+                success={goal.success}
               />
               <Circle>
                 <CircleSm color={selectedMandalart.color} />
               </Circle>
               <GoalText>{goal.text}</GoalText>
-            </Goal>
+            </GoalWrapper>
           ))}
         </OverviewContainer>
       )}

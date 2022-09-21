@@ -53,12 +53,14 @@ for (let i = 0; i < 8; i++) {
       periodText: "",
       periodRange: "",
       periodNumber: 0,
+      done: false,
     };
   }
   tempGoalsArr[i] = {
     id: i + 1,
     text: "",
     todos: tempTodosArr,
+    success: 0,
   };
 }
 
@@ -71,6 +73,7 @@ const initialState: GoalState = {
     id: 0,
     text: "",
     todos: [],
+    success: 0,
   },
   selectedTodo: {
     id: 0,
@@ -81,6 +84,7 @@ const initialState: GoalState = {
     periodText: "",
     periodRange: "",
     periodNumber: 0,
+    done: false
   },
 };
 

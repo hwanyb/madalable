@@ -134,29 +134,40 @@ export default function TodoContainer() {
     return diffInDays;
   };
 
-  const getWeeks = (start_date: string, end_date: string) => {
-    const startDate: Date = new Date(start_date);
-    const endDate: Date = new Date(end_date);
+  // 데일리, 위클리, 먼슬리 투두 기능 개발 시 필요한 일수구하기 주수구하기 개월수 구하기 로직
+  // const getWeeks = (start_date: string, end_date: string) => {
+  //   const startDate: Date = new Date(start_date);
+  //   const endDate: Date = new Date(end_date);
 
-    const oneWeek = 1000 * 60 * 60 * 24 * 7;
-    const diffInTime = endDate.getTime() - startDate.getTime();
-    const diffInWeeks = Math.round(diffInTime / oneWeek);
+  //   const oneWeek = 1000 * 60 * 60 * 24 * 7;
+  //   const diffInTime = endDate.getTime() - startDate.getTime();
+  //   const diffInWeeks = Math.round(diffInTime / oneWeek);
 
-    return diffInWeeks;
+  //   return diffInWeeks;
+  // };
+  // const getMonths = (start_date: string, end_date: string) => {
+  //   const startDate: Date = new Date(start_date);
+  //   const endDate: Date = new Date(end_date);
+
+  //   let diffInMonths = (endDate.getFullYear() - startDate.getFullYear()) * 12;
+
+  //   diffInMonths -= startDate.getMonth();
+  //   diffInMonths += endDate.getMonth();
+
+  //   if (endDate.getDate() < startDate.getDate()) {
+  //     return diffInMonths--;
+  //   } else return diffInMonths;
+  // };
+  const getMandalartSuccess = (mandalart: Mandalart) => {
+    const vaildGoal = mandalart.goals.filter((goal) => goal.text !== "");
+    const sumSuccess = mandalart.goals.reduce((acc, goal) => acc + goal.success, 0);
+    return Math.ceil(sumSuccess / vaildGoal.length);
   };
-  const getMonths = (start_date: string, end_date: string) => {
-    const startDate: Date = new Date(start_date);
-    const endDate: Date = new Date(end_date);
-
-    let diffInMonths = (endDate.getFullYear() - startDate.getFullYear()) * 12;
-
-    diffInMonths -= startDate.getMonth();
-    diffInMonths += endDate.getMonth();
-
-    if (endDate.getDate() < startDate.getDate()) {
-      return diffInMonths--;
-    } else return diffInMonths;
-  };
+  const getGoalSuccess = (goal: Goal) => {
+    const validTodo = goal.todos.filter((todo) => todo.text !== "").length;
+    const doneTodo = goal.todos.filter((todo) => todo.done === true).length;
+    return Math.ceil((doneTodo / validTodo) * 100);
+  }
 
   const onClickDone = async (
     e: React.SyntheticEvent<HTMLSpanElement>,
@@ -167,8 +178,10 @@ export default function TodoContainer() {
     const newGoals = [...myMandalart.goals];
     newGoals[goal.id - 1].todos[todo.id - 1].done =
       !newGoals[goal.id - 1].todos[todo.id - 1].done;
+      newGoals[goal.id - 1].success = getGoalSuccess(goal);
     await dbService.collection("mandalable").doc(myMandalart.doc_id).update({
       goals: newGoals,
+      success: getMandalartSuccess(myMandalart)
     });
   };
   return (
@@ -179,21 +192,15 @@ export default function TodoContainer() {
             <MandalartEmoji unified={myMandalart.emoji} size={15} />
             <MandalartAlias>{myMandalart.alias}</MandalartAlias>
           </MandalartInfo>
-          <p>
-            {myMandalart.start_date} - {myMandalart.end_date} /
-            {getDays(myMandalart.start_date, myMandalart.end_date)}일,
-            {getWeeks(myMandalart.start_date, myMandalart.end_date)}주,
-            {getMonths(myMandalart.start_date, myMandalart.end_date)}개월
-          </p>
 
           {myMandalart.goals
             .filter((goal) => goal.text !== "")
             .map((goal) => (
               <>
                 <TodoInfo>{goal.text}</TodoInfo>
-                <TodoLabel>일회성 과제</TodoLabel>
+                {/* <TodoLabel>일회성 과제</TodoLabel> */}
                 {goal.todos
-                  .filter((todo) => todo.multiple === false && todo.text !== "")
+                  .filter((todo) => todo.text !== "")
                   .map((todo) => (
                     <>
                       <TodoItem>
@@ -213,7 +220,7 @@ export default function TodoContainer() {
                       </TodoItem>
                     </>
                   ))}
-                <TodoLabel>데일리 과제</TodoLabel>
+                {/* <TodoLabel>데일리 과제</TodoLabel>
                 {goal.todos
                   .filter(
                     (todo) =>
@@ -243,8 +250,8 @@ export default function TodoContainer() {
                         </TodoCountWrapper>
                       </TodoItem>
                     </>
-                  ))}
-                <TodoLabel>위클리 과제</TodoLabel>
+                  ))} */}
+                {/* <TodoLabel>위클리 과제</TodoLabel>
                 {goal.todos
                   .filter(
                     (todo) =>
@@ -274,8 +281,8 @@ export default function TodoContainer() {
                         </TodoCountWrapper>
                       </TodoItem>
                     </>
-                  ))}
-                {goal.todos
+                  ))} */}
+                {/* {goal.todos
                   .filter(
                     (todo) =>
                       todo.multiple === true &&
@@ -305,7 +312,7 @@ export default function TodoContainer() {
                         </TodoCountWrapper>
                       </TodoItem>
                     </>
-                  ))}
+                  ))} */}
               </>
             ))}
         </TodoWrapper>

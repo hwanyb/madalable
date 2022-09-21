@@ -5,6 +5,7 @@ import { Emoji } from "emoji-picker-react";
 
 import { RootState } from "../../modules";
 import SuccessContainer from "./SuccessContainer";
+import { Icon } from "../../styles/Common";
 
 const Base = styled.div`
   position: relative;
@@ -84,11 +85,11 @@ const TodoItem = styled.div`
   text-align: left;
   align-items: center;
   display: grid;
-  grid-template-columns: 1fr 7fr;
+  grid-template-columns: 1fr 4fr 1fr;
 `;
 const TodoEmojiWrapper = styled.div`
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   margin-right: 0px;
 `;
 const TodoEmoji = styled(Emoji)``;
@@ -99,6 +100,13 @@ const TodoText = styled.p`
   width: fit-content;
   font-size: ${(props) => props.theme.fontSize.base};
   font-weight: 700;
+`;
+
+const TodoDone = styled(Icon)<{ done: boolean }>`
+  color: ${props => props.done ? props.theme.color.primary : props.theme.color.lightGray};
+  font-size: ${props => props.theme.fontSize.lg};
+  cursor: default;
+  text-align: right;
 `;
 const TodoSuccess = styled.div`
   display: flex;
@@ -138,6 +146,7 @@ export default function TodoOverview() {
   const selectedGoal = useSelector(
     (state: RootState) => state.overviewReducer.selectedGoal,
   );
+
   return (
     <Base>
       <ContentWrapper>
@@ -145,12 +154,12 @@ export default function TodoOverview() {
         <GoalSuccess>
           <SuccessContainer
             size={400}
-            success={50}
+            success={selectedGoal.success}
             color={selectedMandalart.color}
           />
           <GoalSuccessTextWrapper>
             <GoalText>건강</GoalText>
-            <GoalSuccessText>50 %</GoalSuccessText>
+            <GoalSuccessText>{selectedGoal.success} %</GoalSuccessText>
           </GoalSuccessTextWrapper>
         </GoalSuccess>
       </ContentWrapper>
@@ -160,7 +169,7 @@ export default function TodoOverview() {
           {selectedGoal.todos.map((todo) => (
             <TodoItem key={todo.id}>
               <TodoEmojiWrapper>
-                <TodoEmoji unified={todo.emoji === "" ? "2754" : todo.emoji} size={40} />
+                <TodoEmoji unified={todo.emoji === "" ? "2754" : todo.emoji} size={35} />
               </TodoEmojiWrapper>
               <TodoInfo>
                 <TodoText>
@@ -177,7 +186,7 @@ export default function TodoOverview() {
                       } ${todo.text}`
                     : todo.text}
                 </TodoText>
-                <TodoSuccess>
+                {/* <TodoSuccess>
                   <TodoSuccessText>50 %</TodoSuccessText>
                   <TodoSuccessBarWrapper>
                     <BackgroundBar />
@@ -186,8 +195,9 @@ export default function TodoOverview() {
                       color={selectedMandalart.color}
                     />
                   </TodoSuccessBarWrapper>
-                </TodoSuccess>
+                </TodoSuccess> */}
               </TodoInfo>
+              <TodoDone className="material-symbols-rounded" done={todo.done}>{todo.done ? "check_circle" : "circle"}</TodoDone>
             </TodoItem>
           ))}
         </Todos>

@@ -9,13 +9,14 @@ import styled, { css } from "styled-components";
 import { RootState } from "../../modules";
 import { Icon } from "../../styles/Common";
 import { CloseBtn } from "./CreateMandalart";
-import { EditOrSubmitBtn, GoalProps } from "./MandalartDetail";
+import { EditOrSubmitBtn } from "./MandalartDetail";
 import {
   setIsEditingTodo,
   setIsOpenedTodoDetail,
   setSelectedTodo,
 } from "../../modules/goalReducer";
 import { useDispatch } from "react-redux";
+import { Goal } from "../../types";
 
 const Base = styled.div<{ rgba: string }>`
   position: fixed;
@@ -34,11 +35,11 @@ const Base = styled.div<{ rgba: string }>`
 
 const CreateTodoContainer = styled.div<{ isEditingTodo: boolean }>`
   position: relative;
-  width: ${(props) => (props.isEditingTodo ? "80vw" : "fit-content")};
-  height: ${(props) => (props.isEditingTodo ? "70vh" : "fit-content")};
+  width: fit-content;
+  height: fit-content;
   background-color: ${(props) => props.theme.color.transWhite};
   border-radius: 50px;
-  padding: ${(props) => (props.isEditingTodo ? "60px 0" : "100px")};
+  padding: 100px;
   transition: all 0.5s ease-in-out;
   box-shadow: 4px 4px 10px ${(props) => props.theme.color.shadow};
 `;
@@ -53,10 +54,11 @@ const CurrentInfo = styled.div<{ isEditingTodo: boolean }>`
   display: flex;
   flex-direction: column;
   transition: all 0.5s ease-in-out;
+  line-height: ${props => props.isEditingTodo ? "auto" : "36px"};
   ${(props) =>
     props.isEditingTodo
       ? css`
-          margin-left: 80px;
+          margin-left: 0;
         `
       : css`
           margin: 0 auto;
@@ -94,7 +96,7 @@ const Describe = styled.p`
 `;
 
 const CreateTodoForm = styled.form`
-  width: 60vw;
+  width: fit-content;
   margin: 0 auto;
   color: ${(props) => props.theme.color.fontPrimary};
 `;
@@ -105,7 +107,7 @@ const TodoInfo = styled.div<{ isEditingTodo: boolean }>`
   align-items: center;
   justify-content: ${(props) =>
     props.isEditingTodo ? "flex-start" : "center"};
-  margin: 40px 0 ${(props) => (props.isEditingTodo ? "50px" : 0)} ${(props) => (props.isEditingTodo ? "80px" : 0)};
+  margin: 40px 0 ${(props) => (props.isEditingTodo ? "10px" : 0)} 0;
   color: ${(props) => props.theme.color.fontPrimary};
 `;
 const InfoEmojiPlaceholder = styled.div`
@@ -133,7 +135,7 @@ const FlexWrapper = styled.div`
 const EmojiBtn = styled.div`
   background-color: ${(props) => props.theme.color.transWhite};
   filter: drop-shadow(4px 4px 4px ${(props) => props.theme.color.shadow});
-
+  width: fit-content;
   border-radius: ${(props) => props.theme.borderRadius};
   display: flex;
   align-items: center;
@@ -141,6 +143,7 @@ const EmojiBtn = styled.div`
   padding: 0;
   padding-right: 20px;
   height: 30px;
+  margin-bottom: 30px;
 `;
 const EmojiPlaceholder = styled.div`
   width: 36px;
@@ -181,9 +184,9 @@ const PickerWrapper = styled.div`
 const TodoTextInput = styled.input`
   border: 1px solid ${(props) => props.theme.color.gray};
   width: 500px;
-  margin-left: 10px;
   transition: all 0.5s ease-in-out;
   padding: 0 20px;
+  display: block;
   &::placeholder {
     font-weight: 300;
     color: ${(props) => props.theme.color.lightGray};
@@ -344,8 +347,8 @@ const SubmitBtn = styled.button`
         `};
 `;
 interface Props {
-  goals: GoalProps[] | undefined;
-  setGoals: React.Dispatch<React.SetStateAction<GoalProps[] | undefined>>;
+  goals: Goal[];
+  setGoals: React.Dispatch<React.SetStateAction<Goal[]>>;
 }
 const TodoDetail: React.FC<Props> = ({ goals, setGoals }) => {
   const dispatch = useDispatch();
@@ -555,8 +558,7 @@ const TodoDetail: React.FC<Props> = ({ goals, setGoals }) => {
             onSubmit={(e: React.FormEvent<HTMLFormElement>) => onSubmit(e)}
           >
             <InputWrapper>
-              <Label>실천과제</Label>
-              <FlexWrapper>
+              <Label>이모지</Label>
                 <EmojiBtn>
                   <EmojiPlaceholder color={color} onClick={onAddEmojiClick}>
                     {selectedTodo.emoji !== "" ? (
@@ -584,6 +586,7 @@ const TodoDetail: React.FC<Props> = ({ goals, setGoals }) => {
                     />
                   </PickerWrapper>
                 )}
+              <Label>실천과제</Label>
                 <TodoTextInput
                   color={color}
                   autoFocus
@@ -596,9 +599,8 @@ const TodoDetail: React.FC<Props> = ({ goals, setGoals }) => {
                     onChange(e)
                   }
                 />
-              </FlexWrapper>
             </InputWrapper>
-            <FlexWrapper>
+            {/* <FlexWrapper>
               <Label>
                 {selectedTodo.multiple ? "다회성과제" : "일회성과제"}
               </Label>
@@ -681,7 +683,7 @@ const TodoDetail: React.FC<Props> = ({ goals, setGoals }) => {
                   </TodoGoalBtnWrapper>
                 </FlexWrapper>
               </InputWrapper>
-            </MultipleWrapper>
+            </MultipleWrapper> */}
             <SubmitBtn type="submit" disabled={!isfilled} color={color}>
               완료
             </SubmitBtn>

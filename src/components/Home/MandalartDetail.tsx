@@ -12,7 +12,7 @@ import {
 } from "../../modules/goalReducer";
 import { setIsOpenedMandalartDetail } from "../../modules/mandalartReducer";
 import { Icon } from "../../styles/Common";
-import { Mandalart } from "../../types";
+import { Goal, Mandalart, Todo } from "../../types";
 import { CloseBtn } from "./CreateMandalart";
 import TodoDetail from "./TodoDetail";
 
@@ -164,7 +164,7 @@ const GoalInput = styled.textarea`
     font-size: ${(props) => props.theme.fontSize.sm};
   }
 `;
-const Todo = styled.div`
+const TodoText = styled.div`
   background-color: ${(props) => props.theme.color.transWhite};
   font-weight: 300;
   font-size: ${(props) => props.theme.fontSize.sm};
@@ -182,7 +182,7 @@ const GoalWrapper = styled.div`
     "sixth_todo seventh_todo eighth_todo";
   gap: 5px;
   opacity: ${(props) => (props.id === "" ? 0.5 : 1)};
-  & > ${Todo} {
+  & > ${TodoText} {
     cursor: ${(props) => (props.id === "" ? "defalut" : "pointer")};
   }
   & div {
@@ -241,22 +241,6 @@ const GoalText = styled.div<{
   font-weight: 500;
 `;
 
-export type GoalProps = {
-  id: number;
-  text: string;
-  todos: TodoProps[] | undefined;
-};
-type TodoProps = {
-  id: number;
-  text: string;
-  emoji: string;
-  multiple: boolean;
-  period: string;
-  periodText: string;
-  periodRange: string;
-  periodNumber: number;
-};
-
 export default function MandalartDetail() {
   const dispatch = useDispatch();
 
@@ -270,7 +254,7 @@ export default function MandalartDetail() {
     (state: RootState) => state.goalReducer.isOpenedTodoDetail,
   );
 
-  const [goals, setGoals] = useState<GoalProps[] | undefined>(
+  const [goals, setGoals] = useState<Goal[]>(
     selectedMandalart.goals,
   );
 
@@ -306,8 +290,8 @@ export default function MandalartDetail() {
   };
   const onTodoClick = (
     e: React.SyntheticEvent<HTMLDivElement>,
-    todo: TodoProps,
-    goal: GoalProps,
+    todo: Todo,
+    goal: Goal,
   ) => {
     if (e.target instanceof Element) {
       if (e.target.id !== "") {
@@ -399,7 +383,7 @@ export default function MandalartDetail() {
               {goal.text}
             </GoalText>
             {goal?.todos?.map((todo) => (
-              <Todo
+              <TodoText
                 key={todo.id}
                 onClick={(e: React.SyntheticEvent<HTMLDivElement>) =>
                   onTodoClick(e, todo, goal)
@@ -407,7 +391,7 @@ export default function MandalartDetail() {
                 id={goal.text}
               >
                 {todo.text}
-              </Todo>
+              </TodoText>
             ))}
           </GoalWrapper>
         ))}
