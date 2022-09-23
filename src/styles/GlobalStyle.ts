@@ -37,8 +37,31 @@ const GlobalStyle = createGlobalStyle`
         url('https://cdn.jsdelivr.net/gh/webfontworld/sandbox/SBAggroBold.ttf') format("truetype");
     font-display: swap;
 }
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+
+    @media ${(props) => props.theme.windowSize.laptop} {
+        font-size: 14px;
+    }
+    @media ${(props) => props.theme.windowSize.tablet} {
+        font-size: 13px;
+    }
+    @media ${(props) => props.theme.windowSize.mobile} {
+        font-size: 12px;
+    }
+}
 body {
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
     font-family: 'Noto Sans KR';
+
     &::-webkit-scrollbar {
         display: none;
     }
