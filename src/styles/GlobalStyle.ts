@@ -76,7 +76,7 @@ input {
     background-color: transparent;
     font-family: ${(props) => props.theme.fontFamily.noto};
     transition: all 0.2s ease-in;
-    &:active {
+    &:focus {
         border: 2px solid ${(props) => props.theme.color.primary};
     }
 };
