@@ -5,38 +5,125 @@ import AuthContainer from "./AuthContainer";
 import Header from "./common/layout/Header";
 
 const Base = styled.div`
-    width: 50%;
-    &::-webkit-scrollbar {
-        display: none;
-    }
+  width: 50%;
+  display: flex;
+  flex-direction: column;
 `;
-const Guide = styled.div``;
-const Greeting = styled.h1``;
-const MandalableMean = styled.div``;
+const Guide = styled.div`
+  font-family: ${(props) => props.theme.fontFamily.aggro};
+  padding: 0 30px;
+`;
+const Greeting = styled.h1`
+  font-family: ${(props) => props.theme.fontFamily.aggro};
+  font-size: ${(props) => props.theme.fontSize.lg};
+  font-weight: 700;
+  color: ${(props) => props.theme.color.primary};
+  text-align: center;
+`;
+const MandalableMean = styled.div`
+  font-family: ${(props) => props.theme.fontFamily.aggro};
+  display: flex;
+  
+`;
 const WordWrapper = styled.div``;
-const Word = styled.h2``;
-const Mean = styled.p``;
-const Sign = styled.h3``;
-const Mandalable = styled.h2``;
-const Desc = styled.p``;
-const Content = styled.div``;
-const ContentTitle = styled.h2``;
+const Word = styled.h2`
+  font-size: ${(props) => props.theme.fontSize.md};
+  color: ${(props) => props.theme.color.primary};
+  font-weight: 700;
+  background-color: ${(props) => props.theme.color.transWhite};
+  padding: 5px 20px;
+  border-radius: 10px;
+  box-shadow: 0px 2px 5px ${(props) => props.theme.color.shadow};
+`;
+const Mean = styled.p`
+  font-size: ${(props) => props.theme.fontSize.sm};
+  font-weight: 300;
+  text-align: center;
+`;
+const Sign = styled.h3`
+  line-height: 30px;
+  font-size: ${(props) => props.theme.fontSize.md};
+  font-weight: 300;
+  color: ${(props) => props.theme.color.primary};
+  margin: 0 5px;
+`;
+const Mandalable = styled.h2`
+  padding: 5px 20px;
+  background-color: ${(props) => props.theme.color.primary};
+  border-radius: 10px;
+  font-weight: 700;
+  color: ${(props) => props.theme.color.white};
+  line-height: 30px;
+`;
+const Desc = styled.p`
+  margin: 40px 0;
+  font-size: ${(props) => props.theme.fontSize.base};
+  font-weight: 300;
+  line-height: 20px;
+  color: ${(props) => props.theme.color.fontPrimary};
+  b {
+    font-weight: 700;
+  }
+`;
+const Content = styled.div`
+  margin-bottom: 30px;
+`;
+const ContentTitle = styled.h2`
+  display: flex;
+  align-items: center;
+  font-size: ${(props) => props.theme.fontSize.md};
+  color: ${(props) => props.theme.color.primary};
+  font-weight: 700;
+  margin-bottom: 20px;
+
+  & img {
+    margin-right: 20px;
+  }
+`;
 const ContentItemWrapper = styled.ul``;
-const ContentItem = styled.li``;
-const CreateMandalartGuideWrapper = styled.div``;
-const CreateMandalartGuide = styled.div``;
+const ContentItem = styled.li`
+  font-size: ${(props) => props.theme.fontSize.base};
+  font-weight: 300;
+  line-height: 25px;
+`;
+const CreateMandalartGuideWrapper = styled.div`
+  display: flex;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  scroll-snap-type: mandatory;
+`;
+const CreateMandalartGuide = styled.div`
+  width: 70%;
+  display: flex;
+  background-color: ${(props) => props.theme.color.backgroundSecond};
+  margin-right: 30px;
+  border-radius: ${(props) => props.theme.borderRadius};
+  padding: 30px;
+`;
 const GuideTextWrapper = styled.div``;
-const Step = styled.h4``;
-const GuideText = styled.p``;
+const Step = styled.h4`
+  font-size: ${(props) => props.theme.fontSize.md};
+  font-weight: 700;
+  color: ${(props) => props.theme.color.white};
+  background-color: ${(props) => props.theme.color.primary};
+  width: fit-content;
+  padding: 5px 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+`;
+const GuideText = styled.p`
+  font-weight: 300;
+  white-space: pre;
+  word-break: keep-all;
+`;
 const GuideImg = styled.img``;
 
 function AuthMain() {
   return (
     <Base>
       <Header />
-      <Guide>
-        <Greeting></Greeting>
-        <MandalableMean>
+      <Greeting>Mandalable 에 오신 것을 환영합니다!</Greeting>
+      <MandalableMean>
           <WordWrapper>
             <Word>Manda</Word>
             <Mean>본질의 깨달음</Mean>
@@ -54,6 +141,8 @@ function AuthMain() {
           <Sign>=</Sign>
           <Mandalable>Mandalable</Mandalable>
         </MandalableMean>
+      <AuthContainer />
+      <Guide>
         <Desc>
           <b>Mandalart</b>는 가장 큰 <b>주제 · 목표</b>를 세우고
           <br />
@@ -70,7 +159,7 @@ function AuthMain() {
         </Desc>
         <Content>
           <ContentTitle>
-            <Emoji unified="1f44d" size={24} />
+            <Emoji unified="1f44d" size={30} />
             이런 분들께 추천합니다!
           </ContentTitle>
           <ContentItemWrapper>
@@ -88,7 +177,7 @@ function AuthMain() {
         </Content>
         <Content>
           <ContentTitle>
-            <Emoji unified="1f4cc" size={24} />
+            <Emoji unified="1f4cc" size={30} />
             Mandalable 로 이런 것들을 할 수 있어요!
           </ContentTitle>
           <ContentItemWrapper>
@@ -108,7 +197,7 @@ function AuthMain() {
         </Content>
         <Content>
           <ContentTitle>
-            <Emoji unified="1f4cc" size={24} />
+            <Emoji unified="1f4cc" size={30} />
             Mandalart 는 이렇게 만들어요!
           </ContentTitle>
           <CreateMandalartGuideWrapper>
@@ -125,7 +214,7 @@ function AuthMain() {
               <GuideTextWrapper>
                 <Step>step 2</Step>
                 <GuideText>
-                최종 목표를 이루기 위한 주요 목표 8개를 적습니다.
+                  최종 목표를 이루기 위한 주요 목표 8개를 적습니다.
                 </GuideText>
               </GuideTextWrapper>
               <GuideImg src={process.env.PUBLIC_URL + "/guide2.png"} />
@@ -134,19 +223,21 @@ function AuthMain() {
               <GuideTextWrapper>
                 <Step>step 3</Step>
                 <GuideText>
-                주요 목표과 관련된 세부 실천내용이나 달성방법을 적습니다.
-                <br />
-                SMART 기법은 세부 내용을 작성할 때 참고하면 좋습니다!
-                <br />
-                S(Specific) : 목표는 명확하고 구체적이어야 합니다.
-                <br />
-                M(Measurable) : 목표는 정량화되고 측정 가능해야 합니다.
-                <br />
-                A(Attainable) : 목표는 달성 가능해야 합니다.
-                <br />
-                R(Realistic) : 목표는 현실적이어야 합니다.
-                <br />
-                T(Timely) : 목표는 마감기한이 있어야 합니다.
+                  주요 목표과 관련된 세부 실천내용이나 달성방법을 적습니다.
+                  <br />
+                  <br />
+                  SMART 기법은 세부 내용을 작성할 때 참고하면 좋습니다!
+                  <br />
+                  <br />
+                  S(Specific) : 목표는 명확하고 구체적이어야 합니다.
+                  <br />
+                  M(Measurable) : 목표는 정량화되고 측정 가능해야 합니다.
+                  <br />
+                  A(Attainable) : 목표는 달성 가능해야 합니다.
+                  <br />
+                  R(Realistic) : 목표는 현실적이어야 합니다.
+                  <br />
+                  T(Timely) : 목표는 마감기한이 있어야 합니다.
                 </GuideText>
               </GuideTextWrapper>
               <GuideImg src={process.env.PUBLIC_URL + "/guide3.png"} />
@@ -154,7 +245,6 @@ function AuthMain() {
           </CreateMandalartGuideWrapper>
         </Content>
       </Guide>
-      <AuthContainer />
     </Base>
   );
 }
