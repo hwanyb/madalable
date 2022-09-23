@@ -2,14 +2,45 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { authService, firebaseInstance } from "../firebase";
 
-const AuthWrapper = styled.div``;
-const AuthForm = styled.form``;
-const NicknameInput = styled.input``;
-const EmailInput = styled.input``;
-const PasswordInput = styled.input``;
+const AuthWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  text-align: center;
+  justify-content: center;
+  margin: 50px 30px;
+  background-color: ${(props) => props.theme.color.backgroundSecond};
+  box-shadow: 0 0 10px ${(props) => props.theme.color.shadow};
+  border-radius: ${(props) => props.theme.borderRadius};
+`;
+const AuthTitle = styled.h2`
+  font-size: ${(props) => props.theme.fontSize.base};
+  color: ${(props) => props.theme.color.primary};
+  font-weight: 300;
+  margin-bottom: 20px;
+`;
+const AuthForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+const Input = styled.input`
+  display: block;
+  margin-bottom: 20px;
+`;
 const ErrorText = styled.p``;
-const SignupButton = styled.button``;
-const SignupWithGoogle = styled.button``;
+const Button = styled.button`
+  margin-bottom: 10px;
+`;
+
+const AuthText = styled.p`
+  color: ${(props) => props.theme.color.fontPrimary};
+  font-size: ${(props) => props.theme.fontSize.sm};
+  font-size: 300;
+  margin-top: 20px;
+  margin-bottom: 10px;
+`;
 export default function AuthContainer() {
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
@@ -76,9 +107,10 @@ export default function AuthContainer() {
   };
   return (
     <AuthWrapper>
+      <AuthTitle>{signupMode ? "가입하기" : "로그인"}</AuthTitle>
       <AuthForm onSubmit={onSubmit}>
         {signupMode && (
-          <NicknameInput
+          <Input
             name="nickname"
             type="text"
             placeholder="닉네임"
@@ -87,7 +119,7 @@ export default function AuthContainer() {
             onChange={onChange}
           />
         )}
-        <EmailInput
+        <Input
           name="email"
           type="text"
           placeholder="이메일"
@@ -95,7 +127,7 @@ export default function AuthContainer() {
           value={email}
           onChange={onChange}
         />
-        <PasswordInput
+        <Input
           name="password"
           type="password"
           placeholder="비밀번호"
@@ -104,22 +136,19 @@ export default function AuthContainer() {
           onChange={onChange}
         />
         <ErrorText>{error}</ErrorText>
-        <SignupButton type="submit">
-          {signupMode ? "가입하기" : "로그인"}
-        </SignupButton>
+        <Button type="submit">{signupMode ? "가입하기" : "로그인"}</Button>
+        <Button onClick={onGoogleSignupClick}>
+          {signupMode ? "Google 계정으로 가입하기" : "Google 계정으로 로그인"}
+        </Button>
+        <AuthText>
+          {signupMode
+            ? "이미 Mandalable에 가입하셨나요?"
+            : "Mandalable 계정이 없으신가요?"}
+        </AuthText>
+        <Button onClick={onLoginClick}>
+          {signupMode ? "로그인" : "가입하기"}
+        </Button>
       </AuthForm>
-      <SignupWithGoogle onClick={onGoogleSignupClick}>
-        {signupMode ? "Google 계정으로 가입하기" : "Google 계정으로 로그인"}
-      </SignupWithGoogle>
-      <hr />
-      <p>
-        {signupMode
-          ? "이미 Mandalable에 가입하셨나요?"
-          : "Mandalable 계정이 없으신가요?"}
-      </p>
-      <button onClick={onLoginClick}>
-        {signupMode ? "로그인" : "가입하기"}
-      </button>
     </AuthWrapper>
   );
 }
