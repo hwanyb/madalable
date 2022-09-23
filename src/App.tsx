@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { authService, dbService } from "./firebase";
 import { useDispatch, useSelector } from "react-redux";
 
+import Loading from "./components/Loading";
 import Home from "./pages/Home";
 import Auth from "./pages/Auth";
 import Todo from "./pages/Todo";
@@ -14,8 +15,12 @@ import { setWindowSize } from "./modules/appReducer";
 
 function App() {
   const navigate = useNavigate();
+
   const dispatch = useDispatch();
+
   const location = useLocation();
+
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const { isLoggedin, userId } = useSelector(
     (state: RootState) => state.authReducer,
@@ -41,6 +46,12 @@ function App() {
     isOpenedGoalOverview,
     isOpenedTodoOverview,
   } = useSelector((state: RootState) => state.overviewReducer);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 6000);
+  }, []);
 
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
@@ -102,12 +113,18 @@ function App() {
   ]);
 
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/todo" element={<Todo />} />
-      <Route path="/overview" element={<Overview />} />
-      <Route path="/auth" element={<Auth />} />
-    </Routes>
+    <>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/todo" element={<Todo />} />
+          <Route path="/overview" element={<Overview />} />
+          <Route path="/auth" element={<Auth />} />
+        </Routes>
+      )}
+    </>
   );
 }
 
