@@ -39,6 +39,9 @@ const GlobalStyle = createGlobalStyle`
 }
 body {
     font-family: 'Noto Sans KR';
+    &::-webkit-scrollbar {
+        display: none;
+    }
 }
 button {
     border: none;

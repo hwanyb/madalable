@@ -4,7 +4,12 @@ import styled from "styled-components";
 import AuthContainer from "./AuthContainer";
 import Header from "./common/layout/Header";
 
-const Base = styled.div``;
+const Base = styled.div`
+    width: 50%;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+`;
 const Guide = styled.div``;
 const Greeting = styled.h1``;
 const MandalableMean = styled.div``;
