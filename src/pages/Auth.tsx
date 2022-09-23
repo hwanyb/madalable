@@ -1,16 +1,32 @@
-import React from 'react'
-import styled from 'styled-components';
-import AuthContainer from '../components/AuthContainer';
+import React from "react";
+import styled from "styled-components";
+import AuthMain from "../components/AuthMain";
 
-const Base = styled.main``;
-const Greeting = styled.h1``;
-
+const Base = styled.main`
+  width: 100vw;
+  background-color: ${(props) => props.theme.color.background};
+  display: flex;
+`;
+const MainImgWrapper = styled.div`
+  position: fixed;
+  width: 50%;
+  overflow: hidden;
+  top: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+`;
+const MockupImg = styled.img`
+  height: 100vh;
+`;
 
 export default function Auth() {
   return (
     <Base>
-      <Greeting>안녕하세요! Mandalable 에 오신 걸 환영합니다!</Greeting>
-      <AuthContainer />
+      <AuthMain />
+      <MainImgWrapper>
+        <MockupImg src={process.env.PUBLIC_URL + "/mac_mockup.jpg"} />
+      </MainImgWrapper>
     </Base>
-  )
+  );
 }
