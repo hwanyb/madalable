@@ -1,9 +1,10 @@
 import { DefaultTheme } from "styled-components";
 
 const windowSize = {
-  small: `screen and (max-width: '600px')`,
-  base: `screen and (max-width: '768px')`,
-  large: `screen and (max-width: '1024px')`,
+  mobile: `screen and (max-width: 480px)`,
+  tablet: `screen and (max-width: 768px)`,
+  laptop: `screen and (max-width: 1024px)`,
+  desktop: `screen and (max-width: 1600px)`,
 };
 
 const fontSize = {
@@ -16,8 +17,9 @@ const fontSize = {
 
 const fontFamily = {
   aggro: "SBAggro",
-  noto: "Noto Sans KR"
+  noto: "Noto Sans KR",
 };
+
 const color = {
   background: "#FAFAFA",
   backgroundSecond: "#F1F1F1",
@@ -29,14 +31,15 @@ const color = {
   darkGray: "#727272",
   transWhite: "#FFFFFFc0",
   white: "#FFF",
-  shadow: "#8F8F8F44"
+  shadow: "#8F8F8F44",
 };
-const borderRadius = "20px"
+
+const borderRadius = "20px";
 
 export const theme: DefaultTheme = {
   windowSize,
   fontSize,
   fontFamily,
   color,
-  borderRadius
+  borderRadius,
 };
