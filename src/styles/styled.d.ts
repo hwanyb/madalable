@@ -16,9 +16,10 @@ declare module 'styled-components' {
       shadow: string;
     };
     windowSize: {
-      small: string; 
-      base: string;
-      large: string;
+      mobile: string; 
+      tablet: string;
+      laptop: string;
+      desktop: string;
     };
     fontSize: {
       xs: string;
