@@ -90,11 +90,15 @@ const CreateMandalartGuideWrapper = styled.div`
   display: flex;
   overflow-x: scroll;
   overflow-y: hidden;
-  scroll-snap-type: mandatory;
+  scroll-snap-type: x mandatory;
+  flex: none;
+  flex-flow: row nowrap;
 `;
 const CreateMandalartGuide = styled.div`
   width: 70%;
   display: flex;
+  flex: none;
+  scroll-snap-align: center;
   background-color: ${(props) => props.theme.color.backgroundSecond};
   margin-right: 30px;
   border-radius: ${(props) => props.theme.borderRadius};
