@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import AuthMain from "../components/AuthMain";
+import Header from "../components/common/layout/Header";
 
 const Base = styled.main`
   width: 100vw;
@@ -22,11 +23,14 @@ const MockupImg = styled.img`
 
 export default function Auth() {
   return (
-    <Base>
-      <AuthMain />
-      <MainImgWrapper>
-        <MockupImg src={process.env.PUBLIC_URL + "/mac_mockup.jpg"} />
-      </MainImgWrapper>
-    </Base>
+    <>
+      <Header />
+      <Base>
+        <AuthMain />
+        <MainImgWrapper>
+          <MockupImg src={process.env.PUBLIC_URL + "/mac_mockup.jpg"} />
+        </MainImgWrapper>
+      </Base>
+    </>
   );
 }
