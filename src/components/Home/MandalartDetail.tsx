@@ -1,3 +1,4 @@
+import { Emoji } from "emoji-picker-react";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -10,10 +11,17 @@ import {
   setSelectedGoal,
   setSelectedTodo,
 } from "../../modules/goalReducer";
-import { setIsOpenedMandalartDetail } from "../../modules/mandalartReducer";
+import {
+  setIsOpenedMandalartDetail,
+  setSelectedMandalart,
+} from "../../modules/mandalartReducer";
 import { Icon } from "../../styles/Common";
 import { Goal, Mandalart, Todo } from "../../types";
-import { CloseBtn } from "./CreateMandalart";
+import {
+  CloseBtn,
+  DifficultyBtn,
+  DifficultyBtnWrapper,
+} from "./CreateMandalart";
 import TodoDetail from "./TodoDetail";
 
 const Base = styled.div`
@@ -21,9 +29,10 @@ const Base = styled.div`
   overflow: hidden;
   text-align: center;
   display: flex;
+  flex-direction: column;
   align-items: center;
   box-sizing: border-box;
-  justify-content: center;
+  justify-content: space-between;
 `;
 
 export const EditOrSubmitBtn = styled(Icon)`
@@ -56,6 +65,46 @@ const DeleteBtn = styled(Icon)`
     transition: all 0.3s ease-in-out;
   }
 `;
+
+const MandalartInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  & button {
+    font-size: ${(props) => props.theme.fontSize.sm};
+    font-weight: 500;
+    cursor: default;
+    padding: 0 15px;
+  }
+`;
+const Title = styled.h2`
+  font-family: ${(props) => props.theme.fontFamily.aggro};
+  font-weight: 700;
+  font-size: ${(props) => props.theme.fontSize.lg};
+  color: ${(props) => props.color};
+  & input {
+    padding: 0;
+    border-color: ${(props) => props.color};
+    max-width: 150px;
+    text-align: center;
+  }
+`;
+const InfoWrapper = styled.div`
+  line-height: 30px;
+  margin: 0 auto;
+`;
+const InfoItem = styled.div`
+  display: flex;
+`;
+const Label = styled.label`
+  font-weight: 300;
+  font-size: ${(props) => props.theme.fontSize.sm};
+  margin-right: 20px;
+`;
+const InfoText = styled.p`
+  font-size: ${(props) => props.theme.fontSize.sm};
+`;
+
 const DetailContainer = styled.div`
   width: fit-content;
   height: fit-content;
@@ -106,6 +155,8 @@ const MainGoal = styled.div`
   & > div {
     width: 60px;
     height: 60px;
+    display: flex;
+    align-items: center;
     text-align: center;
     border-radius: 10px;
     outline: none;
@@ -155,20 +206,46 @@ const MandalartAlias = styled.div<{
   align-items: center;
   word-break: break-all;
 `;
-const GoalInput = styled.textarea`
+const GoalInput = styled.textarea<{
+  selectedMandalart: Mandalart;
+}>`
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0.65),
+      rgba(255, 255, 255, 0.65)
+    ),
+    linear-gradient(
+      ${(props) => props.selectedMandalart.color},
+      ${(props) => props.selectedMandalart.color}
+    );
+
   background-color: ${(props) => props.theme.color.white};
   font-size: ${(props) => props.theme.fontSize.base};
-
+  font-weight: 500;
+  white-space: pre-wrap;
+  word-break: keep-all;
   &::placeholder {
     color: ${(props) => props.theme.color.lightGray};
     font-size: ${(props) => props.theme.fontSize.sm};
   }
 `;
-const TodoText = styled.div`
-  background-color: ${(props) => props.theme.color.transWhite};
+const TodoText = styled.div<{
+  selectedMandalart: Mandalart;
+}>`
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0.95),
+      rgba(255, 255, 255, 0.95)
+    ),
+    linear-gradient(
+      ${(props) => props.selectedMandalart.color},
+      ${(props) => props.selectedMandalart.color}
+    );
+
   font-weight: 300;
   font-size: ${(props) => props.theme.fontSize.sm};
   transition: all 0.2s ease-in-out;
+  white-space: pre-wrap;
+  word-break: keep-all;
+  overflow: hidden;
   &:hover {
     background-color: ${(props) => props.theme.color.white};
   }
@@ -235,8 +312,15 @@ const GoalWrapper = styled.div`
 const GoalText = styled.div<{
   selectedMandalart: Mandalart;
 }>`
-  background-color: ${(props) => props.selectedMandalart.color};
-  filter: brightness(1.2) saturate(0.8);
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0.65),
+      rgba(255, 255, 255, 0.65)
+    ),
+    linear-gradient(
+      ${(props) => props.selectedMandalart.color},
+      ${(props) => props.selectedMandalart.color}
+    );
+
   font-size: ${(props) => props.theme.fontSize.base};
   font-weight: 500;
 `;
@@ -247,16 +331,14 @@ export default function MandalartDetail() {
   const selectedMandalart = useSelector(
     (state: RootState) => state.mandalartReducer.selectedMandalart,
   );
-  const isEditingGoal = useSelector(
-    (state: RootState) => state.goalReducer.isEditingGoal,
+  const { isEditingGoal, isOpenedTodoDetail } = useSelector(
+    (state: RootState) => state.goalReducer,
   );
-  const isOpenedTodoDetail = useSelector(
-    (state: RootState) => state.goalReducer.isOpenedTodoDetail,
+  const nickname = useSelector(
+    (state: RootState) => state.authReducer.nickname,
   );
 
-  const [goals, setGoals] = useState<Goal[]>(
-    selectedMandalart.goals,
-  );
+  const [goals, setGoals] = useState<Goal[]>(selectedMandalart.goals);
 
   const onCloseBtnClick = () => {
     if (isEditingGoal) {
@@ -265,7 +347,6 @@ export default function MandalartDetail() {
       );
       if (result) {
         dispatch(setIsEditingGoal());
-        dispatch(setIsOpenedMandalartDetail());
       }
     } else {
       dispatch(setIsOpenedMandalartDetail());
@@ -288,6 +369,26 @@ export default function MandalartDetail() {
       setGoals(copiedGoals);
     }
   };
+
+  const onAliasChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { value },
+    } = e;
+    dispatch(
+      setSelectedMandalart({
+        ...selectedMandalart,
+        alias: value,
+      }),
+    );
+  };
+
+  // 타임스탬프 날짜 변환 로직
+  const date = new Date(selectedMandalart.created_at);
+  const year = date.getFullYear().toString().slice(-4);
+  const month = ("0" + (date.getMonth() + 1)).slice(-2);
+  const day = ("0" + date.getDate()).slice(-2);
+  const returnDate = year + "년 " + month + "월 " + day + "일  ";
+
   const onTodoClick = (
     e: React.SyntheticEvent<HTMLDivElement>,
     todo: Todo,
@@ -323,6 +424,9 @@ export default function MandalartDetail() {
         .doc(selectedMandalart.doc_id)
         .update({
           goals: goals,
+          alias: selectedMandalart.alias,
+          emoji: selectedMandalart.emoji,
+          difficulty: selectedMandalart.difficulty,
         })
         .then(() => {
           dispatch(setIsEditingGoal());
@@ -330,6 +434,17 @@ export default function MandalartDetail() {
         .catch((error) => {
           alert("다음의 에러로 수정할 수 없습니다.: " + error);
         });
+    }
+  };
+
+  const onDifficultyClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (event.target instanceof Element) {
+      dispatch(
+        setSelectedMandalart({
+          ...selectedMandalart,
+          difficulty: event.target.id,
+        }),
+      );
     }
   };
 
@@ -357,6 +472,86 @@ export default function MandalartDetail() {
       <DeleteBtn className="material-symbols-rounded" onClick={onDeleteClick}>
         delete
       </DeleteBtn>
+      {isEditingGoal ? (
+        <MandalartInfo>
+          <Title color={selectedMandalart.color}>
+            {nickname}님의{" "}
+            <input
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                onAliasChange(e)
+              }
+              type="text"
+              value={selectedMandalart.alias}
+            />{" "}
+            계획 <Emoji unified={selectedMandalart.emoji} size={30} />
+          </Title>
+          <InfoWrapper>
+            <InfoItem>
+              <Label>생성 날짜 : </Label>
+              <InfoText>{returnDate}</InfoText>
+            </InfoItem>
+            <InfoItem>
+              <Label>성공 난이도 : </Label>
+              <DifficultyBtnWrapper
+                onClick={(event: React.MouseEvent<HTMLDivElement>) =>
+                  onDifficultyClick(event)
+                }
+              >
+                <DifficultyBtn
+                  difficulty={selectedMandalart.difficulty}
+                  color={"#4EF340"}
+                  id="easy"
+                >
+                  Easy
+                </DifficultyBtn>
+                <DifficultyBtn
+                  difficulty={selectedMandalart.difficulty}
+                  color={"#497BFB"}
+                  id="normal"
+                >
+                  Normal
+                </DifficultyBtn>
+                <DifficultyBtn
+                  difficulty={selectedMandalart.difficulty}
+                  color={"#FF6464"}
+                  id="difficult"
+                >
+                  Difficult
+                </DifficultyBtn>
+              </DifficultyBtnWrapper>
+            </InfoItem>
+          </InfoWrapper>
+        </MandalartInfo>
+      ) : (
+        <MandalartInfo>
+          <Title color={selectedMandalart.color}>
+            {nickname}님의 {selectedMandalart.alias} 계획{" "}
+            <Emoji unified={selectedMandalart.emoji} size={30} />
+          </Title>
+          <InfoWrapper>
+            <InfoItem>
+              <Label>생성 날짜 : </Label>
+              <InfoText>{returnDate}</InfoText>
+            </InfoItem>
+            <InfoItem>
+              <Label>성공 난이도 : </Label>
+              <DifficultyBtn
+                difficulty={selectedMandalart.difficulty}
+                color={
+                  selectedMandalart.difficulty === "easy"
+                    ? "#4EF340"
+                    : selectedMandalart.difficulty === "normal"
+                    ? "#497BFB"
+                    : "#FF6464"
+                }
+                id={selectedMandalart.difficulty}
+              >
+                {selectedMandalart.difficulty}
+              </DifficultyBtn>
+            </InfoItem>
+          </InfoWrapper>
+        </MandalartInfo>
+      )}
       <DetailContainer>
         <MainGoal>
           <MandalartAlias selectedMandalart={selectedMandalart}>
@@ -364,6 +559,7 @@ export default function MandalartDetail() {
           </MandalartAlias>
           {goals?.map((goal) => (
             <GoalInput
+              selectedMandalart={selectedMandalart}
               key={goal.id}
               value={goal.text}
               spellCheck={false}
@@ -382,6 +578,7 @@ export default function MandalartDetail() {
             </GoalText>
             {goal?.todos?.map((todo) => (
               <TodoText
+                selectedMandalart={selectedMandalart}
                 key={todo.id}
                 onClick={(e: React.SyntheticEvent<HTMLDivElement>) =>
                   onTodoClick(e, todo, goal)
