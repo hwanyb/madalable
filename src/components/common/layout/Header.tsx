@@ -8,6 +8,8 @@ const Base = styled.header`
   left: 0;
   padding: 30px;
   display: flex;
+  backdrop-filter: blur(10px);
+  z-index: 99999;
 `;
 const LogoImg = styled.img`
   height: 50px;
