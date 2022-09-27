@@ -195,6 +195,39 @@ const GuideImg = styled.img`
 `;
 
 function AuthMain() {
+  const windowSize = useSelector(
+    (state: RootState) => state.appReducer.windowSize,
+  );
+
+  const guideRef = useRef(null);
+
+  const [offsetWidth, setOffsetWidth] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+
+  useEffect(() => {
+    setOffsetWidth(guideRef.current.offsetWidth);
+    setScrollLeft(guideRef.current.scrollLeft);
+  }, [windowSize]);
+
+  const onArrowClick = (e: React.MouseEvent<HTMLSpanElement>) => {
+    if (e.currentTarget.id === "prev") {
+      if (scrollLeft > 0) {
+        setScrollLeft(scrollLeft - offsetWidth);
+        guideRef.current.scroll({
+          left: scrollLeft - offsetWidth,
+          behavior: "smooth",
+        });
+      }
+    } else {
+      if (scrollLeft <= offsetWidth * 2 - 10) {
+        setScrollLeft(scrollLeft + offsetWidth);
+        guideRef.current.scroll({
+          left: scrollLeft + offsetWidth,
+          behavior: "smooth",
+        });
+      }
+    }
+  };
   return (
     <Base>
       <Greeting>Mandalable 에 오신 것을 환영합니다!</Greeting>
@@ -216,7 +249,6 @@ function AuthMain() {
         <Sign>=</Sign>
         <Mandalable>Mandalable</Mandalable>
       </MandalableMean>
-      <AuthContainer />
       <Guide>
         <Desc>
           <b>Mandalart</b>는 가장 큰 <b>주제 · 목표</b>를 세우고
@@ -239,85 +271,99 @@ function AuthMain() {
           </ContentTitle>
           <ContentItemWrapper>
             <ContentItem>
-              ✔ 지킬 수 있는 계획을 어떻게 세워야 할지 막막하신 분
+              지킬 수 있는 계획을 어떻게 세워야 할지 막막하신 분
             </ContentItem>
             <ContentItem>
-              ✔ 매년 거창한 계획은 세우지만 정작 어떻게 실천해야할 지 모르시는
-              분
+              매년 거창한 계획은 세우지만 정작 어떻게 실천해야할 지 모르시는 분
             </ContentItem>
             <ContentItem>
-              ✔ 세워둔 계획을 얼마나 실천했는지 관리하고 싶으신 분
+              세워둔 계획을 얼마나 실천했는지 관리하고 싶으신 분
             </ContentItem>
           </ContentItemWrapper>
         </Content>
         <Content>
           <ContentTitle>
-            <Emoji unified="1f4cc" size={30} />
+            <Emoji unified="1f44c" size={30} />
             Mandalable 로 이런 것들을 할 수 있어요!
           </ContentTitle>
           <ContentItemWrapper>
             <ContentItem>
-              ✔ 목표 성공률을 설정하여 만다라트를 생성할 수 있어요,
+              목표 성공률을 설정하여 만다라트를 생성할 수 있어요,
             </ContentItem>
             <ContentItem>
-              ✔ 생성한 만다라트를 이미지로 저장할 수도 있어요.
+              생성한 만다라트를 이미지로 저장할 수도 있어요.
             </ContentItem>
             <ContentItem>
-              ✔ 생성한 만다라트의 세부 과제들을 Todo로 체크할 수 있어요.
+              생성한 만다라트의 세부 과제들을 Todo로 체크할 수 있어요.
             </ContentItem>
             <ContentItem>
-              ✔ 만다라트 계획의 성공률을 확인할 수 있어요.
+              만다라트 계획의 성공률을 확인할 수 있어요.
             </ContentItem>
           </ContentItemWrapper>
         </Content>
         <Content>
           <ContentTitle>
-            <Emoji unified="1f4cc" size={30} />
+            <Emoji unified="1f449" size={30} />
             Mandalart 는 이렇게 만들어요!
           </ContentTitle>
-          <CreateMandalartGuideWrapper>
-            <CreateMandalartGuide>
-              <GuideTextWrapper>
+          <CreateMandalartGuideContainer>
+            <Arrow
+              id="prev"
+              className="material-symbols-rounded"
+              onClick={(e) => onArrowClick(e)}
+              disabled={scrollLeft <= 0}
+            >
+              arrow_back_ios_new
+            </Arrow>
+            <CreateMandalartGuideWrapper ref={guideRef}>
+              <CreateMandalartGuide>
                 <Step>step 1</Step>
+                <GuideImg src={process.env.PUBLIC_URL + "/guide1.png"} />
                 <GuideText>
                   가장 가운데 목표칸에 이루고자 하는 핵심 목표를 적습니다.
                 </GuideText>
-              </GuideTextWrapper>
-              <GuideImg src={process.env.PUBLIC_URL + "/guide1.png"} />
-            </CreateMandalartGuide>
-            <CreateMandalartGuide>
-              <GuideTextWrapper>
+              </CreateMandalartGuide>
+              <CreateMandalartGuide>
                 <Step>step 2</Step>
+
+                <GuideImg src={process.env.PUBLIC_URL + "/guide2.png"} />
                 <GuideText>
                   최종 목표를 이루기 위한 주요 목표 8개를 적습니다.
                 </GuideText>
-              </GuideTextWrapper>
-              <GuideImg src={process.env.PUBLIC_URL + "/guide2.png"} />
-            </CreateMandalartGuide>
-            <CreateMandalartGuide>
-              <GuideTextWrapper>
+              </CreateMandalartGuide>
+              <CreateMandalartGuide>
                 <Step>step 3</Step>
+                <GuideImg src={process.env.PUBLIC_URL + "/guide3.png"} />
                 <GuideText>
                   주요 목표과 관련된 세부 실천내용이나 달성방법을 적습니다.
                   <br />
                   <br />
-                  SMART 기법은 세부 내용을 작성할 때 참고하면 좋습니다!
-                  <br />
-                  <br />
-                  S(Specific) : 목표는 명확하고 구체적이어야 합니다.
-                  <br />
-                  M(Measurable) : 목표는 정량화되고 측정 가능해야 합니다.
-                  <br />
-                  A(Attainable) : 목표는 달성 가능해야 합니다.
-                  <br />
-                  R(Realistic) : 목표는 현실적이어야 합니다.
-                  <br />
-                  T(Timely) : 목표는 마감기한이 있어야 합니다.
+                  <small>
+                    SMART 기법은 세부 내용을 작성할 때 참고하면 좋습니다!
+                    <br />
+                    <br />
+                    S(Specific) : 목표는 명확하고 구체적이어야 합니다.
+                    <br />
+                    M(Measurable) : 목표는 정량화되고 측정 가능해야 합니다.
+                    <br />
+                    A(Attainable) : 목표는 달성 가능해야 합니다.
+                    <br />
+                    R(Realistic) : 목표는 현실적이어야 합니다.
+                    <br />
+                    T(Timely) : 목표는 마감기한이 있어야 합니다.
+                  </small>
                 </GuideText>
-              </GuideTextWrapper>
-              <GuideImg src={process.env.PUBLIC_URL + "/guide3.png"} />
-            </CreateMandalartGuide>
-          </CreateMandalartGuideWrapper>
+              </CreateMandalartGuide>
+            </CreateMandalartGuideWrapper>
+            <Arrow
+              id="next"
+              className="material-symbols-rounded"
+              onClick={(e) => onArrowClick(e)}
+              disabled={scrollLeft >= offsetWidth * 2 - 10}
+            >
+              arrow_forward_ios
+            </Arrow>
+          </CreateMandalartGuideContainer>
         </Content>
       </Guide>
     </Base>
