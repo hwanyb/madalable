@@ -16,6 +16,7 @@ const MainImgWrapper = styled.div`
   right: 0;
   display: flex;
   justify-content: center;
+  z-index: 999999;
 `;
 const MockupImg = styled.img`
   height: 100vh;
