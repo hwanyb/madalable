@@ -107,5 +107,9 @@ textarea {
     font-family: 'Noto Sans KR', sans-serif;
     resize: none;
 }
+
+image {
+    image-rendering: -webkit-optimize-contrast;
+}
 `;
 export default GlobalStyle;
