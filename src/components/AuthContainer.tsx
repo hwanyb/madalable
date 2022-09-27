@@ -1,23 +1,25 @@
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import styled from "styled-components";
 import { authService, firebaseInstance } from "../firebase";
+import { CloseBtn } from "./Home/CreateMandalart";
 
 const AuthWrapper = styled.div`
+  width: fit-content;
   display: flex;
   flex-direction: column;
-  padding: 30px;
+  padding: 100px;
   text-align: center;
   justify-content: center;
-  margin: 50px 30px;
-  background-color: ${(props) => props.theme.color.backgroundSecond};
+  background-color: ${(props) => props.theme.color.transWhite};
   box-shadow: 0 0 10px ${(props) => props.theme.color.shadow};
+  backdrop-filter: blur(30px);
   border-radius: ${(props) => props.theme.borderRadius};
 `;
 const AuthTitle = styled.h2`
-  font-size: ${(props) => props.theme.fontSize.base};
+  font-size: ${(props) => props.theme.fontSize.xl};
   color: ${(props) => props.theme.color.primary};
-  font-weight: 300;
-  margin-bottom: 20px;
+  font-weight: 700;
+  margin-bottom: 50px;
 `;
 const AuthForm = styled.form`
   display: flex;
@@ -41,7 +43,12 @@ const AuthText = styled.p`
   margin-top: 20px;
   margin-bottom: 10px;
 `;
-export default function AuthContainer() {
+
+type Props = {
+  setIsOpenedAuthForm: React.Dispatch<SetStateAction<boolean>>;
+};
+
+export default function AuthContainer({ setIsOpenedAuthForm }: Props) {
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -107,6 +114,12 @@ export default function AuthContainer() {
   };
   return (
     <AuthWrapper>
+      <CloseBtn
+        className="material-symbols-rounded"
+        onClick={() => setIsOpenedAuthForm(false)}
+      >
+        close
+      </CloseBtn>
       <AuthTitle>{signupMode ? "가입하기" : "로그인"}</AuthTitle>
       <AuthForm onSubmit={onSubmit}>
         {signupMode && (
