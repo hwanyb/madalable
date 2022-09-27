@@ -27,6 +27,7 @@ declare module 'styled-components' {
       base: string;
       md: string;
       lg: string;
+      xl: string;
     };
     fontFamily: {
       aggro: string;
