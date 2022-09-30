@@ -242,12 +242,12 @@ const QuestionIcon = styled(Icon)`
   cursor: default;
 `;
 
-const DifficultyBtnWrapper = styled.div`
+export const DifficultyBtnWrapper = styled.div`
   width: fit-content;
   margin: 0 auto;
   display: flex;
 `;
-const DifficultyBtn = styled.button<{ difficulty: string }>`
+export const DifficultyBtn = styled.button<{ difficulty: string }>`
   margin-right: 20px;
   text-align: center;
 
