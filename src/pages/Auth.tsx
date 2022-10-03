@@ -1,19 +1,22 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
 
-import AuthMain from "../components/AuthMain";
 import Header from "../components/common/layout/Header";
-import AuthContainer from "../components/AuthContainer";
+import AuthMain from "../components/Auth/AuthMain";
+import AuthContainer from "../components/Auth/AuthContainer";
 import { Icon } from "../styles/Common";
 
 const Base = styled.main`
   width: 100vw;
   background-color: ${(props) => props.theme.color.background};
   display: flex;
+  @media ${(props) => props.theme.windowSize.laptop} {
+    flex-direction: column;
+  }
 `;
 
 const AuthBtnWrapper = styled.div`
-  position: absolute;
+  position: fixed;
   top: 30px;
   left: calc(50% - 60px);
   transform: translateX(-50%);
@@ -22,6 +25,12 @@ const AuthBtnWrapper = styled.div`
   align-items: center;
   justify-content: end;
   height: 50px;
+
+  @media ${(props) => props.theme.windowSize.laptop} {
+    left: auto;
+    right: 30px;
+    transform: translateX(0);
+  }
 `;
 const AuthBtn = styled(Icon)`
   color: ${(props) => props.theme.color.primary};
@@ -56,9 +65,19 @@ const MainImgWrapper = styled.div`
   display: flex;
   justify-content: center;
   z-index: 999999;
+
+  @media ${(props) => props.theme.windowSize.laptop} {
+    position: relative;
+    width: 100%;
+    z-index: 999;
+    top: 110px;
+  }
 `;
 const MockupImg = styled.img`
   height: 100vh;
+  @media ${(props) => props.theme.windowSize.laptop} {
+    height: 80vh;
+  }
 `;
 const AuthContainerWrapper = styled.div`
   position: absolute;
@@ -67,12 +86,11 @@ const AuthContainerWrapper = styled.div`
   right: 0;
   backdrop-filter: blur(10px);
   z-index: 99999999;
-  background-color: ${props=>props.theme.color.shadow};
+  background-color: ${(props) => props.theme.color.shadow};
   display: flex;
   justify-content: center;
   align-items: center;
 `;
-
 
 export default function Auth() {
   const modalRef = useRef(null);
@@ -81,38 +99,38 @@ export default function Auth() {
 
   const onAuthBtnClick = () => {
     setIsOpenedAuthForm(true);
-  }
+  };
   const onModalOutsideClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if(e.target === modalRef.current) {
+    if (e.target === modalRef.current) {
       setIsOpenedAuthForm(false);
     }
-  }
+  };
   return (
     <>
       <Header />
+      <AuthBtnWrapper>
+        <AuthBtn className="material-symbols-rounded" onClick={onAuthBtnClick}>
+          login
+          <span>로그인</span>
+        </AuthBtn>
+        <AuthBtn className="material-symbols-rounded" onClick={onAuthBtnClick}>
+          account_circle
+          <span>회원가입</span>
+        </AuthBtn>
+      </AuthBtnWrapper>
       <Base>
-        <AuthBtnWrapper>
-          <AuthBtn
-            className="material-symbols-rounded"
-            onClick={onAuthBtnClick}
-          >
-            login
-            <span>로그인</span>
-          </AuthBtn>
-          <AuthBtn
-            className="material-symbols-rounded"
-            onClick={onAuthBtnClick}
-          >
-            account_circle
-            <span>회원가입</span>
-          </AuthBtn>
-        </AuthBtnWrapper>
-        <AuthMain />
         <MainImgWrapper>
           <MockupImg src={process.env.PUBLIC_URL + "/mac_mockup.jpg"} />
         </MainImgWrapper>
+
+        <AuthMain />
         {isOpenedAuthForm && (
-          <AuthContainerWrapper ref={modalRef} onClick={(e: React.MouseEvent<HTMLDivElement>) => onModalOutsideClick(e)}>
+          <AuthContainerWrapper
+            ref={modalRef}
+            onClick={(e: React.MouseEvent<HTMLDivElement>) =>
+              onModalOutsideClick(e)
+            }
+          >
             <AuthContainer setIsOpenedAuthForm={setIsOpenedAuthForm} />
           </AuthContainerWrapper>
         )}
