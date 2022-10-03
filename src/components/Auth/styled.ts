@@ -7,10 +7,16 @@ export const Base = styled.div`
   flex-direction: column;
   margin-top: 150px;
   position: relative;
+  @media ${(props) => props.theme.windowSize.laptop} {
+    width: 100%;
+  }
 `;
 export const Guide = styled.div`
   font-family: ${(props) => props.theme.fontFamily.aggro};
   padding: 0 30px;
+  @media ${(props) => props.theme.windowSize.mobile} {
+    padding: 0 10px;
+  }
 `;
 export const Greeting = styled.h1`
   font-family: ${(props) => props.theme.fontFamily.aggro};
@@ -19,11 +25,17 @@ export const Greeting = styled.h1`
   color: ${(props) => props.theme.color.primary};
   text-align: center;
   margin-bottom: 50px;
+  @media ${(props) => props.theme.windowSize.laptop} {
+    word-break: keep-all;
+  }
 `;
 export const MandalableMean = styled.div`
   font-family: ${(props) => props.theme.fontFamily.aggro};
   display: flex;
   justify-content: center;
+  @media ${(props) => props.theme.windowSize.laptop} {
+    padding: 0 30px;
+  }
 `;
 export const WordWrapper = styled.div``;
 export const Word = styled.h2`
@@ -35,12 +47,16 @@ export const Word = styled.h2`
   border-radius: 10px;
   box-shadow: 0px 2px 5px ${(props) => props.theme.color.shadow};
   line-height: 30px;
+  @media ${(props) => props.theme.windowSize.mobile} {
+    padding: 0 10px;
+  }
 `;
 export const Mean = styled.p`
   font-size: ${(props) => props.theme.fontSize.sm};
   font-weight: 300;
   text-align: center;
   margin-top: 10px;
+  word-break: keep-all;
 `;
 export const Sign = styled.h3`
   line-height: 50px;
@@ -48,6 +64,9 @@ export const Sign = styled.h3`
   font-weight: 300;
   color: ${(props) => props.theme.color.primary};
   margin: 0 5px;
+  @media ${(props) => props.theme.windowSize.mobile} {
+    line-height: 30px;
+  }
 `;
 export const Mandalable = styled.h2`
   padding: 5px 20px;
@@ -58,6 +77,9 @@ export const Mandalable = styled.h2`
   color: ${(props) => props.theme.color.white};
   line-height: 30px;
   height: fit-content;
+  @media ${(props) => props.theme.windowSize.mobile} {
+    padding: 0 10px;
+  }
 `;
 export const Desc = styled.p`
   margin: 40px 0;
@@ -96,6 +118,8 @@ export const ContentItem = styled.li`
   font-weight: 300;
   line-height: 25px;
   margin-bottom: 10px;
+  word-break: keep-all;
+
   &::before {
     content: "✔";
     width: fit-content;
@@ -162,6 +186,12 @@ export const CreateMandalartGuide = styled.div`
   border-radius: ${(props) => props.theme.borderRadius};
   padding: 30px;
   text-align: center;
+
+  @media ${(props) => props.theme.windowSize.mobile} {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
 `;
 export const Step = styled.h4`
   font-size: ${(props) => props.theme.fontSize.md};
@@ -187,4 +217,7 @@ export const GuideText = styled.p`
 export const GuideImg = styled.img`
   width: 60%;
   margin-bottom: 20px;
+  @media ${(props) => props.theme.windowSize.mobile} {
+    width: 100%;
+  }
 `;
