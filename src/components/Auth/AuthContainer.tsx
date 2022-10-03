@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
 import styled from "styled-components";
-import { authService, firebaseInstance } from "../firebase";
-import { CloseBtn } from "./Home/CreateMandalart";
+import { authService, firebaseInstance } from "../../firebase";
+import { CloseBtn } from "../Home/CreateMandalart";
 
 const AuthWrapper = styled.div`
   width: fit-content;
