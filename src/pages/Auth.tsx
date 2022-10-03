@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import styled from "styled-components";
 
 import Header from "../components/common/layout/Header";
@@ -105,6 +105,18 @@ export default function Auth() {
       setIsOpenedAuthForm(false);
     }
   };
+
+  useEffect(() => {
+    if (isOpenedAuthForm) {
+      document.body.style.overflow = "hidden";
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    } else {
+      document.body.style.overflow = "scroll";
+    }
+  });
   return (
     <>
       <Header />
