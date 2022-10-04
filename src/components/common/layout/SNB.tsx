@@ -22,8 +22,8 @@ const ToggleBtn = styled(Icon)`
 const Base = styled.div<{ snbIsOpened: boolean }>`
   height: 100%;
   box-sizing: border-box;
-  margin-top: 30px;
   position: relative;
+  top: 150px;
   transition: all 0.5s ease-in-out;
   &:hover ${ToggleBtn} {
     color: ${(props) => props.theme.color.gray};
@@ -35,15 +35,15 @@ const Base = styled.div<{ snbIsOpened: boolean }>`
           width: 250px;
         `
       : css`
-          width: 50px;
+          width: 100px;
           ${ItemText} {
             display: none;
           }
           ${ItemWrapper} {
-            padding-left: 5px;
+            padding-left: 30px;
           }
           ${LogoutBtn} {
-            padding-left: 5px;
+            padding-left: 30px;
           }
         `}
 `;
