@@ -14,6 +14,9 @@ const AuthWrapper = styled.div`
   box-shadow: 0 0 10px ${(props) => props.theme.color.shadow};
   backdrop-filter: blur(30px);
   border-radius: ${(props) => props.theme.borderRadius};
+  @media ${(props) => props.theme.windowSize.mobile} {
+    padding: 100px 50px;
+  }
 `;
 const AuthTitle = styled.h2`
   font-size: ${(props) => props.theme.fontSize.xl};
