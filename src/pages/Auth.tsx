@@ -25,6 +25,7 @@ const AuthBtnWrapper = styled.div`
   align-items: center;
   justify-content: end;
   height: 50px;
+  padding: 30px 0;
 
   @media ${(props) => props.theme.windowSize.laptop} {
     left: auto;
@@ -80,7 +81,7 @@ const MockupImg = styled.img`
   }
 `;
 const AuthContainerWrapper = styled.div`
-  position: absolute;
+  position: fixed;
   width: 100%;
   height: 100vh;
   right: 0;
@@ -90,6 +91,7 @@ const AuthContainerWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  
 `;
 
 export default function Auth() {
@@ -109,10 +111,6 @@ export default function Auth() {
   useEffect(() => {
     if (isOpenedAuthForm) {
       document.body.style.overflow = "hidden";
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
     } else {
       document.body.style.overflow = "scroll";
     }
