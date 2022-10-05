@@ -16,7 +16,7 @@ const Base = styled.div`
   width: calc(100% - 60px);
   height: calc(100% - 100px);
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
   &::-webkit-scrollbar {
     width: 10px;
     margin-left: 30px;

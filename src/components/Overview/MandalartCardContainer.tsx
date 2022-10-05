@@ -7,6 +7,8 @@ import {
   setSelectedMandalart,
 } from "../../modules/overviewReducer";
 import { Mandalart } from "../../types";
+import Empty from "../common/Empty";
+import SuccessContainer from "./SuccessContainer";
 import MandalartCard from "../common/MandalartCard";
 import {
   Base,
@@ -17,7 +19,6 @@ import {
   SuccessStamp,
   SuccessStampWrapper,
 } from "../Home/MandalartCardContainer";
-import SuccessContainer from "./SuccessContainer";
 
 export default function MandalartCardContainer() {
   const dispatch = useDispatch();
@@ -36,6 +37,11 @@ export default function MandalartCardContainer() {
 
   return (
     <Base>
+    {
+      myMandalartArr.length === 0 && (
+        <Empty />
+      )
+    }
       {myMandalartArr.map((mandalart, index) => (
         <ItemWrapper
           key={index}

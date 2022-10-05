@@ -26,7 +26,7 @@ const color = {
   backgroundSecond: "#F1F1F1",
   primary: "#497BFB",
   secondary: "#FF9292",
-  fontPrimary: "#484848",
+  fontPrimary: "#121212",
   lightGray: "#D1D1D1",
   gray: "#A5A5A5",
   darkGray: "#727272",

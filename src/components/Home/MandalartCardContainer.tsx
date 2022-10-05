@@ -32,6 +32,8 @@ const iconAnimation = keyframes`
 `;
 
 export const Base = styled.div`
+  width: 100%;
+  height: 100%;
   position: relative;
   display: flex;
   flex-wrap: wrap;

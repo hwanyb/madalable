@@ -330,13 +330,6 @@ export default function CreateMandalart() {
     "#FF80E3",
   ];
 
-  useEffect(() => {
-    console.log(mandalart);
-  });
-
-  const onQuestionClick = () => {
-    
-  };
   const onArrowClick = (e: React.MouseEvent<HTMLSpanElement>) => {
     if (e.currentTarget.id === "prev") {
       if (currentIdx > 0) {
@@ -420,14 +413,10 @@ export default function CreateMandalart() {
     const result = window.confirm(
       "아래 정보로 만다라트를 생성하시겠습니까?\n- 별명 : " +
         alias +
-        "\n- 이모지 : " +
+        "\n- 이모지 : &#x" +
         emoji +
         "\n- 색상 : " +
         color +
-        "\n- 기간 : " +
-        start_date +
-        "~" +
-        end_date +
         "\n- 성공 난이도 : " +
         difficulty,
     );
