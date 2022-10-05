@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Emoji } from "emoji-picker-react";
 import styled from "styled-components";
@@ -7,6 +7,7 @@ import { RootState } from "../modules";
 import { Icon } from "../styles/Common";
 import { Goal, Mandalart, Todo } from "../types";
 import { dbService } from "../firebase";
+import Empty from "./common/Empty";
 
 const Base = styled.div`
   color: ${(props) => props.theme.color.fontPrimary};
@@ -17,18 +18,15 @@ const Base = styled.div`
   height: calc(100% - 100px);
   overflow-x: hidden;
   overflow-y: auto;
-  &::-webkit-scrollbar {
-    width: 10px;
-    margin-left: 30px;
+
+  @media ${(props) => props.theme.windowSize.tablet} {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
   }
-  &::-webkit-scrollbar-track {
-    background-color: ${(props) => props.theme.color.lightGray};
-    border-radius: 10px;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: ${(props) => props.theme.color.primary};
-    border-radius: 10px;
-    box-shadow: 2px 2px 3px ${(props) => props.theme.color.shadow};
+  @media ${(props) => props.theme.windowSize.mobile} {
+    padding: 20px 0;
   }
 `;
 const MandalartInfo = styled.div`
@@ -40,6 +38,10 @@ const MandalartInfo = styled.div`
   border-radius: ${(props) => props.theme.borderRadius};
   filter: drop-shadow(2px 2px 3px ${(props) => props.theme.color.shadow});
   margin-bottom: 10px;
+  @media ${(props) => props.theme.windowSize.mobile} {
+  width: 100%;
+  justify-content: center;
+  }
 `;
 const MandalartEmoji = styled(Emoji)``;
 const MandalartAlias = styled.p`
@@ -51,6 +53,12 @@ const MandalartAlias = styled.p`
 const TodoWrapper = styled.div`
   width: calc(100% - 80px);
   margin-bottom: 30px;
+  @media ${(props) => props.theme.windowSize.tablet} {
+    width: calc(100% - 30px);
+  }
+  @media ${(props) => props.theme.windowSize.mobile} {
+    width: calc(100% - 10px);
+  }
 `;
 const TodoInfo = styled.p`
   font-size: ${(props) => props.theme.fontSize.sm};
@@ -78,6 +86,13 @@ const TodoItem = styled.div`
   margin-bottom: 20px;
   margin-left: 30px;
   align-items: center;
+  @media ${(props) => props.theme.windowSize.tablet} {
+    margin-left: 0;
+  }
+  @media ${(props) => props.theme.windowSize.mobile} {
+      padding: 10px 20px;
+
+  }
 `;
 const TodoEmoji = styled(Emoji)``;
 const TodoTextWrapper = styled.div`
@@ -86,6 +101,10 @@ const TodoTextWrapper = styled.div`
 const TodoText = styled.h3`
   font-weight: 700;
   font-size: ${(props) => props.theme.fontSize.md};
+   @media ${(props) => props.theme.windowSize.mobile} {
+     font-size: ${(props) => props.theme.fontSize.base};
+
+   }
 `;
 const TodoPeriod = styled.p`
   font-weight: 300;
@@ -99,6 +118,10 @@ const TodoDone = styled(Icon)<{ done: boolean }>`
   transition: all 0.3s ease-in-out;
   &:hover {
     color: ${(props) => props.theme.color.primary};
+  }
+   @media ${(props) => props.theme.windowSize.mobile} {
+      font-size: 20px;
+
   }
 `;
 const TodoCountWrapper = styled.div`
@@ -123,6 +146,7 @@ export default function TodoContainer() {
   const myMandalart = useSelector(
     (state: RootState) => state.mandalartReducer.myMandalart,
   );
+  const windowSize = useSelector((state: RootState) => state.appReducer.windowSize);
 
   // 데일리, 위클리, 먼슬리 투두 기능 개발 시 필요한 일수구하기 주수구하기 개월수 구하기 로직
   // const getDays = (start_date: string, end_date: string) => {
@@ -191,135 +215,139 @@ export default function TodoContainer() {
   };
   return (
     <Base>
-      {myMandalart.map((myMandalart) => (
-        <TodoWrapper key={myMandalart.created_at}>
-          <MandalartInfo color={myMandalart.color}>
-            <MandalartEmoji unified={myMandalart.emoji} size={15} />
-            <MandalartAlias>{myMandalart.alias}</MandalartAlias>
-          </MandalartInfo>
+      {myMandalart.length === 0 ? (
+        <Empty />
+      ) : (
+        myMandalart.map((myMandalart) => (
+          <TodoWrapper key={myMandalart.created_at}>
+            <MandalartInfo color={myMandalart.color}>
+              <MandalartEmoji unified={myMandalart.emoji} size={15} />
+              <MandalartAlias>{myMandalart.alias}</MandalartAlias>
+            </MandalartInfo>
 
-          {myMandalart.goals
-            .filter((goal) => goal.text !== "")
-            .map((goal) => (
-              <React.Fragment key={goal.id}>
-                <TodoInfo>{goal.text}</TodoInfo>
-                {/* <TodoLabel>일회성 과제</TodoLabel> */}
-                {goal.todos
-                  .filter((todo) => todo.text !== "")
-                  .map((todo) => (
-                    <TodoItem key={todo.id}>
-                      <TodoEmoji unified={todo.emoji} size={40} />
-                      <TodoTextWrapper>
-                        <TodoText>{todo.text}</TodoText>
-                      </TodoTextWrapper>
-                      <TodoDone
-                        className="material-symbols-rounded"
-                        onClick={(e: React.SyntheticEvent<HTMLSpanElement>) =>
-                          onClickDone(e, myMandalart, goal, todo)
-                        }
-                        done={todo.done}
-                      >
-                        {todo.done ? "check_circle" : "circle"}
-                      </TodoDone>
-                    </TodoItem>
-                  ))}
-                {/* <TodoLabel>데일리 과제</TodoLabel>
-                {goal.todos
-                  .filter(
-                    (todo) =>
-                      todo.multiple === true &&
-                      todo.period === "daily" &&
-                      todo.text !== "",
-                  )
-                  .map((todo) => (
-                    <>
-                      <TodoItem>
-                        <TodoEmoji unified={todo.emoji} size={40} />
+            {myMandalart.goals
+              .filter((goal) => goal.text !== "")
+              .map((goal) => (
+                <React.Fragment key={goal.id}>
+                  <TodoInfo>{goal.text}</TodoInfo>
+                  {/* <TodoLabel>일회성 과제</TodoLabel> */}
+                  {goal.todos
+                    .filter((todo) => todo.text !== "")
+                    .map((todo) => (
+                      <TodoItem key={todo.id}>
+                        <TodoEmoji unified={todo.emoji} size={windowSize < 480 ? 20 : windowSize < 768 ? 28 : 35} />
                         <TodoTextWrapper>
                           <TodoText>{todo.text}</TodoText>
-                          <TodoPeriod>
-                            일 {todo.periodNumber}
-                            {todo.periodText}{" "}
-                            {todo.periodRange === "less" ? "이하" : "이상"}
-                          </TodoPeriod>
                         </TodoTextWrapper>
-                        <TodoCountWrapper>
-                          <CountArrow className="material-symbols-rounded">
-                            arrow_drop_up
-                          </CountArrow>
-                          <CountArrow className="material-symbols-rounded">
-                            arrow_drop_down
-                          </CountArrow>
-                        </TodoCountWrapper>
+                        <TodoDone
+                          className="material-symbols-rounded"
+                          onClick={(e: React.SyntheticEvent<HTMLSpanElement>) =>
+                            onClickDone(e, myMandalart, goal, todo)
+                          }
+                          done={todo.done}
+                        >
+                          {todo.done ? "check_circle" : "circle"}
+                        </TodoDone>
                       </TodoItem>
-                    </>
-                  ))} */}
-                {/* <TodoLabel>위클리 과제</TodoLabel>
-                {goal.todos
-                  .filter(
-                    (todo) =>
-                      todo.multiple === true &&
-                      todo.period === "weekly" &&
-                      todo.text !== "",
-                  )
-                  .map((todo) => (
-                    <>
-                      <TodoItem>
-                        <TodoEmoji unified={todo.emoji} size={40} />
-                        <TodoTextWrapper>
-                          <TodoText>{todo.text}</TodoText>
-                          <TodoPeriod>
-                            주 {todo.periodNumber}
-                            {todo.periodText}{" "}
-                            {todo.periodRange === "less" ? "이하" : "이상"}
-                          </TodoPeriod>
-                        </TodoTextWrapper>
-                        <TodoCountWrapper>
-                          <CountArrow className="material-symbols-rounded">
-                            arrow_drop_up
-                          </CountArrow>
-                          <CountArrow className="material-symbols-rounded">
-                            arrow_drop_down
-                          </CountArrow>
-                        </TodoCountWrapper>
-                      </TodoItem>
-                    </>
-                  ))} */}
-                {/* {goal.todos
-                  .filter(
-                    (todo) =>
-                      todo.multiple === true &&
-                      todo.period === "monthly" &&
-                      todo.text !== "",
-                  )
-                  .map((todo) => (
-                    <>
-                      <TodoLabel>먼슬리 과제</TodoLabel>
-                      <TodoItem>
-                        <TodoEmoji unified={todo.emoji} size={40} />
-                        <TodoTextWrapper>
-                          <TodoText>{todo.text}</TodoText>
-                          <TodoPeriod>
-                            월 {todo.periodNumber}
-                            {todo.periodText}{" "}
-                            {todo.periodRange === "less" ? "이하" : "이상"}
-                          </TodoPeriod>
-                        </TodoTextWrapper>
-                        <TodoCountWrapper>
-                          <CountArrow className="material-symbols-rounded">
-                            arrow_drop_up
-                          </CountArrow>
-                          <CountArrow className="material-symbols-rounded">
-                            arrow_drop_down
-                          </CountArrow>
-                        </TodoCountWrapper>
-                      </TodoItem>
-                    </>
-                  ))} */}
-              </React.Fragment>
-            ))}
-        </TodoWrapper>
-      ))}
+                    ))}
+                  {/* <TodoLabel>데일리 과제</TodoLabel>
+                    {goal.todos
+                      .filter(
+                        (todo) =>
+                          todo.multiple === true &&
+                          todo.period === "daily" &&
+                          todo.text !== "",
+                      )
+                      .map((todo) => (
+                        <>
+                          <TodoItem>
+                            <TodoEmoji unified={todo.emoji} size={40} />
+                            <TodoTextWrapper>
+                              <TodoText>{todo.text}</TodoText>
+                              <TodoPeriod>
+                                일 {todo.periodNumber}
+                                {todo.periodText}{" "}
+                                {todo.periodRange === "less" ? "이하" : "이상"}
+                              </TodoPeriod>
+                            </TodoTextWrapper>
+                            <TodoCountWrapper>
+                              <CountArrow className="material-symbols-rounded">
+                                arrow_drop_up
+                              </CountArrow>
+                              <CountArrow className="material-symbols-rounded">
+                                arrow_drop_down
+                              </CountArrow>
+                            </TodoCountWrapper>
+                          </TodoItem>
+                        </>
+                      ))} */}
+                  {/* <TodoLabel>위클리 과제</TodoLabel>
+                    {goal.todos
+                      .filter(
+                        (todo) =>
+                          todo.multiple === true &&
+                          todo.period === "weekly" &&
+                          todo.text !== "",
+                      )
+                      .map((todo) => (
+                        <>
+                          <TodoItem>
+                            <TodoEmoji unified={todo.emoji} size={40} />
+                            <TodoTextWrapper>
+                              <TodoText>{todo.text}</TodoText>
+                              <TodoPeriod>
+                                주 {todo.periodNumber}
+                                {todo.periodText}{" "}
+                                {todo.periodRange === "less" ? "이하" : "이상"}
+                              </TodoPeriod>
+                            </TodoTextWrapper>
+                            <TodoCountWrapper>
+                              <CountArrow className="material-symbols-rounded">
+                                arrow_drop_up
+                              </CountArrow>
+                              <CountArrow className="material-symbols-rounded">
+                                arrow_drop_down
+                              </CountArrow>
+                            </TodoCountWrapper>
+                          </TodoItem>
+                        </>
+                      ))} */}
+                  {/* {goal.todos
+                      .filter(
+                        (todo) =>
+                          todo.multiple === true &&
+                          todo.period === "monthly" &&
+                          todo.text !== "",
+                      )
+                      .map((todo) => (
+                        <>
+                          <TodoLabel>먼슬리 과제</TodoLabel>
+                          <TodoItem>
+                            <TodoEmoji unified={todo.emoji} size={40} />
+                            <TodoTextWrapper>
+                              <TodoText>{todo.text}</TodoText>
+                              <TodoPeriod>
+                                월 {todo.periodNumber}
+                                {todo.periodText}{" "}
+                                {todo.periodRange === "less" ? "이하" : "이상"}
+                              </TodoPeriod>
+                            </TodoTextWrapper>
+                            <TodoCountWrapper>
+                              <CountArrow className="material-symbols-rounded">
+                                arrow_drop_up
+                              </CountArrow>
+                              <CountArrow className="material-symbols-rounded">
+                                arrow_drop_down
+                              </CountArrow>
+                            </TodoCountWrapper>
+                          </TodoItem>
+                        </>
+                      ))} */}
+                </React.Fragment>
+              ))}
+          </TodoWrapper>
+        ))
+      )}
     </Base>
   );
 }

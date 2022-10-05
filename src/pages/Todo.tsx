@@ -2,8 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import Layout from "../components/common/layout/Layout";
 import TodoContainer from "../components/TodoContainer";
-export default function Todo() {
- const Base = styled.div`
+
+const Base = styled.div`
   width: 100%;
   height: 100%;
   position: relative;
@@ -11,6 +11,8 @@ export default function Todo() {
   flex-wrap: wrap;
   gap: 30px;
 `;
+
+export default function Todo() {
   return (
     <Layout>
       <Base>

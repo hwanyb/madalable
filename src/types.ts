@@ -33,6 +33,7 @@ export type Mandalart = {
 
 export type AuthState = {
   isLoggedin: boolean;
+  signupMode: boolean;
   userId: string;
   nickname: string;
 };

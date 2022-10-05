@@ -83,6 +83,7 @@ function App() {
     await dbService
       .collection("mandalable")
       .where("user_id", "==", userId)
+      .orderBy("created_at", "desc")
       .onSnapshot((snapshot) => {
         const docsArr: any = snapshot.docs.map((doc) => ({
           doc_id: doc.id,
@@ -94,6 +95,7 @@ function App() {
 
   useEffect(() => {
     fetchDocs();
+    console.log("fetched")
   }, [
     location,
     isLoggedin,

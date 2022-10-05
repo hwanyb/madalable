@@ -16,6 +16,7 @@
     "dotenv": "^16.0.3",
     "emoji-picker-react": "^4.4.7",
     "firebase": "^8.10.1",
+    "html2canvas": "^1.4.1",
     "react": "^18.2.0",
     "react-color": "^2.19.3",
     "react-dom": "^18.2.0",

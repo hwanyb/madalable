@@ -61,6 +61,7 @@
     border: 0;
     background: none;
     outline: none;
+    padding: 0;
 }
 
 .EmojiPickerReact .epr-category-nav {
@@ -70,9 +71,6 @@
     padding: 0 20px;
 }
 
-
-
-
 .EmojiPickerReact .epr-preview {
     border-top: 1px solid #f1f1f1;
 }
@@ -81,21 +79,21 @@
     font-weight: 500;
     font-size: 14px;
 }
+
 .EmojiPickerReact .epr-skin-tones {
     display: none;
 }
+
 .epr-preview .epr-emoji-img {
     font-size: 30px !important;
     width: 30px !important;
     height: 30px !important;
 }
-aside {
-    border-color: rgba(255, 0, 0, 0) !important;
-}
 
 .epr-emoji-img {
-    z-index: 9999;
+    z-index: 999;
 }
+
 
 /* color picker */
 

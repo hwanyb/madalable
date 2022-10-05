@@ -5,6 +5,8 @@ import Header from "../components/common/layout/Header";
 import AuthMain from "../components/Auth/AuthMain";
 import AuthContainer from "../components/Auth/AuthContainer";
 import { Icon } from "../styles/Common";
+import { useDispatch } from "react-redux";
+import { setSignupMode } from "../modules/authReducer";
 
 const Base = styled.main`
   width: 100vw;
@@ -12,6 +14,18 @@ const Base = styled.main`
   display: flex;
   @media ${(props) => props.theme.windowSize.laptop} {
     flex-direction: column;
+  }
+`;
+
+const HeaderWrapper = styled.div`
+  width: 50vw;
+  height: 100px;
+  position: fixed;
+  top: 0;
+  background-color: ${(props) => props.theme.color.background};
+  z-index: 5555;
+  @media ${(props) => props.theme.windowSize.laptop} {
+    width: 100vw;
   }
 `;
 
@@ -28,9 +42,13 @@ const AuthBtnWrapper = styled.div`
   padding: 30px 0;
 
   @media ${(props) => props.theme.windowSize.laptop} {
-    left: auto;
+    left: initial;
     right: 30px;
     transform: translateX(0);
+  }
+  @media ${(props) => props.theme.windowSize.mobile} {
+    padding: 0;
+    top: 10px;
   }
 `;
 const AuthBtn = styled(Icon)`
@@ -59,25 +77,31 @@ const AuthBtn = styled(Icon)`
 
 const MainImgWrapper = styled.div`
   position: fixed;
-  width: 50%;
+  width: 50vw;
+  height: 100vh;
   overflow: hidden;
   top: 0;
   right: 0;
   display: flex;
   justify-content: center;
-  z-index: 999999;
+  background-image: url(${process.env.PUBLIC_URL}/mockup.jpg);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 
   @media ${(props) => props.theme.windowSize.laptop} {
     position: relative;
     width: 100%;
-    z-index: 999;
-    top: 110px;
+    top: 100px;
+    height: 50vh;
   }
-`;
-const MockupImg = styled.img`
-  height: 100vh;
-  @media ${(props) => props.theme.windowSize.laptop} {
-    height: 80vh;
+  @media ${(props) => props.theme.windowSize.mobile} {
+    /* mobile viewport bug fix */
+    /* iOS only */
+    @supports (-webkit-touch-callout: none) {
+      height: -webkit-fill-available;
+      min-height: -webkit-fill-available;
+    }
   }
 `;
 const AuthContainerWrapper = styled.div`
@@ -91,16 +115,32 @@ const AuthContainerWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  
+  @media ${(props) => props.theme.windowSize.mobile} {
+    /* mobile viewport bug fix */
+    /* iOS only */
+    @supports (-webkit-touch-callout: none) {
+      height: -webkit-fill-available;
+      min-height: -webkit-fill-available;
+    }
+  }
 `;
 
 export default function Auth() {
   const modalRef = useRef(null);
 
+  const dispatch = useDispatch();
+
   const [isOpenedAuthForm, setIsOpenedAuthForm] = useState<boolean>(false);
 
-  const onAuthBtnClick = () => {
-    setIsOpenedAuthForm(true);
+  const onAuthBtnClick = (e: React.MouseEvent<HTMLSpanElement>) => {
+    if (e.target instanceof Element) {
+      setIsOpenedAuthForm(true);
+      if (e.target.id === "signup") {
+        dispatch(setSignupMode(true));
+      } else {
+        dispatch(setSignupMode(false));
+      }
+    }
   };
   const onModalOutsideClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === modalRef.current) {
@@ -117,22 +157,29 @@ export default function Auth() {
   });
   return (
     <>
-      <Header />
+      <HeaderWrapper>
+        <Header />
+      </HeaderWrapper>
       <AuthBtnWrapper>
-        <AuthBtn className="material-symbols-rounded" onClick={onAuthBtnClick}>
+        <AuthBtn
+          className="material-symbols-rounded"
+          onClick={onAuthBtnClick}
+          id="login"
+        >
           login
           <span>로그인</span>
         </AuthBtn>
-        <AuthBtn className="material-symbols-rounded" onClick={onAuthBtnClick}>
+        <AuthBtn
+          className="material-symbols-rounded"
+          onClick={onAuthBtnClick}
+          id="signup"
+        >
           account_circle
           <span>회원가입</span>
         </AuthBtn>
       </AuthBtnWrapper>
       <Base>
-        <MainImgWrapper>
-          <MockupImg src={process.env.PUBLIC_URL + "/mac_mockup.jpg"} />
-        </MainImgWrapper>
-
+        <MainImgWrapper />
         <AuthMain />
         {isOpenedAuthForm && (
           <AuthContainerWrapper

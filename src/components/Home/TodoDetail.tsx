@@ -8,8 +8,6 @@ import { useSelector } from "react-redux";
 import styled, { css } from "styled-components";
 import { RootState } from "../../modules";
 import { Icon } from "../../styles/Common";
-import { CloseBtn } from "./CreateMandalart";
-import { EditOrSubmitBtn } from "./MandalartDetail";
 import {
   setIsEditingTodo,
   setIsOpenedTodoDetail,
@@ -31,6 +29,15 @@ const Base = styled.div<{ rgba: string }>`
   align-items: center;
   justify-content: center;
   text-align: left;
+  z-index: 9999999;
+  @media ${props => props.theme.windowSize.mobile} {
+    /* mobile viewport bug fix */
+    /* iOS only */
+    @supports (-webkit-touch-callout: none) {
+      height: -webkit-fill-available;
+      min-height: -webkit-fill-available;
+    }
+  }
 `;
 
 const CreateTodoContainer = styled.div<{ isEditingTodo: boolean }>`
@@ -42,13 +49,39 @@ const CreateTodoContainer = styled.div<{ isEditingTodo: boolean }>`
   padding: 100px;
   transition: all 0.5s ease-in-out;
   box-shadow: 4px 4px 10px ${(props) => props.theme.color.shadow};
+
+  @media ${props => props.theme.windowSize.mobile} {
+    width: 90vw;
+    padding: 80px 50px;
+  }
 `;
 
 const BtnWrapper = styled.div`
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 50px;
+  right: 50px;
   z-index: 999999;
+  display: flex;
+  gap: 10px;
+`;
+const CloseBtn = styled(Icon)`
+  color: ${(props) => props.theme.color.gray};
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    color: ${(props) => props.theme.color.darkGray};
+    transform: scale(1.2);
+    transition: all 0.3s ease-in-out;
+  }
+`;
+const EditOrSubmitBtn = styled(Icon)`
+    color: ${(props) => props.theme.color.gray};
+  transition: all 0.3s ease-in-out;
+  &:hover {
+    color: ${(props) => props.theme.color.primary};
+    transform: scale(1.2);
+    transition: all 0.3s ease-in-out;
+  }
 `;
 const CurrentInfo = styled.div<{ isEditingTodo: boolean }>`
   display: flex;
@@ -172,13 +205,15 @@ const AddIcon = styled(Icon)`
 `;
 const PickerWrapper = styled.div`
   width: 600px;
-  z-index: 100;
+  z-index: 1000000;
   position: absolute;
   text-align: center;
   margin: 0 auto;
   background-color: ${(props) => props.theme.color.white};
   border-radius: ${(props) => props.theme.borderRadius};
-  top: 50px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   box-shadow: 4px 4px 4px ${(props) => props.theme.color.shadow};
 `;
 const TodoTextInput = styled.input`
@@ -194,6 +229,10 @@ const TodoTextInput = styled.input`
   &:focus {
     transition: all 0.5s ease-in-out;
     border: 1px solid ${(props) => props.color};
+  }
+
+  @media ${props => props.theme.windowSize.mobile} {
+    width: 100%;
   }
 `;
 const ToggleBtn = styled.div<{ isMultiple: boolean }>`
@@ -491,12 +530,6 @@ const TodoDetail: React.FC<Props> = ({ goals, setGoals }) => {
     <Base rgba={rgba}>
       <CreateTodoContainer isEditingTodo={isEditingTodo}>
         <BtnWrapper>
-          <CloseBtn
-            className="material-symbols-rounded"
-            onClick={onCloseBtnClick}
-          >
-            close
-          </CloseBtn>
           {!isEditingTodo && isEditingGoal && (
             <EditOrSubmitBtn
               className="material-symbols-rounded"
@@ -505,6 +538,12 @@ const TodoDetail: React.FC<Props> = ({ goals, setGoals }) => {
               edit
             </EditOrSubmitBtn>
           )}
+           <CloseBtn
+            className="material-symbols-rounded"
+            onClick={onCloseBtnClick}
+          >
+            close
+          </CloseBtn>
         </BtnWrapper>
         <CurrentInfo isEditingTodo={isEditingTodo}>
           <FlexWrapper>

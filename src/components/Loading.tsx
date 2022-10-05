@@ -11,6 +11,14 @@ const Base = styled.div`
   justify-content: center;
   align-items: center;
   transition: opacity 2s ease-in-out;
+  @media ${props => props.theme.windowSize.mobile} {
+    /* mobile viewport bug fix */
+    /* iOS only */
+    @supports (-webkit-touch-callout: none) {
+      height: -webkit-fill-available;
+      min-height: -webkit-fill-available;
+    }
+  }
 `;
 const Logo = styled.img`
   width: 192px;

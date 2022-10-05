@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Emoji } from "emoji-picker-react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import styled, { keyframes } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import { RootState } from "../../modules";
 import {
   setIsOpenedCreateMandalart,
@@ -31,13 +31,22 @@ const iconAnimation = keyframes`
   }
 `;
 
-export const Base = styled.div`
+export const Base = styled.div<{ mandalartLength: number }>`
   width: 100%;
   height: 100%;
   position: relative;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 30px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 220px);
+  grid-template-rows: repeat(auto-fill, 220px);
+  grid-gap: 2rem;
+  justify-content: center;
+  ${(props) =>
+    props.mandalartLength === 0 &&
+    css`
+      display: block;
+    `}
 `;
 const CreateText = styled.p`
   position: absolute;
@@ -77,11 +86,14 @@ const CrateMandalartCard = styled.div<{ mandalartLength: number }>`
 `;
 export const ItemWrapper = styled.div`
   position: relative;
+  width: fit-content;
+  height: fit-content;
 `;
 const AddIcon = styled(Icon)`
   font-size: 80px;
   color: ${(props) => props.theme.color.primary};
   transition: all 0.3s ease-in-out;
+  width: 100%;
 `;
 export const MandalartEmoji = styled(Emoji)``;
 export const MandalartAlias = styled.p`
@@ -154,7 +166,7 @@ export default function MandalartCardContainer() {
     dispatch(setIsOpenedMandalartDetail());
   };
   return (
-    <Base>
+    <Base mandalartLength={myMandalartArr.length}>
       <ItemWrapper onClick={onCreateClick}>
         {myMandalartArr.length <= 0 && (
           <CreateText>

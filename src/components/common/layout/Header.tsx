@@ -3,17 +3,22 @@ import styled from "styled-components";
 
 const Base = styled.header`
   position: fixed;
-  width: 100vw;
+  width: 90vw;
   top: 0;
-  left: 0;
   padding: 30px;
   display: flex;
-  backdrop-filter: blur(10px);
-  z-index: 99999;
+  z-index: 999999;
+  @media ${(props) => props.theme.windowSize.mobile} {
+    padding: 15px;
+  }
 `;
+
 const LogoImg = styled.img`
   height: 50px;
   margin-right: 10px;
+  @media ${(props) => props.theme.windowSize.mobile} {
+    height: 30px;
+  }
 `;
 const LogoText = styled.h1`
   font-family: ${(props) => props.theme.fontFamily.aggro};

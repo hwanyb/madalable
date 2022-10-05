@@ -8,11 +8,13 @@ const SET_SELECTED_MANDALART =
   "overviewReducer/SET_SELECTED_MANDALART" as const;
 const SET_SELECTED_GOAL = "overviewReducer/SET_SELECTED_GOAL" as const;
 
-export const setIsOpenedGoalOverview = () => ({
+export const setIsOpenedGoalOverview = (isOpenedGoalOverview: boolean) => ({
   type: SET_IS_OPENED_GOAL_OVERVIEW,
+  payload: isOpenedGoalOverview,
 });
-export const setIsOpenedTodoOverview = () => ({
+export const setIsOpenedTodoOverview = (isOpenedTodoOverview: boolean) => ({
   type: SET_IS_OPENED_TODO_OVERVIEW,
+  payload: isOpenedTodoOverview,
 });
 
 export const setSelectedMandalart = (
@@ -64,12 +66,12 @@ function overviewReducer(
     case SET_IS_OPENED_GOAL_OVERVIEW:
       return {
         ...state,
-        isOpenedGoalOverview: !state.isOpenedGoalOverview,
+        isOpenedGoalOverview: action.payload,
       };
     case SET_IS_OPENED_TODO_OVERVIEW:
       return {
         ...state,
-        isOpenedTodoOverview: !state.isOpenedTodoOverview,
+        isOpenedTodoOverview: action.payload,
       };
     case SET_SELECTED_MANDALART:
       return {

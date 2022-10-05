@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled, { css } from "styled-components";
 import EmojiPicker, {
@@ -15,7 +15,6 @@ import {
   setMandalart,
   setMandalartInit,
 } from "../../modules/mandalartReducer";
-import "../../styles/featPicker.css";
 import { dbService } from "../../firebase";
 
 const Base = styled.div`
@@ -24,23 +23,33 @@ const Base = styled.div`
   margin: 0 auto;
   overflow: hidden;
   transition: opacity 1s ease-in-out;
+  @media ${(props) => props.theme.windowSize.laptop} {
+    width: 100%;
+  }
 `;
 
 export const CloseBtn = styled(Icon)`
   position: absolute;
-  width: 30px;
-  height: 30px;
-  text-align: center;
-  cursor: pointer;
   color: ${(props) => props.theme.color.gray};
   top: 50px;
   right: 50px;
-  line-height: 30px;
   transition: all 0.3s ease-in-out;
-  &:hover {
-    color: ${(props) => props.theme.color.darkGray};
-    transform: rotate(90deg) scale(1.2);
-    transition: all 0.3s ease-in-out;
+  z-index: 99999;
+  @media (hover: hover) {
+    &:hover {
+      color: ${(props) => props.theme.color.darkGray};
+      transform: scale(1.2);
+      transition: all 0.3s ease-in-out;
+    }
+  }
+
+  @media ${(props) => props.theme.windowSize.tablet} {
+    top: 30px;
+    right: 30px;
+  }
+  @media ${(props) => props.theme.windowSize.mobile} {
+    top: 20px;
+    right: 10px;
   }
 `;
 const Pagination = styled.div`
@@ -49,14 +58,15 @@ const Pagination = styled.div`
   align-items: center;
   position: relative;
   z-index: 9999;
+  @media ${(props) => props.theme.windowSize.tablet} {
+    top: 50px;
+  }
+  @media ${(props) => props.theme.windowSize.mobile} {
+    top: 40px;
+  }
 `;
 const Arrow = styled(Icon)<{ disabled: boolean }>`
-  width: 30px;
-  height: 30px;
   border-radius: 50%;
-  text-align: center;
-  font-size: ${(props) => props.theme.fontSize.base};
-  line-height: 30px;
   transition: all 0.3s ease-in-out;
   color: ${(props) =>
     props.disabled ? props.theme.color.lightGray : props.theme.color.primary};
@@ -73,6 +83,9 @@ const BackgroudBar = styled.div`
   background-color: ${(props) => props.theme.color.lightGray};
   border-radius: ${(props) => props.theme.borderRadius};
   margin: 0px 50px;
+  @media ${(props) => props.theme.windowSize.laptop} {
+    width: 100%;
+  }
 `;
 const CurrentBar = styled.div<{ currentIdx: number }>`
   width: ${(props) => (props.currentIdx + 1) * 33.33333}%;
@@ -83,7 +96,10 @@ const CurrentBar = styled.div<{ currentIdx: number }>`
   transition: width 0.5s ease-in-out;
 `;
 
-const CreateMandalartContainer = styled.div<{ currentIdx: number }>`
+const CreateMandalartContainer = styled.div<{
+  currentIdx: number;
+  baseWidth: number;
+}>`
   width: 300%;
   height: 100%;
   display: flex;
@@ -91,6 +107,12 @@ const CreateMandalartContainer = styled.div<{ currentIdx: number }>`
   transform: translateX(${(props) => props.currentIdx * -800}px);
   transition: transform 0.5s ease-in-out;
   margin-top: -50px;
+  @media ${(props) => props.theme.windowSize.laptop} {
+    transform: translateX(${(props) => props.currentIdx * -props.baseWidth}px);
+  }
+  @media ${(props) => props.theme.windowSize.mobile} {
+    margin-top: 0;
+  }
 `;
 const CreateMandalartWrapper = styled.div`
   position: relative;
@@ -109,11 +131,21 @@ const CommandText = styled.h2`
   font-weight: 500;
   color: ${(props) => props.theme.color.fontPrimary};
   margin-right: 10px;
+  margin-top: 5px;
   line-height: 30px;
+  @media ${(props) => props.theme.windowSize.tablet} {
+    font-size: ${(props) => props.theme.fontSize.base};
+  }
 `;
 const MandalartAliasInput = styled.input`
   width: 60%;
   color: ${(props) => props.theme.color.primary};
+  @media ${(props) => props.theme.windowSize.tablet} {
+    width: 80%;
+  }
+  @media ${(props) => props.theme.windowSize.mobile} {
+    width: 100%;
+  }
 `;
 const MandalartFeatContainer = styled.div`
   position: relative;
@@ -138,7 +170,8 @@ const MandalartFeatBtn = styled.div`
   border-radius: ${(props) => props.theme.borderRadius};
 `;
 const FeatText = styled.p`
-  font-size: 14px;
+  font-size: ${(props) => props.theme.fontSize.base};
+
   font-weight: 500;
   color: ${(props) => props.theme.color.fontPrimary};
   text-align: left;
@@ -162,10 +195,13 @@ const FeatAddIcon = styled(Icon)`
   font-weight: 500;
   color: ${(props) => props.theme.color.fontPrimary};
   transition: all 0.2s ease-in-out;
-  &:hover {
-    color: ${(props) => props.theme.color.primary};
-    transform: rotate(90deg);
-    transition: all 0.2s ease-in-out;
+
+  @media (hover: hover) {
+    &:hover {
+      color: ${(props) => props.theme.color.primary};
+      transform: rotate(90deg);
+      transition: all 0.2s ease-in-out;
+    }
   }
 `;
 const PickerWrapper = styled.div<{ isOpenedFeatPicker: boolean }>`
@@ -176,6 +212,14 @@ const PickerWrapper = styled.div<{ isOpenedFeatPicker: boolean }>`
   background-color: ${(props) => props.theme.color.white};
   border-radius: ${(props) => props.theme.borderRadius};
   top: -10px;
+  @media ${(props) => props.theme.windowSize.tablet} {
+    width: 100%;
+  }
+  @media ${(props) => props.theme.windowSize.tablet} {
+    width: 100%;
+    top: -150px;
+    z-index: 9999;
+  }
 `;
 
 // 데일리 위클리 먼슬리 추가 시 필요
@@ -197,17 +241,9 @@ const PickerWrapper = styled.div<{ isOpenedFeatPicker: boolean }>`
 //   margin: 0 10px;
 // `;
 
-const DifficultyGuidewrapper = styled.div<{ currentIdx: number }>`
-  position: absolute;
-  top: 40%;
-  right: 400px;
-  transition: opacity 0.5s 1s ease-in-out;
-  visibility: ${props => props.currentIdx === 2 ? "visible" : "hidden"};
-  opacity: ${props => props.currentIdx === 2 ? 1 : 0};
-`;
 const QuestionWrapper = styled.div`
   position: absolute;
-  z-index: 100;
+  z-index: 99999;
   width: 30px;
   height: 30px;
   border-radius: 50%;
@@ -215,17 +251,28 @@ const QuestionWrapper = styled.div`
   filter: drop-shadow(1px 1px 1px ${(props) => props.theme.color.shadow});
   text-align: center;
   line-height: 30px;
+  top: -30px;
+  right: 120px;
+  cursor: pointer;
+
+  @media ${(props) => props.theme.windowSize.tablet} {
+    right: 0;
+  }
 `;
 const DifficultyGuide = styled.div<{ showGuide: boolean }>`
-  position: absolute;
-  top: 0;
-  left: 0;
   background-color: ${(props) => props.theme.color.transWhite};
   border-radius: ${(props) => props.theme.borderRadius};
   padding: 30px;
-  opacity: ${props => props.showGuide ? 1 : 0};
   transition: opacity 0.5s ease-in-out;
   filter: drop-shadow(1px 1px 1px ${(props) => props.theme.color.shadow});
+  display: ${(props) => (props.showGuide ? "block" : "none")};
+  position: absolute;
+  right: 120px;
+  top: -135px;
+  z-index: 9999;
+  @media ${(props) => props.theme.windowSize.tablet} {
+    right: 0;
+  }
 `;
 const DifficultyGuideText = styled.p`
   font-size: ${(props) => props.theme.fontSize.sm};
@@ -244,16 +291,28 @@ const QuestionIcon = styled(Icon)`
 
 export const DifficultyBtnWrapper = styled.div`
   width: fit-content;
-  margin: 0 auto;
   display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin: 0 auto;
+  position: relative;
+  @media ${(props) => props.theme.windowSize.tablet} {
+    width: 100%;
+  }
+  @media ${(props) => props.theme.windowSize.mobile} {
+    flex-direction: column;
+  }
+  ${(props) =>
+    props.id === "detail" &&
+    css`
+      @media ${(props) => props.theme.windowSize.mobile} {
+        flex-direction: row;
+      }
+    `}
 `;
 export const DifficultyBtn = styled.button<{ difficulty: string }>`
-  margin-right: 20px;
   text-align: center;
 
-  &:last-child {
-    margin-right: 0;
-  }
   &:hover {
     background-color: ${(props) => props.color};
     color: ${(props) => props.theme.color.white};
@@ -288,6 +347,7 @@ const CompleteBtn = styled.button<{ isFilled: boolean }>`
 `;
 
 export default function CreateMandalart() {
+  const baseWidth = document.getElementById("base")?.offsetWidth;
   const [currentIdx, setCurrentIdx] = useState<number>(0);
   const [showGuide, setShowGuide] = useState<boolean>(false);
   const [isOpenedFeatPicker, setIsOpenedFeatPicker] = useState<boolean>(false);
@@ -310,7 +370,7 @@ export default function CreateMandalart() {
 
   useEffect(() => {
     // const values = Object.values(mandalart);
-    if (alias !=="" && emoji !== "" && difficulty !== "") {
+    if (alias !== "" && emoji !== "" && difficulty !== "") {
       setIsFilled(true);
     }
   }, [mandalart]);
@@ -324,7 +384,7 @@ export default function CreateMandalart() {
     "#80FFBA",
     "#80FFF7",
     "#80D1FF",
-    "#809CFF",
+    "#739aff",
     "#A180FF",
     "#DE80FF",
     "#FF80E3",
@@ -425,7 +485,7 @@ export default function CreateMandalart() {
         .collection("mandalable")
         .add({
           user_id: userId,
-          create_at: Date.now(),
+          created_at: Date.now(),
           alias: alias,
           emoji: emoji,
           color: color,
@@ -447,7 +507,7 @@ export default function CreateMandalart() {
     }
   };
   return (
-    <Base>
+    <Base id="base">
       <CloseBtn className="material-symbols-rounded" onClick={onCloseBtnClick}>
         close
       </CloseBtn>
@@ -472,7 +532,7 @@ export default function CreateMandalart() {
           arrow_forward_ios
         </Arrow>
       </Pagination>
-      <CreateMandalartContainer currentIdx={currentIdx}>
+      <CreateMandalartContainer currentIdx={currentIdx} baseWidth={baseWidth}>
         <CreateMandalartWrapper>
           <CommandTextWrapper>
             <CommandText>만다라트 별칭을 입력해 주세요!</CommandText>
@@ -577,6 +637,22 @@ export default function CreateMandalart() {
           <CommandTextWrapper>
             <CommandText>만다라트 성공 난이도를 선택해 주세요!</CommandText>
             <Emoji unified="1f929" size={24} emojiStyle={EmojiStyle.APPLE} />
+            <QuestionWrapper
+              onMouseDown={() => setShowGuide(true)}
+              onMouseUp={() => setShowGuide(false)}
+            >
+              <QuestionIcon>question_mark</QuestionIcon>
+            </QuestionWrapper>
+            <DifficultyGuide showGuide={showGuide}>
+              <DifficultyGuideText>
+                선택한 난이도에 따라 만다라트 성공율이 결정됩니다.
+                <br />
+                • Easy : 85%
+                <br />
+                • Normal : 90%
+                <br />• Difficult : 99%
+              </DifficultyGuideText>
+            </DifficultyGuide>
           </CommandTextWrapper>
           <DifficultyBtnWrapper
             onClick={(event: React.MouseEvent<HTMLDivElement>) =>
@@ -606,21 +682,6 @@ export default function CreateMandalart() {
           </CompleteBtn>
         </CreateMandalartWrapper>
       </CreateMandalartContainer>
-      <DifficultyGuidewrapper currentIdx={currentIdx}>
-            <QuestionWrapper onMouseOver={() => setShowGuide(true)} onMouseLeave={() => setShowGuide(false)}>
-              <QuestionIcon>question_mark</QuestionIcon>
-            </QuestionWrapper>
-            <DifficultyGuide showGuide={showGuide}>
-              <DifficultyGuideText>
-                선택한 난이도에 따라 만다라트 성공율이 결정됩니다.
-                <br />
-                • Easy : 85%
-                <br />
-                • Normal : 90%
-                <br />• Difficult : 99%
-              </DifficultyGuideText>
-            </DifficultyGuide>
-          </DifficultyGuidewrapper>
     </Base>
   );
 }

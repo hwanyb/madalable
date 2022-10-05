@@ -2,6 +2,10 @@ import React, { Dispatch, SetStateAction, useState } from "react";
 import styled from "styled-components";
 import { authService, firebaseInstance } from "../../firebase";
 import { CloseBtn } from "../Home/CreateMandalart";
+import { useSelector } from "react-redux";
+import { RootState } from "../../modules";
+import { useDispatch } from "react-redux";
+import { setSignupMode } from "../../modules/authReducer";
 
 const AuthWrapper = styled.div`
   width: fit-content;
@@ -56,7 +60,13 @@ export default function AuthContainer({ setIsOpenedAuthForm }: Props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [signupMode, setSignupMode] = useState(true);
+  // const [signupMode, setSignupMode] = useState(true);
+
+  const dispatch = useDispatch();
+
+  const signupMode = useSelector(
+    (state: RootState) => state.authReducer.signupMode,
+  );
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
@@ -113,7 +123,7 @@ export default function AuthContainer({ setIsOpenedAuthForm }: Props) {
   };
   const onLoginClick = (event: React.MouseEvent) => {
     event.preventDefault();
-    setSignupMode(!signupMode);
+    dispatch(setSignupMode(!signupMode));
   };
   return (
     <AuthWrapper>

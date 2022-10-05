@@ -63,11 +63,18 @@ export default function SuccessContainer({
     <SuccessRateWrapper className="success-rate-wrapper">
       <SuccessRate>
         <BackCircle size={size}>
-          <SuccessRateCircle className="success-rate-circle" success={success} color={color} size={size} />
+          <SuccessRateCircle
+            className="success-rate-circle"
+            success={success}
+            color={color}
+            size={size}
+          />
           <FrontCircle className="front-circle" color={color} />
         </BackCircle>
       </SuccessRate>
-      <SuccessRateText className="success-rate-text">{success} %</SuccessRateText>
+      <SuccessRateText className="success-rate-text">
+        {success} %
+      </SuccessRateText>
     </SuccessRateWrapper>
   );
 }

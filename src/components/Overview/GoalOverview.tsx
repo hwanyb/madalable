@@ -31,6 +31,11 @@ const Circle = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  @media ${(props) => props.theme.windowSize.tablet} {
+  width: fit-content;
+  height: fit-content;
+  
+  }
 `;
 const CircleSm = styled.div`
   width: 85%;
@@ -41,6 +46,14 @@ const CircleSm = styled.div`
       rgba(255, 255, 255, 0.7)
     ),
     linear-gradient(${(props) => props.color}, ${(props) => props.color});
+@media ${props => props.theme.windowSize.tablet}{
+  width: 68px;
+  height: 68px;
+}
+@media ${props => props.theme.windowSize.mobile}{
+  width: 44px;
+  height: 44px;
+}
 `;
 
 const Base = styled.div`
@@ -76,6 +89,15 @@ const OverviewContainer = styled.div`
     justify-content: center;
     align-items: center;
     box-shadow: 3px 3px 5px ${(props) => props.theme.color.shadow};
+  }
+  @media ${(props) => props.theme.windowSize.tablet} {
+    width: 100%;
+    height: 60%;
+    & > div {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+    }
   }
   & > div:nth-child(1) {
     grid-area: main_goal;
@@ -137,12 +159,15 @@ const GoalWrapper = styled.div`
 const GoalText = styled.h2`
   position: absolute;
   z-index: 999;
-  font-size: ${(props) => props.theme.fontSize.lg};
+  font-size: ${(props) => props.theme.fontSize.md};
   color: ${(props) => props.theme.color.fontPrimary};
 `;
 
 export default function GoalOverview() {
   const dispatch = useDispatch();
+
+  const windowSize = useSelector((state: RootState) => state.appReducer.windowSize);
+
   const selectedMandalart = useSelector(
     (state: RootState) => state.overviewReducer.selectedMandalart,
   );
@@ -151,28 +176,19 @@ export default function GoalOverview() {
   );
   const onGoalClick = (e: React.SyntheticEvent<HTMLDivElement>, goal: Goal) => {
     dispatch(setSelectedGoal(goal));
-    dispatch(setIsOpenedTodoOverview());
+    dispatch(setIsOpenedTodoOverview(true));
   };
-  const onBackClick = () => {
-    if (isOpenedTodoOverview) {
-      dispatch(setIsOpenedTodoOverview());
-    } else {
-      dispatch(setIsOpenedGoalOverview());
-    }
-  };
+
   return (
     <Base>
-      <BackBtn className="material-symbols-rounded" onClick={onBackClick}>
-        arrow_back
-      </BackBtn>
       {isOpenedTodoOverview ? (
         <TodoOverview />
       ) : (
         <OverviewContainer>
           <Mandalart color={selectedMandalart.color}>
-            <MandalartEmoji unified={selectedMandalart.emoji} size={70} />
+            <MandalartEmoji unified={selectedMandalart.emoji} size={windowSize < 480 ? 25 : windowSize < 768 ? 40 : 70} />
             <SuccessContainer
-              size={150}
+              size={windowSize < 480 ? 50 : windowSize < 768 ? 80 : 150}
               color={selectedMandalart.color}
               success={selectedMandalart.success}
             />
@@ -186,7 +202,7 @@ export default function GoalOverview() {
               color={selectedMandalart.color}
             >
               <SuccessContainer
-                size={150}
+                size={windowSize < 480 ? 50 : windowSize < 768 ? 80 : 150}
                 color={selectedMandalart.color}
                 success={goal.success}
               />

@@ -41,6 +41,20 @@ const GlobalStyle = createGlobalStyle`
 * {
     box-sizing: border-box;
 }
+*::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    margin-left: 30px;
+  }
+  *::-webkit-scrollbar-track {
+    background-color: transparent;
+    border-radius: 10px;
+  }
+  *::-webkit-scrollbar-thumb {
+    background-color: ${(props) => props.theme.color.lightGray};
+    border-radius: 10px;
+    box-shadow: 2px 2px 3px ${(props) => props.theme.color.shadow};
+  }
 
 html {
     font-size: 16px;
@@ -76,7 +90,7 @@ button {
     transition: all 0.2s ease-in;
     font-weight: 500;
     font-size: ${(props) => props.theme.fontSize.base};
-    padding: 2px 40px;
+    padding: 0.1rem 2rem;
     background-color: ${(props) => props.theme.color.transWhite};
     color: ${(props) => props.theme.color.fontPrimary};
     cursor: pointer;
